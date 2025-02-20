@@ -1,0 +1,137 @@
+<app-header></app-header>
+<div class="row justify-content-center ">
+    <div class="col-md-8 mt-3  card shadow ">
+        <div class="row">
+            <div class="col-6 text-center ">
+                <h1 class="pt-5 text-primary">សូមស្វាគមន៍ </h1>
+                <h1 class="text-danger">មកកាន់</h1>
+                <h3 class="text-primary">មជ្ឈមណ្ឌលកុំព្យូទ័រ ប៉ោយប៉ែត</h3>
+                <div ><img src="/img/illustration.png" alt=""></div>
+            </div>
+            <div class="col-6 p-5">
+                <h1 class=" text-center text-danger">បង្កើតគណនី</h1>
+                <form #signupForm="ngForm" (ngSubmit)="onSubmit(signupForm)">
+                    <div class="mb-3">
+                      <label for="username" class="form-label">ឈ្មោះ</label>
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        id="username" 
+                        [(ngModel)]="username" 
+                        name="username" 
+                        required 
+                        minlength="3"
+                        #usernameCtrl="ngModel"
+                      />
+                      <div *ngIf="usernameCtrl.invalid && usernameCtrl.touched" class="text-danger">
+                        ឈ្មោះត្រូវមានយ៉ាងហោចណាស់ 3 តួអក្សរ។
+                      </div>
+                    </div>
+                  
+                    <div class="mb-3">
+                      <label for="email" class="form-label">អ៊ីម៉ែល</label>
+                      <input 
+                        type="email" 
+                        class="form-control" 
+                        id="email" 
+                        [(ngModel)]="email" 
+                        name="email" 
+                        required 
+                        #emailCtrl="ngModel"
+                      />
+                      <div *ngIf="emailCtrl.invalid && emailCtrl.touched" class="text-danger">
+                        សូមបញ្ចូលអ៊ីម៉ែលដែលត្រឹមត្រូវ។
+                      </div>
+                    </div>
+                  
+                    <div class="mb-3">
+                      <label class="form-label">ភេទ</label>
+                      <div class="d-flex">
+                        <div class="form-check">
+                          <input 
+                            class="form-check-input" 
+                            type="radio" 
+                            name="gender" 
+                            [(ngModel)]="gender" 
+                            value="male" 
+                            id="male" 
+                            required
+                          />
+                          <label class="form-check-label" for="male">ប្រុស</label>
+                        </div>
+                        <div class="ms-5 form-check">
+                          <input 
+                            class="form-check-input" 
+                            type="radio" 
+                            name="gender" 
+                            [(ngModel)]="gender" 
+                            value="female" 
+                            id="female" 
+                            required
+                          />
+                          <label class="form-check-label" for="female">ស្រី</label>
+                        </div>
+                      </div>
+                    </div>
+                  
+                    <div class="mb-3">
+                      <label for="phone" class="form-label">លេខទូរស័ព្ទ</label>
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        id="phone" 
+                        [(ngModel)]="phone" 
+                        name="phone" 
+                        required 
+                        pattern="^\d{10}$"
+                        #phoneCtrl="ngModel"
+                      />
+                      <div *ngIf="phoneCtrl.invalid && phoneCtrl.touched" class="text-danger">
+                        សូមបញ្ចូលលេខទូរស័ព្ទត្រឹមត្រូវ (10 តួលេខ)។
+                      </div>
+                    </div>
+                  
+                    <div class="mb-3">
+                      <label for="password" class="form-label">លេខសម្ងាត់</label>
+                      <input 
+                        type="password" 
+                        class="form-control" 
+                        id="password" 
+                        [(ngModel)]="password" 
+                        name="password" 
+                        required 
+                        minlength="6"
+                        #passwordCtrl="ngModel"
+                      />
+                      <div *ngIf="passwordCtrl.invalid && passwordCtrl.touched" class="text-danger">
+                        លេខសម្ងាត់ត្រូវមានយ៉ាងហោចណាស់ 6 តួអក្សរ។
+                      </div>
+                    </div>
+                  
+                    <div class="mb-3">
+                      <label for="confirmPassword" class="form-label">បញ្ជាក់លេខសម្ងាត់</label>
+                      <input 
+                        type="password" 
+                        class="form-control" 
+                        id="confirmPassword" 
+                        [(ngModel)]="confirmPassword" 
+                        name="confirmPassword" 
+                        required
+                      />
+                      <div *ngIf="password && confirmPassword && password !== confirmPassword" class="alert alert-danger">
+                        លេខសម្ងាត់មិនត្រូវគ្នាទេ!
+                      </div>
+                    </div>
+                  
+                    <div class="mb-3">បើអ្នកមានគណនី?<a routerLink="/login"> ចូល</a></div>
+                  
+                    <div class="mb-3 text-center">
+                      <button class="btn btn-primary" type="submit" [disabled]="signupForm.invalid">បង្កើត</button>
+                    </div>
+                  </form>
+                  
+                
+            </div>
+        </div>
+    </div>
+</div>
