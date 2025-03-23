@@ -39,9 +39,6 @@
             </a>
             <span class="nav-tooltip">about</span>
           </li>
-          
-          
-          
         </ul>
         <!-- Secondary bottom nav -->
         <ul class="nav-list secondary-nav fs-5">
@@ -53,12 +50,12 @@
             <span class="nav-tooltip">Profile</span>
           </li>
           <li class="nav-item">
-            <a routerLink="/login" class="nav-link">
+            <a class="nav-link" (click)="navigateToLogin()" style="cursor: pointer;">
               <span class="nav-icon material-symbols-rounded"><i class="fa-solid fa-right-to-bracket"></i></span>
               <span class="nav-label">ចូល</span>
             </a>
-            <span class="nav-tooltip">Profile</span>
-          </li>
+            <span class="nav-tooltip">Login</span>
+          </li> 
         </ul>
       </nav>
     </div>

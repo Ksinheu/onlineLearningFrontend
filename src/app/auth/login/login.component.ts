@@ -32,7 +32,7 @@ export class LoginComponent {
             confirmButtonText: 'Continue'
           }).then((result) => {
             if (result.isConfirmed) {
-              this.router.navigate(['/']); // Navigate to dashboard
+              this.router.navigate(['/deshboard']); // Navigate to dashboard
             }
           });
         },

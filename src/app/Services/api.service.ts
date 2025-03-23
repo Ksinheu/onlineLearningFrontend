@@ -1,5 +1,7 @@
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -8,7 +10,10 @@ import { Observable } from 'rxjs';
 export class ApiService {
 
   private apiUrl= 'http://127.0.0.1:8000/api';
-  constructor(private http:HttpClient) { }
+  private sliderApi = 'http://localhost:8000/api/sliderApi';
+  private newsApi='http://localhost:8000/api/newsApi';
+  constructor(private http:HttpClient, private router:Router,
+     @Inject(PLATFORM_ID) private platformId: object) { }
   
   register(data: any): Observable<any> {
     const deviceInfo = this.collectDeviceInfo();
@@ -26,6 +31,16 @@ export class ApiService {
     }
     return this.http.post<any>(`${this.apiUrl}/login`,loginData);
   }
+  logout(): Observable<any> {
+    return this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true });
+  }
+  
+  clearSession(): void {
+    localStorage.removeItem('token'); // Remove the token
+    sessionStorage.clear(); // Clear session storage
+    this.router.navigate(['/login']); // Redirect to login page
+  }
+
   private collectDeviceInfo() {
     const userAgent = navigator.userAgent;
     let browserName = 'Unknown';
@@ -66,4 +81,14 @@ export class ApiService {
     };
   }
 
+  // slider api
+  getSliders(): Observable<any> {
+    return this.http.get<any>(this.sliderApi);
+  }
+  // slider api
+  getNews(): Observable<any> {
+    return this.http.get<any>(this.newsApi);
+  }
+
+  
 }

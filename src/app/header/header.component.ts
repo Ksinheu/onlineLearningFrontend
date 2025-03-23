@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { ApiService } from '../Services/api.service';
+import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -8,5 +11,17 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+  isLoggedIn = false; // Track authentication status
 
+  constructor(
+    private authService: ApiService, 
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
+
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.isLoggedIn = !!localStorage.getItem('token'); // Only runs on the client-side
+    }
+  }
 }
