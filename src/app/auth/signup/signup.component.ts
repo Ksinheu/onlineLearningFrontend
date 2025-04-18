@@ -49,7 +49,7 @@ export class SignupComponent {
             confirmButtonText: 'Go to Login'
           }).then((result) => {
             if (result.isConfirmed) {
-              this.router.navigate(['/login']);
+              this.router.navigate(['/deshboard']);
             }
           });
         },

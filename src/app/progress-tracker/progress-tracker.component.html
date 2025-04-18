@@ -1,0 +1,10 @@
+<div class="container">
+    <h2>Progress Tracker</h2>
+    
+    <div *ngFor="let entry of progressList" class="progress-item">
+      <span>{{ entry.lesson.title }}</span>
+      <button *ngIf="!entry.completed" (click)="markAsCompleted(entry.id)">Mark as Completed</button>
+      <button class="delete" (click)="deleteProgress(entry.id)">Delete</button>
+    </div>
+  </div>
+  

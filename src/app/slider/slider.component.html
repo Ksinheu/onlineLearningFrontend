@@ -1,11 +1,14 @@
-<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+<div class="row">
+<div id="carouselExampleAutoplaying" class="carousel slide mt-5" data-bs-ride="carousel">
     <div class="carousel-inner" *ngIf="sliders.length > 0; else noImages">
         <div *ngFor="let slider of sliders; let index = index" 
              class="carousel-item" 
              [ngClass]="{'active': index === 0}">
+             <div class="width-img">
             <img [src]="'http://localhost:8000/storage/' + slider.image" 
                  alt="Slider Image" 
-                 class="d-block w-100" style="height: 500px;"/>
+                 class=" w-100"/>
+            </div>
         </div>
     </div>
 
@@ -21,7 +24,7 @@
         <span class="visually-hidden">Next</span>
     </button>
 </div>
-
+</div>
 <!-- No Images Template -->
 <ng-template #noImages>
     <p class="text-center mt-3">No images found.</p>

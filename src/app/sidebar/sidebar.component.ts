@@ -9,9 +9,9 @@ import { Router } from '@angular/router';
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit{
   
-
+  isLoggedIn = false;
   constructor(
     private authService: ApiService, 
     private router: Router,
@@ -20,5 +20,20 @@ export class SidebarComponent {
   navigateToLogin(): void {
     this.router.navigate(['/login']); // Navigate to login page
   }
-  
+  ngOnInit() {
+     // Check token at startup
+     this.isLoggedIn = this.authService.isLoggedIn();
+
+     // Listen to real-time login/logout
+     this.authService.isLoggedIn1().subscribe((status) => {
+       this.isLoggedIn = status;
+     });
+  }
+
+  logout(): void {
+    this.authService.logout().subscribe(() => {
+      this.authService.clearSession(); // Clears token + redirects
+    });
+  }
 }
+

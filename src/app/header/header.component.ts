@@ -11,7 +11,7 @@ import { isPlatformBrowser } from '@angular/common';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  isLoggedIn = false; // Track authentication status
+  isLoggedin = false; // Track authentication status
 
   constructor(
     private authService: ApiService, 
@@ -21,7 +21,7 @@ export class HeaderComponent {
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      this.isLoggedIn = !!localStorage.getItem('token'); // Only runs on the client-side
+      this.isLoggedin = !!localStorage.getItem('token'); // Only runs on the client-side
     }
   }
 }

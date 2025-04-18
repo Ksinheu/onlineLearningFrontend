@@ -15,7 +15,9 @@ export class NewsComponent {
 
   ngOnInit(): void {
     this.newsService.getNews().subscribe((response) => {
-      this.news = response.news;
+      this.news = response.news; // Ensure response contains 'news' array
+    }, (error) => {
+      console.error('Error fetching news:', error);
     });
   }
 }

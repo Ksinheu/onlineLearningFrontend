@@ -15,7 +15,7 @@
           </div>
           <div class="mb-3">
             <label for="password" class="form-label">លេខសម្ងាត់</label>
-            <input type="text" class="form-control" id="password" [(ngModel)]="password" name="password" required minlength="8" ngModel>
+            <input type="password" class="form-control" id="password" [(ngModel)]="password" name="password" required minlength="8" ngModel>
         </div>
         <div class="mb-3">បើអ្នកមិនទាន់មានគណនី?<a routerLink="/signup">បង្កើត</a></div>
         <div *ngIf="errorMessage" class="alert alert-danger">

@@ -1,6 +1,14 @@
-<div *ngFor="let newsItem of news " class="card" style="width: 18rem;">
-  <img [src]="'http://localhost:8000/storage/' + newsItem.imageNews" class="card-img-top" alt="News Image">
+<div class="row overflow-auto flex-nowrap">
+  <!-- <div class="col-12"> -->
+  <div 
+    *ngFor="let newsItem of news" 
+    class="ms-3 card  shadow-card" 
+    style="width: 15rem;">
+    <img 
+      [src]="'http://localhost:8000/storage/' + newsItem.imageNews" 
+      class="card-img-top" 
+      alt="News Image">
+  </div>
+  <!-- </div> -->
 </div>
-
-  
   

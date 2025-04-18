@@ -12,7 +12,7 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class SideBar2Component {
   
-  isLoggedIn = false; // Track authentication status
+  isLoggedin = false; // Track authentication status
   
     constructor(
       private authService: ApiService, 
@@ -20,13 +20,13 @@ export class SideBar2Component {
        @Inject(PLATFORM_ID) private platformId: Object) {}
   
     ngOnInit(): void {
-       this.isLoggedIn = !!localStorage.getItem('token');
+       this.isLoggedin = !!localStorage.getItem('token');
       this.checkLoginStatus(); // Check login status when component initializes
     }
   
     checkLoginStatus(): void {
       if (isPlatformBrowser(this.platformId)) {
-        this.isLoggedIn = !!localStorage.getItem('token');
+        this.isLoggedin = !!localStorage.getItem('token');
       }
     }
     logout(): void {
@@ -34,12 +34,12 @@ export class SideBar2Component {
         next: (response) => {
           console.log('Logout successful:', response);
           this.authService.clearSession(); // Clear session
-          this.isLoggedIn = false; // Update navbar status
+          this.isLoggedin = false; // Update navbar status
         },
         error: (error) => {
           console.error('Logout failed:', error);
           this.authService.clearSession(); // Ensure session is cleared even if API fails
-          this.isLoggedIn = false;
+          this.isLoggedin = false;
         }
       });
     }

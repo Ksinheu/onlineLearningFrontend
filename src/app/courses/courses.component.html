@@ -1,0 +1,56 @@
+<!-- វគ្គសិក្សាពេញនិយម -->
+       
+<div class="row overflow-auto  flex-nowrap">
+  <!-- <div class="col-12"> -->
+  <div 
+    *ngFor="let newsItem of course" 
+    class="ms-3 card cursor-card shadow-card pt-2" 
+    style="width: 20rem;">
+    <a [routerLink]="['/courses', newsItem.id]">
+    <img 
+      [src]="'http://localhost:8000/storage/' + newsItem.imgCourse" 
+      class="card-img-top" 
+      alt="News Image">
+    </a>
+      <div class="card-body">
+          <div class="card-title">
+              <div>មុខវិជ្ជា៖ <span class="text-primary">{{newsItem.course_name}}</span></div> 
+            <div>តម្លៃ ៖ <span class="text-warning">{{newsItem.price}}$</span></div> 
+            <div class="text-center mt-2"><a [routerLink]="['/courses', newsItem.id]" class="btn btn-success w-100">ទិញ</a></div>
+          </div>
+      </div>
+  </div>
+  <!-- </div> -->
+</div>
+
+  <!-- <div class="container-fuild header">
+    <app-header></app-header>
+  </div>
+  <div class="container-fuild">
+    <div class="row">
+      <div class="col-2">
+        <app-side-bar2></app-side-bar2>
+      </div>
+      <div class="col-10 mt-5  overflow-hidden">
+        
+        
+        
+        
+        
+        <div class="row bg-blue mt-3 p-2">
+          <div class="col-8">
+            <div class="text-white">©​រក្សាសិទ្ធគ្រប់យ៉ាង</div>
+          </div>
+          <div class="col-4">
+            <div class="text-warning">www.poipetcomputercenter.com</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  
+  
+  
+  <div class="container position-relative">
+  
+  </div>

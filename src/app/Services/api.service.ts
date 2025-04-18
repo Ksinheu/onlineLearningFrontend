@@ -2,7 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,9 @@ export class ApiService {
 
   private apiUrl= 'http://127.0.0.1:8000/api';
   private sliderApi = 'http://localhost:8000/api/sliderApi';
-  private newsApi='http://localhost:8000/api/newsApi';
+  private courseApi = 'http://localhost:8000/api/courseApi';
+  private lessonApi = 'http://localhost:8000/api/lessonApi';
+  // private newsApi='http://localhost:8000/api/newsApi';
   constructor(private http:HttpClient, private router:Router,
      @Inject(PLATFORM_ID) private platformId: object) { }
   
@@ -24,14 +26,21 @@ export class ApiService {
 
     return this.http.post<any>(`${this.apiUrl}/customerRegister`, fullData);
   }
+  private loggedIn = new BehaviorSubject<boolean>(false);
+
+  isLoggedIn1(): Observable<boolean> {
+    return this.loggedIn.asObservable();
+  }
   Login(email:string, password:string): Observable<any> {
     const loginData={
       email:email,
       password:password
     }
+    this.loggedIn.next(true);
     return this.http.post<any>(`${this.apiUrl}/login`,loginData);
   }
   logout(): Observable<any> {
+    this.loggedIn.next(false);
     return this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true });
   }
   
@@ -80,15 +89,27 @@ export class ApiService {
         // last_used: new Date().toISOString()
     };
   }
-
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token'); // or 'auth_user', etc.
+  }
   // slider api
   getSliders(): Observable<any> {
     return this.http.get<any>(this.sliderApi);
   }
   // slider api
   getNews(): Observable<any> {
-    return this.http.get<any>(this.newsApi);
+    return this.http.get<any>('http://localhost:8000/api/newsApi');
+  }
+  // get course
+  getCourse():Observable<any>{
+    return this.http.get<any>(this.courseApi);
+  }
+  getCourseById(id: number): Observable<any> {
+    return this.http.get(`${this.courseApi}/${id}`);
+  }
+  // get lession
+  getLesson():Observable<any>{
+    return this.http.get<any>(this.lessonApi);
   }
 
-  
 }

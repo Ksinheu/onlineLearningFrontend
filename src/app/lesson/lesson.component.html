@@ -1,0 +1,31 @@
+<div class="container-fluid">
+    <app-header></app-header>
+  
+    <div class="row" *ngFor="let lessons of lesson">
+      <div class="col-6">
+        <!-- video lesson -->
+         <h1>Test</h1>
+        <video
+          [src]="lessons.video_url"
+          controls
+          width="100%"
+          height="auto"
+          preload="metadata"
+        ></video>
+      </div>
+  
+      <div class="col-6">
+        <!-- description -->
+        <h3>{{ lessons.title }}</h3>
+        <p>{{ lessons.content }}</p>
+  
+        <!-- Buy button -->
+        <div *ngIf="!hasPurchased" class="mt-3">
+          <button class="btn btn-primary" (click)="buyCourse(lessons.course_id)">
+            Buy This Course
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

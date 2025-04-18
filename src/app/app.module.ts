@@ -15,8 +15,19 @@ import { TestSideBarComponent } from './test-side-bar/test-side-bar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SideBar2Component } from './side-bar2/side-bar2.component';
 import { NewsComponent } from './news/news.component';
+import { ProgressTrackerComponent } from './progress-tracker/progress-tracker.component';
+import { CoursesComponent } from './courses/courses.component';
+import { PurchaseComponent } from './purchase/purchase.component';
+import { LessonComponent } from './lesson/lesson.component';
+import { CourseDetailComponent } from './course-detail/course-detail.component';
 const router:Routes=[
- 
+ {path:'course',component:CoursesComponent},
+ {
+  path: 'courses/:id',
+  component: CourseDetailComponent
+},
+ {path:'lesson',component:LessonComponent},
+{path:'purchase',component:PurchaseComponent},
 {path:'login',component:LoginComponent},
 {path:'signup',component:SignupComponent},
 {path:'',component:HomeComponent},
@@ -36,7 +47,12 @@ const router:Routes=[
     TestSideBarComponent,
     DashboardComponent,
     SideBar2Component,
-    NewsComponent
+    NewsComponent,
+    ProgressTrackerComponent,
+    CoursesComponent,
+    PurchaseComponent,
+    LessonComponent,
+    CourseDetailComponent
   ],
   imports: [
     BrowserModule,

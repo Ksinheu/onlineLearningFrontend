@@ -83,7 +83,7 @@
                         [(ngModel)]="phone" 
                         name="phone" 
                         required 
-                        pattern="^\d{10}$"
+                        
                         #phoneCtrl="ngModel"
                       />
                       <div *ngIf="phoneCtrl.invalid && phoneCtrl.touched" class="text-danger">
