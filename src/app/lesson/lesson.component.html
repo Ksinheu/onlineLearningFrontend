@@ -1,31 +1,26 @@
-<div class="container-fluid">
-    <app-header></app-header>
-  
-    <div class="row" *ngFor="let lessons of lesson">
-      <div class="col-6">
-        <!-- video lesson -->
-         <h1>Test</h1>
-        <video
-          [src]="lessons.video_url"
-          controls
-          width="100%"
-          height="auto"
-          preload="metadata"
-        ></video>
-      </div>
-  
-      <div class="col-6">
-        <!-- description -->
-        <h3>{{ lessons.title }}</h3>
-        <p>{{ lessons.content }}</p>
-  
-        <!-- Buy button -->
-        <div *ngIf="!hasPurchased" class="mt-3">
-          <button class="btn btn-primary" (click)="buyCourse(lessons.course_id)">
-            Buy This Course
-          </button>
+<div class="container mt-4">
+  <div *ngFor="let lessons of lesson; let i = index">
+    <div class="card mb-3 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">{{ lessons.title }}</h5>
+        <p class="card-text">{{ lessons.content }}</p>
+       
+
+        <!-- Video only shown when clicked -->
+        <div>
+          <video
+            [src]="'http://localhost:8000/storage/' + lessons.video_url"
+            controls
+            class="w-100 rounded shadow"
+            preload="metadata"
+          ></video>
         </div>
       </div>
     </div>
   </div>
-  
+
+  <!-- Loading/Error Fallback -->
+  <div *ngIf="!lesson?.length" class="text-center">
+    <p>កំពុងផ្ទុកមេរៀន...</p>
+  </div>
+</div>

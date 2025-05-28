@@ -1,5 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-
+import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, Inject, PLATFORM_ID } from '@angular/core';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -9,4 +8,6 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 })
 export class AppComponent {
   title = 'lms-frontend';
+ 
+  
 }

@@ -1,12 +1,12 @@
-<app-header></app-header>
+<app-home-header></app-home-header>
 <div class="row justify-content-center mt-5">
   <div class="col-md-8 card shadow">
     <div class="row">
-      <div class="col-6 text-center">
+      <div class="col-12 col-md-6 col-lg-6 text-center">
         
-        <div><img src="img/illustration.png" alt=""></div>
+        <div class="d-none d-md-block"><img src="img/illustration.png" alt=""></div>
       </div>
-      <div class="col-6 p-5">
+      <div class="col-12 col-md-6 col-lg-6 p-5">
         <h1 class="pt-3 text-center text-danger">ចូលគណនី</h1>
         <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm)">
           <div class="mb-3">
@@ -23,6 +23,7 @@
         </div>
         <div class="mb-3 text-center">
             <button class="btn btn-primary" type="submit" [disabled]="!loginForm.valid">ចូល</button>
+            <a class="btn btn-secondary" routerLink="/">ចេញ</a>
         </div>
         </form>
       </div>

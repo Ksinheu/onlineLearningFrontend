@@ -1,16 +1,108 @@
-<div class="container-fluid">
-    <app-header></app-header>
-    <div class="container">
-        <div class="row mt-3">
-            <div class="col-12">
-                <div class="fs-4 mb-3 text-primary">ទូទាត់លុយជាមួយ</div>
-                <div class="card mb-2 p-4">
-                   <a href=""> <img src="https://www.ababank.com/fileadmin/user_upload/Payment_Cards/Visa_Virtual_2020_FA.png" alt="" width="15%"></a>
-                </div>
-                <div class="card p-4">
-                   <a href=""> <img src="https://bredcambodia.com.kh/wp-content/uploads/2022/12/KHQR-available-here-logo-with-bg-1024x422.png" width="15%" alt=""></a>
-                </div>
-            </div>
-        </div>
+
+  <app-header></app-header>
+  <div class="content">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="text-center">
+      <p>Loading course details...</p>
     </div>
-</div>
+
+    <!-- Course Details -->
+    <div *ngIf="!loading && course" class="course-section mt-5">
+      <div class="back-button">
+        <a routerLink="/dashboard" class="button secondary">ត្រឡប់ (Back)</a>
+      </div>
+      <div class="card">
+        <div class="course-details">
+          <div class="course-image">
+            <img [src]="'http://localhost:8000/storage/' + course.imgCourse " alt="Course Image" class="course-img" />
+          </div>
+          <div class="course-info">
+            <h5>{{ course.course_name }}</h5>
+            <p><strong>Description:</strong> {{ course.description }}</p>
+            <p><strong>Price:</strong> ${{ course.price }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error if No Course -->
+    <div *ngIf="!loading && !course" class="alert error">
+      Failed to load course details.
+    </div>
+
+    <!-- Summary and Buy Button -->
+    <div *ngIf="!loading && course" class="summary">
+      <div class="card">
+        <h5 class="text-center">សរុប & ទូទាត់ (Summary & Payment)</h5>
+        <h6>{{ course?.course_name }}</h6>
+        <div class="summary-row">
+          <div class="summary-label">
+            <p><strong>Price:</strong></p>
+            <p><strong>Total:</strong></p>
+          </div>
+          <div class="summary-value">
+            <p>${{ course?.price }}</p>
+            <p>${{ course?.price }}</p>
+          </div>
+        </div>
+        <div class="text-center">
+          <button class="button success" (click)="isLogined ? openModal() : navigateToLogin()" [disabled]="!course">
+            {{ isLogined ? 'ទិញ (Buy)' : 'Login to Buy' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal" *ngIf="showModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5>ការទូទាត់ (Payment)</h5>
+          <button class="close-button" (click)="closeModal()">×</button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="purchaseForm" (ngSubmit)="onSubmit()">
+            <!-- Payment Methods -->
+            <div class="form-group">
+              <label>Payment Methods</label>
+              <div *ngIf="payment_methods.length === 0" class="alert warning">
+                No payment methods available.
+              </div>
+              <div *ngFor="let payment of payment_methods" class="payment-method">
+                <p><strong>Bank Name:</strong> {{ payment.name_bank }}</p>
+                <p><strong>Account Number:</strong> {{ payment.number_bank }}</p>
+                <p><strong>Phone Number:</strong> {{ payment.phone_number }}</p>
+                <img [src]="'http://localhost:8000/storage/' + payment.QR_code" alt="QR Code" class="qr-code" />
+              </div>
+            </div>
+
+            <!-- Payment Slip Upload -->
+            <div class="form-group">
+              <label for="pay_slip">Upload Payment Slip</label>
+              <input type="file" id="pay_slip" (change)="onFileChange($event)" class="form-control" [class.invalid]="hasError('pay_slip')" accept="image/jpeg,image/jpg,image/png">
+              <div *ngIf="hasError('pay_slip')" class="error-message">
+                <div *ngIf="purchaseForm.get('pay_slip')?.hasError('required')">Payment slip is required</div>
+                <div *ngIf="purchaseForm.get('pay_slip')?.hasError('invalidType')">Only JPG, JPEG, or PNG files are allowed</div>
+                <div *ngIf="purchaseForm.get('pay_slip')?.hasError('maxSize')">File must not exceed 2MB</div>
+                <div *ngIf="purchaseForm.get('pay_slip')?.hasError('emptyFile')">File is empty</div>
+                <div *ngIf="purchaseForm.get('pay_slip')?.hasError('invalidBase64')">Invalid file format</div>
+              </div>
+            </div>
+
+            <!-- Comment Field -->
+            <div class="form-group">
+              <label for="comment">Comment (Optional)</label>
+              <textarea id="comment" class="form-control" formControlName="comment"></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center">
+              <button type="submit" class="button success" [disabled]="isSubmitting || purchaseForm.invalid">
+                {{ isSubmitting ? 'Submitting...' : 'ទូទាត់ (Pay)' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

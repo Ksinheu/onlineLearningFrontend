@@ -1,18 +1,30 @@
-<div class="row">
-    <div class="col-12">
-      <!-- <div class="container-fuild "> -->
-      <div class="row bg-blue shadow">
-        <div class="col-1"></div>
-        <div class="col-4 p-1">
-          <a routerLink="/"><img src="/img/pcc-logo.png" alt="my image" class="w-50 ps-20px"></a>
-        </div>
-        <div class="col-5"></div>
-        <div class="col-2 text-center">
-          <i class="fa-regular fa-bell fs-2 pt-4 text-white"></i>
-          <!-- <li *ngIf="isLoggedIn" class="nav-item">
-            <a class="nav-link" (click)="logout()" style="cursor: pointer;">Logout</a>
-          </li> -->
-        </div>
+<!-- Responsive Header -->
+<div class="container-fluid bg-primary text-white py-2">
+  <div class="row align-items-center">
+    
+    <!-- Logo -->
+    <div class="col-6 col-md-4 ps-4">
+      <a >
+        <img src="/img/pcc-logo.png" alt="Logo" class="img-fluid" style="max-width: 200px;">
+      </a>
+    </div>
+
+    <!-- Spacer for large screens -->
+    <div class="d-none d-md-block col-md-5"></div>
+
+    <!-- Icons & Dropdown -->
+    <div class="col-6 col-md-3 text-end pe-4">
+      <i class="fa-regular fa-bell fs-5 me-3"></i>
+
+      <!-- Dropdown -->
+      <div class="dropdown d-inline">
+        <i class="fa-solid fa-circle-user fs-5 " data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer;"></i>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="#">👤 {{ username }}</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" (click)="logout()" style="cursor: pointer;">🚪 ចេញ</a></li>
+        </ul>
       </div>
     </div>
   </div>
+</div>

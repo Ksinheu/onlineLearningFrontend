@@ -1,27 +1,65 @@
-<div *ngIf="loading">Loading...</div>
-<div class="container-fluid">
-    <app-header></app-header>
+<app-home-header></app-home-header>
+
+<!-- Centered loader -->
+<div *ngIf="loading" class="loader-wrapper">
+  <div class="loader"></div>
+</div>
+
+<!-- Main content -->
+<div class="container-fluid" *ngIf="!loading">
   <div class="container">
-    <div class="row justify-content-center mt-5" *ngIf="!loading && course">
-      <div class="col-6">
-        <div> <a routerLink="/deshboard" class="btn btn-secondary">ត្រឡប់</a></div>
-        <!-- video lesson -->
-        <div class=" text-center">
-            <img [src]="'http://localhost:8000/storage/' + course.imgCourse" class="w-50" />
-          </div>
-          <!-- description -->
-          <h1 class="mt-3">{{ course.course_name }}</h1>
-        <p><strong>Description:</strong> {{ course.description }}</p>
-        <p><strong>Price:</strong> ${{ course.price }}</p>
+    <div class="row justify-content-center mt-5" *ngIf="course">
+      <div class="col-12 col-md-12 col-lg-8">
+        <a routerLink="/deshboard" class="btn btn-secondary">ត្រឡប់</a>
+        <div class="text-center">
+          <img [src]="'http://localhost:8000/storage/' + course?.imgCourse" class="w-100" />
         </div>
-  
-      <div class="col-6">
-        
-        <!-- Buy button -->
-        
-        <button (click)="onBuy(course.id)" class="btn btn-success w-100">ទិញ</button>
+        <h1 class="mt-3">{{ course.course_name }}</h1>
+      </div>
+      <div class="col-12 col-md-12 col-lg-4 mb-3 text-center">
+        <a href="" class="btn btn-light shadow w-50">
+          <span class="text-decoration-line-through">{{course?.price_normal}}$</span> | ${{ course?.price }}
+        </a>
+        <button (click)="onBuy(course.id)" class="btn btn-danger shadow w-50">ទិញវគ្គសិក្សា</button>
       </div>
     </div>
-</div>
+    <div class="row mb-5">
+  <div class="col-12 col-md-12 col-lg-8">
+    <nav class="nav nav-pills flex-nowrap overflow-auto scroll-nav bg-danger shadow">
+      <a class="nav-link text-white text-nowrap overflow-text" href="#">អំពីវគ្គសិក្សា</a>
+      <a class="nav-link text-white text-nowrap overflow-text" href="#">មាតិកាមេរៀន</a>
+      <a class="nav-link text-white text-nowrap overflow-text" href="#">មតិយោបល់</a>
+      <a class="nav-link text-white text-nowrap overflow-text" href="#">វិធីសាស្រ្ដរៀន</a>
+    </nav>
+    <div class="card p-3 bg-gray">
+     <div *ngIf="lessons && lessons.length > 0; else noLessons">
+    <div *ngFor="let lesson of lessons; let i = index; trackBy: trackByLessonId" class="mb-4">
+      <div class="bg-light p-1 rounded shadow-sm text-dark" (click)="toggleVideo(i)" style="cursor: pointer;">
+        <h5>{{ lesson.title }}</h5>
+        <p>{{ lesson.content }}</p>
+      </div>
+
+      <!-- Show video if this lesson is selected -->
+      <div *ngIf="selectedLessonIndex === i" class="mt-2">
+        <video
+          [src]="'http://localhost:8000/storage/' + lesson.video_url"
+          controls
+          class="w-100 rounded shadow"
+          preload="metadata"
+        ></video>
+      </div>
+      </div>
+    </div>
   </div>
-  
+
+  <ng-template #noLessons>
+    <p>មិនមានមេរៀនក្នុងវគ្គនេះទេ។</p>
+  </ng-template>
+
+  </div>
+</div>
+
+
+  </div>
+</div>
+

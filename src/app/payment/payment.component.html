@@ -1,0 +1,21 @@
+<form [formGroup]="paymentForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+  <div>
+    <label for="customer_id">Customer ID:</label>
+    <input id="customer_id" formControlName="customer_id" type="number" />
+  </div>
+
+  <div>
+    <label for="course_id">Course ID:</label>
+    <input id="course_id" formControlName="course_id" type="number" />
+  </div>
+
+  <div>
+    <label for="pay_slip">Pay Slip (jpg, png, pdf):</label>
+    <input id="pay_slip" type="file" (change)="onFileChange($event)" />
+  </div>
+
+  <button type="submit">Upload</button>
+
+  <p *ngIf="successMessage" style="color: green">{{ successMessage }}</p>
+  <p *ngIf="errorMessage" style="color: red">{{ errorMessage }}</p>
+</form>

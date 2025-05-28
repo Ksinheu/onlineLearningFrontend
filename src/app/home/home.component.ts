@@ -6,15 +6,15 @@ import { isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'app-home',
   standalone: false,
-  
+  providers: [ApiService],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
+  styleUrls: ['./home.component.css'],
  
 
 })
 export class HomeComponent {
   isLoggedIn = false; // Track authentication status
-
+  loading=false;
   constructor(
     private authService: ApiService, 
     private router: Router,
@@ -30,7 +30,7 @@ export class HomeComponent {
     }
   }
   logout(): void {
-    this.authService.logout().subscribe({
+    this.authService.Logout().subscribe({
       next: (response) => {
         console.log('Logout successful:', response);
         this.authService.clearSession(); // Clear session

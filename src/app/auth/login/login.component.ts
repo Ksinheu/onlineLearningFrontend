@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../Services/api.service';
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
 
 @Component({
   selector: 'app-login',
@@ -11,51 +13,49 @@ import { ApiService } from '../../Services/api.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
-  email:string='';
-  password:string='';
+export class LoginComponent implements OnInit{
+  email: string = '';
+  password: string = '';
   errorMessage:string='';
+  userName: string = '';
 
-  constructor(private apiService:ApiService,private router:Router){}
+  constructor(private apiService:ApiService,private router:Router,  @Inject(PLATFORM_ID) private platformId: Object){}
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      const token = localStorage.getItem('token');
+      if (token) {
+        this.router.navigate(['/dashboard']);
+      }
+    }
+  }
 
   onLogin(form: NgForm) {
     if (form.valid) {
       this.apiService.Login(this.email, this.password).subscribe({
-        next: (response) => {
-          console.log('Login successful', response);
-          // SweetAlert for successful login
-          Swal.fire({
-            title: 'Login Successful!',
-            text: 'Welcome back!',
-            icon: 'success',
-            confirmButtonColor: '#3085d6',
-            confirmButtonText: 'Continue'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this.router.navigate(['/deshboard']); // Navigate to dashboard
-            }
-          });
+        next: (response: any) => {
+          console.log('Login response:', response);
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('username', response.user.username);
+          console.log('Logged in as:', response.user.username);
+          this.router.navigate(['/dashboard']);
         },
-        error: (error) => {
-          console.error('Login error', error);
+        error: (error: any) => {
+          console.error('Login error:', error);
+          this.errorMessage = 'Invalid credentials. Please try again.';
           Swal.fire({
-            title: 'Login Failed!',
-            text: 'Failed to login. Please check your credentials.',
             icon: 'error',
-            confirmButtonColor: '#d33',
-            confirmButtonText: 'Try Again'
+            title: 'Login Failed',
+            text: 'Invalid email or password. Please try again.',
+            confirmButtonColor: '#d33'
           });
-          this.errorMessage = 'Failed to login. Please check your credentials.';
         }
       });
     } else {
-      this.errorMessage = 'Please fill in all fields correctly.';
       Swal.fire({
-        title: 'Error!',
-        text: 'Please fill in all fields correctly.',
         icon: 'warning',
-        confirmButtonColor: '#ffc107',
-        confirmButtonText: 'OK'
+        title: 'Invalid Form',
+        text: 'Please fill in all required fields.',
+        confirmButtonColor: '#f0ad4e'
       });
     }
   }

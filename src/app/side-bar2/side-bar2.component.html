@@ -1,77 +1,29 @@
-<div class="row pt-4">
-    <div class="col-12">
-      <div class="sidebar">
-        <nav class="sidebar-nav">
-          <!-- Primary top nav -->
-          <ul class="nav-list primary-nav fs-5">
-            <li class="nav-item">
-              <a href="#" class="">
-                <!-- <span class="nav-icon material-symbols-rounded">dashboard</span> -->
-                <span class="nav-label1 link-underline-primary text-center">កម្មវិធី</span>
-              </a>
-              <!-- <span class="nav-tooltip">កម្មវិធី</span> -->
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <span class="nav-icon material-symbols-rounded"><i class="fa-solid fa-user"></i></span>
-                  <span class="nav-label">ប្រវត្តិរូប</span>
-                </a>
-                <span class="nav-tooltip">account</span>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <span class="nav-icon material-symbols-rounded"><i class="fa-solid fa-book"></i></span>
-                  <span class="nav-label">មេរៀនរបស់ខ្ញុំ</span>
-                </a>
-                <span class="nav-tooltip">account</span>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <span class="nav-icon material-symbols-rounded"><i class="fa-solid fa-gift"></i></span>
-                <span class="nav-label">ឥតគិតថ្លៃ</span>
-              </a>
-              <span class="nav-tooltip">Free</span>
-            </li>
-            <li class="nav-item">
-              <a routerLink="/course" class="nav-link">
-                <span class="nav-icon material-symbols-rounded"><i class="fa-solid fa-film"></i></span>
-                <span class="nav-label">វគ្គសិក្សា</span>
-              </a>
-              <span class="nav-tooltip">course</span>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <span class="nav-icon material-symbols-rounded"><i class="fa-solid fa-bullhorn"></i></span>
-                <span class="nav-label">ព័ត៌មានថ្មីៗ</span>
-              </a>
-              <span class="nav-tooltip">News</span>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <span class="nav-icon material-symbols-rounded"><i class="fa-solid fa-circle-info"></i></span>
-                <span class="nav-label">អំពីយើងខ្ញុំ</span>
-              </a>
-              <span class="nav-tooltip">about</span>
-            </li>
-          </ul>
-          <!-- Secondary bottom nav -->
-          <ul class="nav-list secondary-nav fs-5">
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <span class="nav-icon material-symbols-rounded"><i class="fa-solid fa-gear"></i></span>
-                <span class="nav-label">ការកំណត់</span>
-              </a>
-              <span class="nav-tooltip">Profile</span>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" (click)="logout()" style="cursor: pointer;">
-                <span class="nav-icon material-symbols-rounded"><i class="fa-solid fa-right-to-bracket"></i></span>
-                <span class="nav-label">ចេញ</span>
-              </a>
-              <span class="nav-tooltip">Logout</span>
-            </li> 
-          </ul>
-        </nav>
-      </div>
+<!-- Desktop Sidebar -->
+<div class="row pt-4 d-none d-md-block">
+  <div class="col-12">
+    <div class="sidebar">
+      <nav class="sidebar-nav">
+        <ul class="nav-list primary-nav fs-5">
+          <li class="nav-item"><a href="#"><span class="nav-label1">កម្មវិធី</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><i class="fa-solid fa-user"></i><span class="nav-label">ប្រវត្តិរូប</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><i class="fa-solid fa-book"></i><span class="nav-label">មេរៀនរបស់ខ្ញុំ</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><i class="fa-solid fa-gift"></i><span class="nav-label">ឥតគិតថ្លៃ</span></a></li>
+          <li class="nav-item"><a routerLink="/course" class="nav-link"><i class="fa-solid fa-film"></i><span class="nav-label">វគ្គសិក្សា</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><i class="fa-solid fa-bullhorn"></i><span class="nav-label">ព័ត៌មានថ្មីៗ</span></a></li>
+        </ul>
+        <ul class="nav-list secondary-nav fs-5">
+          <li class="nav-item"><a class="nav-link" (click)="logout()" style="cursor: pointer;">🚪<span class="nav-label">ចេញ</span></a></li>
+        </ul>
+      </nav>
     </div>
   </div>
+</div>
+
+<!-- Mobile Bottom Navbar -->
+<nav class="mobile-footer-nav d-md-none">
+  <a routerLink="/" class="nav-icon"><i class="fa-solid fa-house"></i><small>គេហទំព័រ</small></a>
+  <a href="#" class="nav-icon"><i class="fa-solid fa-user"></i><small>ប្រវត្តិរូប</small></a>
+  <a routerLink="/course" class="nav-icon"><i class="fa-solid fa-film"></i><small>វគ្គ</small></a>
+  <a href="#" class="nav-icon"><i class="fa-solid fa-bell"></i><small>ដំណឹង</small></a>
+  <a (click)="logout()" class="nav-icon"><i class="fa-solid fa-sign-out-alt"></i><small>ចេញ</small></a>
+</nav>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../Services/api.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-lesson',
@@ -9,22 +10,25 @@ import { ApiService } from '../Services/api.service';
   styleUrl: './lesson.component.css'
 })
 export class LessonComponent {
-lesson: any[]=[];
-hasPurchased = false; // Set this from API or route guard
-constructor(private apiService:ApiService){}
-ngOnInit(): void {
-  this.apiService.getLesson().subscribe((response) => {
-    this.lesson = response.lesson; // Ensure response contains 'news' array
-  }, (error) => {
-    console.error('Error fetching news:', error);
+  lesson: any;
+  hasPurchased = false;
+
+
+  constructor(private apiService: ApiService, private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+  // this.id = Number(this.route.snapshot.paramMap.get('id'));
+  this.apiService.getLessonById().subscribe({
+     next: (res) => {
+    this.lesson = res.lessons; // <- match key!
+  }
+     
   });
 }
 
-
-buyCourse(courseId: number) {
-  // Call your purchase API here
-  console.log('Buying course with ID:', courseId);
-  // On success:
-  this.hasPurchased = true;
-}
+  buyCourse(courseId: number): void {
+    console.log('Buying course with ID:', courseId);
+    // Call actual purchase API here
+    this.hasPurchased = true;
+  }
 }

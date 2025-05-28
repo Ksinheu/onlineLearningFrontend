@@ -1,0 +1,62 @@
+<div class="container mt-4">
+  <h4>វិធីសាស្ត្រទូទាត់</h4>
+  <div class="row">
+    <div class="col-md-4 mb-3" *ngFor="let method of paymentMethods">
+      <div class="card shadow" style="cursor: pointer;">
+        <img [src]="'http://localhost:8000/storage/' + method.QR_code" class="card-img-top" alt="QR Code">
+        <div class="card-body">
+          <h5 class="card-title">{{ method.name_bank }}</h5>
+          <p class="card-text">
+            <strong>លេខគណនី:</strong> {{ method.number_bank }}<br>
+            <strong>លេខទូរស័ព្ទ:</strong> {{ method.phone_number }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadModalLabel">ការទូទាត់</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-4" *ngIf="selectedMethod">
+        <div class="mb-3">
+          <label class="form-label">លេខគណនី</label>
+          <input class="form-control" [value]="selectedMethod.number_bank" readonly>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">ឈ្មោះធនាគារ</label>
+          <input class="form-control" [value]="selectedMethod.name_bank" readonly>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">លេខទូរស័ព្ទ</label>
+          <input class="form-control" [value]="selectedMethod.phone_number" readonly>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">QR Code</label><br>
+          <img [src]="'http://localhost:8000/storage/' + selectedMethod.QR_code" class="w-50">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Upload វិក័យបត្រ</label>
+          <input type="file" class="form-control">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">មតិយោបល់</label>
+          <textarea class="form-control"></textarea>
+        </div>
+
+        <div class="text-center">
+          <button class="btn btn-success w-50">បញ្ជាក់ការទូទាត់</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

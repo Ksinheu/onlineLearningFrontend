@@ -1,0 +1,52 @@
+<!-- Desktop/Tablet Navbar -->
+<div class="row bg-primary d-none d-md-flex">
+  <div class="col-12">
+    <div class="row bg-blue shadow">
+      <div class="col-2 p-1 ps-4">
+        <a routerLink="/"><img src="/img/pcc-logo.png" alt="my image" class="w-100 ps-20px"></a>
+      </div>
+      <div class="col-2"></div>
+      <div class="col-6">
+        <nav class="navbar pt-3 fs-5 navbar-expand-lg">
+          <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link active" routerLink="/">ទំព័រដើម</a></li>
+                <li class="nav-item"><a class="nav-link active" routerLink="/payment">អំពី</a></li>
+                <li class="nav-item"><a class="nav-link active" href="#">ព័ត៌មានថ្មីៗ</a></li>
+                <li class="nav-item"><a class="nav-link active" href="#">សេវាកម្ម</a></li>
+                <li class="nav-item"><a class="nav-link active" href="#">ទំនាក់ទំនង</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+      <div class="col-1"></div>
+      <div class="col-1 pt-3">
+        <a routerLink="/login" class="btn btn-danger"><i class="fa-solid fa-lock"></i> ចូល</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile Bottom Nav -->
+<nav class="mobile-bottom-nav d-md-none shadow">
+  <a routerLink="/" class="nav-item text-white text-center">
+    <i class="fa-solid fa-house"></i><br><small>ទំព័រដើម</small>
+  </a>
+  <a routerLink="/payment" class="nav-item text-white text-center">
+    <i class="fa-solid fa-circle-info"></i><br><small>អំពី</small>
+  </a>
+  <a href="#" class="nav-item text-white text-center">
+    <i class="fa-solid fa-newspaper"></i><br><small>ព័ត៌មាន</small>
+  </a>
+  <a href="#" class="nav-item text-white text-center">
+    <i class="fa-solid fa-phone"></i><br><small>ទំនាក់ទំនង</small>
+  </a>
+  <a routerLink="/login" class="nav-item text-white text-center">
+    <i class="fa-solid fa-lock"></i><br><small>ចូល</small>
+  </a>
+</nav>

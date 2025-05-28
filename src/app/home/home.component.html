@@ -1,56 +1,68 @@
 <div class="container-fuild header">
-  <app-header></app-header>
+ <app-home-header></app-home-header>
 </div>
-<div class="container-fuild">
+<div class="container">
   <div class="row">
-    <div class="col-2">
-      <app-sidebar></app-sidebar>
-    </div>
-    <div class="col-10 mt-4 overflow-hidden">
+    
+    <div class="col-12 mt-5 overflow-hidden">
       <app-slider></app-slider>
-      <!-- ព័ត៌មានថ្មី -->
-      <div class="row">
-        <div class="col-12 mb-3  fs-4 text-danger border-bottom p-2 ps-3 mt-3">ព័ត៌មានថ្មី</div>
-        <app-news></app-news>
-      </div>
-      <!-- វគ្គសិក្សាពេញនិយម -->
-      <div class="row">
-        <div class="col-12 mb-3  ps-3 fs-4 text-danger border-bottom p-2 mt-3">វគ្គសិក្សាពេញនិយម</div>
-          <app-courses></app-courses>
-      </div>
-      <!--ចក្ខុវិស័យ  -->
-      <div class="row fs-5">
-        <div class="col-12 col-md-6 col-lg-6 p-5">
-          <div>
-            <span class="text-primary">ចក្ខុវិស័យ ៖ </span>
-            មជ្ឈមណ្ឌលកុំព្យូទ័រ យើងខ្ញុំនិងក្លាយជា មជ្ឍមណ្ឌលមួយដែលមានគុណភាពល្អផ្តាច់គេ ទាំងផ្នែកចំណេះដឹង
-            និងតំលៃសមរម្យជាងគេក្នុងក្រុងប៉ោយប៉ែត។
-          </div>
-        </div>
-        <div class="col-12 col-md-6 col-lg-6 p-5">
-          <div>
-            <span class="text-primary">បេសកកម្ម ៖ </span>
-            មជ្ឈមណ្ឌលកុំព្យូទ័រ យើងខ្ញុំបង្រៀនលោកអ្នកឱ្យមានចំណេះដឹងពិតប្រាកដសម្រាប់ធ្វើការ
-            និងសម្រាប់បើកដំណើរការអាជីវកម្មផ្ទាល់ខ្លួន ក្រោយពេលបញ្ចប់ការសិក្សាតាមវគ្គនិមួយៗ។
-          </div>
-        </div>
-      </div>
-      <div class="row justify-content-center">
-        <div class="col-md-7 fs-5">
-          <div>
-            <span class="text-primary"> គោលបំណង ៖</span>
-            <ol type="1">
-              <li>ជាមជ្ឈមណ្ឌលមួយដែលមានលក្ខណៈស្តង់ដាត្រឹមត្រូវនៃមុខវិជ្ជាដែលចាំបាច់</li>
-              <li>ផ្តល់ជូនសិស្សានុសិស្ស និងម្ចាស់អាជីវកម្ម នូវចំណេះដឹងផ្នែកកុំព្យូទ័រយ៉ាងពិតប្រាកដ និងស្ទាត់ជំនាញ</li>
-              <li>បង្កើនការធ្វើទីផ្សារ និងបញ្ចុះតំលៃជូនអតិថិជនរបស់យើង ទៅតាមតំលៃដែលសមស្របមួយ</li>
-              <li>ស្វែងរកដៃគូរសហការណ៍ដើម្បីទទួលបានអាហារូបកណ៍ដើម្បីផ្តល់ជូនសិស្សក្រីក្រ ដែលខ្វះលទ្ធភាពបង់ថ្លៃសិក្សា</li>
-              <li>ផ្តល់ជូននៅមុខវិជ្ជាថ្មីៗដែលពិភពលោកកំពុងប្រើប្រាស់នាពេលបច្ចុប្បន្ន</li>
-            </ol>
-          </div>
+    </div>
+  </div>
+</div>
 
-        </div>
-      </div>
-      <div class="row bg-blue mt-3 p-2">
+<!-- Centered loader -->
+<div *ngIf="loading" class="loader-wrapper">
+  <div class="loader"></div>
+</div>
+
+<div class="container position-relative">
+<!-- ព័ត៌មានថ្មី -->
+<div class="row">
+  <div class="col-12 mb-3  fs-4 text-danger border-bottom p-2 ps-3 ">ព័ត៌មានថ្មី</div>
+  <app-news></app-news>
+</div>
+<!-- វគ្គសិក្សាពេញនិយម -->
+<div class="row">
+  <div class="col-12 mb-3  ps-3 fs-4 text-danger border-bottom p-2 mt-3">វគ្គសិក្សាពេញនិយម</div>
+    <app-courses></app-courses>
+</div>
+<!--ចក្ខុវិស័យ  -->
+<div class="row fs-5">
+  <div class="col-12 col-md-6 col-lg-6 p-5">
+    <div>
+      <span class="text-primary">ចក្ខុវិស័យ ៖ </span>
+      មជ្ឈមណ្ឌលកុំព្យូទ័រ យើងខ្ញុំនិងក្លាយជា មជ្ឍមណ្ឌលមួយដែលមានគុណភាពល្អផ្តាច់គេ ទាំងផ្នែកចំណេះដឹង
+      និងតំលៃសមរម្យជាងគេក្នុងក្រុងប៉ោយប៉ែត។
+    </div>
+  </div>
+  <div class="col-12 col-md-6 col-lg-6 p-5">
+    <div>
+      <span class="text-primary">បេសកកម្ម ៖ </span>
+      មជ្ឈមណ្ឌលកុំព្យូទ័រ យើងខ្ញុំបង្រៀនលោកអ្នកឱ្យមានចំណេះដឹងពិតប្រាកដសម្រាប់ធ្វើការ
+      និងសម្រាប់បើកដំណើរការអាជីវកម្មផ្ទាល់ខ្លួន ក្រោយពេលបញ្ចប់ការសិក្សាតាមវគ្គនិមួយៗ។
+    </div>
+  </div>
+</div>
+<div class="row justify-content-center">
+  <div class="col-md-7 fs-5">
+    <div>
+      <span class="text-primary"> គោលបំណង ៖</span>
+      <ol type="1">
+        <li>ជាមជ្ឈមណ្ឌលមួយដែលមានលក្ខណៈស្តង់ដាត្រឹមត្រូវនៃមុខវិជ្ជាដែលចាំបាច់</li>
+        <li>ផ្តល់ជូនសិស្សានុសិស្ស និងម្ចាស់អាជីវកម្ម នូវចំណេះដឹងផ្នែកកុំព្យូទ័រយ៉ាងពិតប្រាកដ និងស្ទាត់ជំនាញ</li>
+        <li>បង្កើនការធ្វើទីផ្សារ និងបញ្ចុះតំលៃជូនអតិថិជនរបស់យើង ទៅតាមតំលៃដែលសមស្របមួយ</li>
+        <li>ស្វែងរកដៃគូរសហការណ៍ដើម្បីទទួលបានអាហារូបកណ៍ដើម្បីផ្តល់ជូនសិស្សក្រីក្រ ដែលខ្វះលទ្ធភាពបង់ថ្លៃសិក្សា</li>
+        <li>ផ្តល់ជូននៅមុខវិជ្ជាថ្មីៗដែលពិភពលោកកំពុងប្រើប្រាស់នាពេលបច្ចុប្បន្ន</li>
+      </ol>
+    </div>
+
+  </div>
+</div>
+</div>
+<div class="container-fluid bg-blue">
+  <div class="col-12 ">
+    <div class="container">
+      <div class="row mt-3 p-2">
         <div class="col-8">
           <div class="text-white">©​រក្សាសិទ្ធគ្រប់យ៉ាង</div>
         </div>
@@ -60,10 +72,4 @@
       </div>
     </div>
   </div>
-</div>
-
-
-
-<div class="container position-relative">
-
 </div>
