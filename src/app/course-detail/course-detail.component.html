@@ -1,65 +1,106 @@
-<app-home-header></app-home-header>
 
-<!-- Centered loader -->
+
+<!-- Header -->
+<ng-container *ngIf="isLogined; else guestNav">
+  <app-header></app-header>
+ 
+<nav class="mobile-footer-nav d-md-none">
+ 
+  <a routerLink="/personal" routerLinkActive="active" class="nav-icon"><i class="fa-solid fa-user"></i><small>ប្រវត្តិរូប</small></a>
+  <a routerLink="/dashboard" routerLinkActive="active" class="nav-icon"><i class="fa-solid fa-film"></i><small>វគ្គ</small></a>
+  <a routerLink="/myLesson" class="nav-icon"><i class="fa-solid fa-bell"></i><small>មេរៀនរបស់ខ្ញុំ</small></a>
+  <a (click)="logout()" class="nav-icon"><i class="fa-solid fa-sign-out-alt"></i><small>ចេញ</small></a>
+</nav>
+
+</ng-container>
+<ng-template #guestNav>
+  <app-home-header></app-home-header>
+</ng-template>
+<!-- Loader -->
 <div *ngIf="loading" class="loader-wrapper">
   <div class="loader"></div>
 </div>
 
-<!-- Main content -->
-<div class="container-fluid" *ngIf="!loading">
-  <div class="container">
-    <div class="row justify-content-center mt-5" *ngIf="course">
-      <div class="col-12 col-md-12 col-lg-8">
-        <a routerLink="/deshboard" class="btn btn-secondary">ត្រឡប់</a>
-        <div class="text-center">
-          <img [src]="'http://localhost:8000/storage/' + course?.imgCourse" class="w-100" />
+<!-- Main Product View -->
+<div class="container py-4 shadow mt-5 mb-2" *ngIf="!loading && course">
+  <div class="">
+     <a routerLink="/dashboard" class="mb-2 ms-3 mt-5"><i class="fa-solid fa-arrow-left"></i></a>
+  </div>
+  <div class="row mt-2">
+    <!-- Left: Image & Thumbnails -->
+    <div class="col-md-6">
+      <img [src]="'http://localhost:8000/storage/' + course.imgCourse"
+           alt="Course Image"
+           class="img-fluid rounded shadow-sm w-100"
+           style="object-fit: contain; max-height: 400px;"/>
+      <!-- Optional thumbnails can go here -->
+    </div>
+
+    <!-- Right: Details -->
+    <div class="col-md-6">
+      <div class="d-flex justify-content-between align-items-start">
+        <h3>{{ course.course_name }}</h3>
+        <button class="btn btn-light rounded-circle shadow-sm">
+          <i class="fa fa-heart text-danger"></i>
+        </button>
+      </div>
+
+      <!-- Rating -->
+      <div class="mb-3">
+        <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
+          <i class="fa"
+             [ngClass]="{
+               'fa-star text-warning': i < 4,
+               'fa-star-o text-muted': i >= 4
+             }"></i>
+        </ng-container>
+        <small class="text-muted ms-2">(120 Reviews)</small>
+      </div>
+
+      <!-- Description -->
+      <p class="text-muted mb-2">
+        {{ course.description || 'This course provides valuable knowledge and practical lessons to help you succeed.' }}
+        <a href="#">more...</a>
+      </p>
+
+      <!-- Price -->
+      <h4 class="fw-bold mb-3">
+        <span class="text-decoration-line-through text-muted me-2">{{ course.price_normal }}$</span>
+        <span class="text-success">{{ course.price }}$</span>
+      </h4>
+
+      
+
+      <!-- Action Buttons -->
+      <div class="d-flex gap-3">
+        <button class="btn btn-success px-4" (click)="onBuy(course.id)">
+          <i class="fa fa-shopping-cart me-1"></i> ទិញវគ្គសិក្សា
+        </button>
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- Lesson Content Below -->
+  <!-- <div class="row mt-5">
+    <div class="col-12">
+      <h4 class="mb-3">Course Lessons</h4>
+      <div *ngIf="lessons && lessons.length > 0; else noLessons">
+        <div *ngFor="let lesson of lessons; let i = index" class="mb-4">
+          <div class="p-3 bg-light rounded shadow-sm" (click)="toggleVideo(i)" style="cursor: pointer;">
+            <h5>{{ lesson.title }}</h5>
+            <p class="mb-1">{{ lesson.content }}</p>
+          </div>
+          <div *ngIf="selectedLessonIndex === i" class="mt-2">
+            <video [src]="'http://localhost:8000/storage/' + lesson.video_url"
+                   controls
+                   class="w-100 rounded shadow"></video>
+          </div>
         </div>
-        <h1 class="mt-3">{{ course.course_name }}</h1>
       </div>
-      <div class="col-12 col-md-12 col-lg-4 mb-3 text-center">
-        <a href="" class="btn btn-light shadow w-50">
-          <span class="text-decoration-line-through">{{course?.price_normal}}$</span> | ${{ course?.price }}
-        </a>
-        <button (click)="onBuy(course.id)" class="btn btn-danger shadow w-50">ទិញវគ្គសិក្សា</button>
-      </div>
+      <ng-template #noLessons>
+        <p class="text-muted">មិនមានមេរៀនក្នុងវគ្គនេះទេ។</p>
+      </ng-template>
     </div>
-    <div class="row mb-5">
-  <div class="col-12 col-md-12 col-lg-8">
-    <nav class="nav nav-pills flex-nowrap overflow-auto scroll-nav bg-danger shadow">
-      <a class="nav-link text-white text-nowrap overflow-text" href="#">អំពីវគ្គសិក្សា</a>
-      <a class="nav-link text-white text-nowrap overflow-text" href="#">មាតិកាមេរៀន</a>
-      <a class="nav-link text-white text-nowrap overflow-text" href="#">មតិយោបល់</a>
-      <a class="nav-link text-white text-nowrap overflow-text" href="#">វិធីសាស្រ្ដរៀន</a>
-    </nav>
-    <div class="card p-3 bg-gray">
-     <div *ngIf="lessons && lessons.length > 0; else noLessons">
-    <div *ngFor="let lesson of lessons; let i = index; trackBy: trackByLessonId" class="mb-4">
-      <div class="bg-light p-1 rounded shadow-sm text-dark" (click)="toggleVideo(i)" style="cursor: pointer;">
-        <h5>{{ lesson.title }}</h5>
-        <p>{{ lesson.content }}</p>
-      </div>
-
-      <!-- Show video if this lesson is selected -->
-      <div *ngIf="selectedLessonIndex === i" class="mt-2">
-        <video
-          [src]="'http://localhost:8000/storage/' + lesson.video_url"
-          controls
-          class="w-100 rounded shadow"
-          preload="metadata"
-        ></video>
-      </div>
-      </div>
-    </div>
-  </div>
-
-  <ng-template #noLessons>
-    <p>មិនមានមេរៀនក្នុងវគ្គនេះទេ។</p>
-  </ng-template>
-
-  </div>
+  </div> -->
 </div>
-
-
-  </div>
-</div>
-

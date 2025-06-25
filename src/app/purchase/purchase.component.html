@@ -1,108 +1,145 @@
 
-  <app-header></app-header>
-  <div class="content">
-    <!-- Loading State -->
-    <div *ngIf="loading" class="text-center">
-      <p>Loading course details...</p>
-    </div>
 
-    <!-- Course Details -->
-    <div *ngIf="!loading && course" class="course-section mt-5">
-      <div class="back-button">
-        <a routerLink="/dashboard" class="button secondary">ត្រឡប់ (Back)</a>
-      </div>
-      <div class="card">
-        <div class="course-details">
-          <div class="course-image">
-            <img [src]="'http://localhost:8000/storage/' + course.imgCourse " alt="Course Image" class="course-img" />
+ <app-header></app-header>
+<div *ngIf="loading" class="loader-wrapper">
+  <div class="loader"></div>
+</div>
+
+<div class="container mt-4">
+  <div class="row" *ngIf="!loading && course">
+    <!-- Payment UI section -->
+    <div class="col-md-8 mx-auto mb-4">
+      <div class="payment-box card shadow rounded-4 overflow-hidden">
+        <div class="d-flex justify-content-between align-items-center px-4 py-3 bg-primary text-white">
+          <div class="mb-0"><a routerLink="/dashboard" class="mb-2 ms-3 mt-5 text-white"><i class="fa-solid fa-arrow-left"></i></a></div>
+          <div>
+            <i class="bi bi-cart"></i>
           </div>
-          <div class="course-info">
-            <h5>{{ course.course_name }}</h5>
-            <p><strong>Description:</strong> {{ course.description }}</p>
-            <p><strong>Price:</strong> ${{ course.price }}</p>
+        </div>
+
+        <div class="px-4 py-4">
+          <div class="text-center">
+            <h2 class="fw-bold">{{ course.price }} USD</h2>
+            <p class="text-muted">All Payment Methods</p>
+           
+          </div>
+
+          <!-- Payment methods list -->
+          <div class="payment-methods mb-4">
+            <div class="d-flex justify-content-between align-items-center border rounded p-2 mb-2">
+              <span *ngIf="payment_methods[0]">{{ payment_methods[0].name_bank }}</span>
+              <!-- <img src="assets/cards/visa.png" alt="Visa" height="24" /> -->
+            </div>
+            <div class="d-flex justify-content-between align-items-center border rounded p-2 mb-2">
+              <span *ngIf="payment_methods[0]">{{ payment_methods[0].number_bank }}</span>
+              <!-- <img src="assets/cards/mastercard.png" alt="Mastercard" height="24" /> -->
+            </div>
+            <div class="d-flex justify-content-between align-items-center border rounded p-2 mb-2">
+              <span *ngIf="payment_methods[0]">{{ payment_methods[0].phone_number }}</span>
+              <!-- <img src="assets/cards/amex.png" alt="Amex" height="24" /> -->
+            </div>
+            <div class="row g-2">
+              <div class="col-6">
+                <div class="border rounded p-2 text-center">
+                  <!-- <img src="assets/cards/bank-card.png" alt="Bank Card" height="24" /> -->
+                   <span>ABA</span>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="border rounded p-2 text-center">
+                  <!-- <img src="assets/cards/paypal.png" alt="PayPal" height="24" /> -->
+                   <span>ABA</span>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="border rounded p-2 text-center">
+                  <!-- <img src="assets/cards/sofort.png" alt="Sofort" height="24" /> -->
+                   <span>ABA</span>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="border rounded p-2 text-center">
+                  <!-- <img src="assets/cards/ideal.png" alt="iDEAL" height="24" /> -->
+                   <span>ABA</span>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="border rounded p-2 text-center">
+                  <!-- <img src="assets/cards/bank.png" alt="Bank" height="24" /> -->
+                   <span>ABA</span>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="border rounded p-2 text-center">
+                  <!-- <img src="assets/cards/alipay.png" alt="Alipay" height="24" /> -->
+                   <span>ABA</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- QR Code section -->
+          <div class="text-center border-top pt-4">
+            <p class="text-muted">Is it more convenient to pay by phone? Scan QR code</p>
+            <img *ngIf="payment_methods[0]" [src]="'http://localhost:8000/storage/' + payment_methods[0].QR_code" alt="QR Code" class="img-fluid rounded border qr-large me-3" style="max-width: 180px;" />
+            <img *ngIf="payment_methods[0]" [src]="'http://localhost:8000/storage/' + payment_methods[0].QR_code" alt="QR Code" class="img-fluid rounded border qr-large" style="max-width: 180px;" />
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Error if No Course -->
-    <div *ngIf="!loading && !course" class="alert error">
-      Failed to load course details.
-    </div>
-
-    <!-- Summary and Buy Button -->
-    <div *ngIf="!loading && course" class="summary">
-      <div class="card">
-        <h5 class="text-center">សរុប & ទូទាត់ (Summary & Payment)</h5>
-        <h6>{{ course?.course_name }}</h6>
-        <div class="summary-row">
-          <div class="summary-label">
-            <p><strong>Price:</strong></p>
-            <p><strong>Total:</strong></p>
+    <!-- Order summary and Pay -->
+    <div class="col-md-4">
+      <div class="bg-primary text-white text-center fw-semibold rounded py-2 mb-3">
+        សរុប & ទូទាត់
+      </div>
+      <div class="card shadow-sm p-4">
+        <div class="row">
+          <div class="col-3">
+            <img [src]="'http://localhost:8000/storage/' + course.imgCourse" alt="Course Image" class="rounded w-100 img-fluid" />
           </div>
-          <div class="summary-value">
-            <p>${{ course?.price }}</p>
-            <p>${{ course?.price }}</p>
+          <div class="col-9">
+            <h5 class="mt-2">{{ course.course_name }}</h5>
           </div>
         </div>
-        <div class="text-center">
-          <button class="button success" (click)="isLogined ? openModal() : navigateToLogin()" [disabled]="!course">
-            {{ isLogined ? 'ទិញ (Buy)' : 'Login to Buy' }}
+        <div class="d-flex justify-content-between mb-2">
+          <span class="mt-3">Price:</span>
+          <span class="fs-1">${{ course.price }}</span>
+        </div>
+        <div class="d-flex justify-content-between border-top pt-2 fw-bold">
+          <span>Total:</span>
+          <span>${{ course.price }}</span>
+        </div>
+        <div class="text-end">
+          <button class="btn btn-outline-danger mt-4 w-50 " (click)="openModal()" [disabled]="!course">
+            {{ isLogined ? 'ទិញ' : 'Login to Buy' }}
           </button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Payment Modal -->
-    <div class="modal" *ngIf="showModal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5>ការទូទាត់ (Payment)</h5>
-          <button class="close-button" (click)="closeModal()">×</button>
-        </div>
-        <div class="modal-body">
-          <form [formGroup]="purchaseForm" (ngSubmit)="onSubmit()">
-            <!-- Payment Methods -->
-            <div class="form-group">
-              <label>Payment Methods</label>
-              <div *ngIf="payment_methods.length === 0" class="alert warning">
-                No payment methods available.
-              </div>
-              <div *ngFor="let payment of payment_methods" class="payment-method">
-                <p><strong>Bank Name:</strong> {{ payment.name_bank }}</p>
-                <p><strong>Account Number:</strong> {{ payment.number_bank }}</p>
-                <p><strong>Phone Number:</strong> {{ payment.phone_number }}</p>
-                <img [src]="'http://localhost:8000/storage/' + payment.QR_code" alt="QR Code" class="qr-code" />
-              </div>
-            </div>
-
-            <!-- Payment Slip Upload -->
-            <div class="form-group">
-              <label for="pay_slip">Upload Payment Slip</label>
-              <input type="file" id="pay_slip" (change)="onFileChange($event)" class="form-control" [class.invalid]="hasError('pay_slip')" accept="image/jpeg,image/jpg,image/png">
-              <div *ngIf="hasError('pay_slip')" class="error-message">
-                <div *ngIf="purchaseForm.get('pay_slip')?.hasError('required')">Payment slip is required</div>
-                <div *ngIf="purchaseForm.get('pay_slip')?.hasError('invalidType')">Only JPG, JPEG, or PNG files are allowed</div>
-                <div *ngIf="purchaseForm.get('pay_slip')?.hasError('maxSize')">File must not exceed 2MB</div>
-                <div *ngIf="purchaseForm.get('pay_slip')?.hasError('emptyFile')">File is empty</div>
-                <div *ngIf="purchaseForm.get('pay_slip')?.hasError('invalidBase64')">Invalid file format</div>
-              </div>
-            </div>
-
-            <!-- Comment Field -->
-            <div class="form-group">
-              <label for="comment">Comment (Optional)</label>
-              <textarea id="comment" class="form-control" formControlName="comment"></textarea>
-            </div>
-
-            <!-- Submit Button -->
-            <div class="text-center">
-              <button type="submit" class="button success" [disabled]="isSubmitting || purchaseForm.invalid">
-                {{ isSubmitting ? 'Submitting...' : 'ទូទាត់ (Pay)' }}
-              </button>
-            </div>
-          </form>
-        </div>
+  <!-- Modal for payment slip upload -->
+  <div class="modal-overlay" *ngIf="showModal">
+    <div class="modal-container">
+      <div class="modal-header d-flex justify-content-between align-items-center border-bottom pb-2">
+        <h5 class="mb-0">ការទូទាត់ (Payment)</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body pt-3">
+        <form [formGroup]="purchaseForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+          <label for="pay_slip" class="form-label fw-semibold">បញ្ចូលវិក័យបត្រ (Upload Pay Slip)</label>
+          <input type="file" id="pay_slip" class="form-control" (change)="onFileChange($event)" accept="image/*" />
+          <div *ngIf="hasError('pay_slip')" class="text-danger small mt-1">
+            <div *ngIf="purchaseForm.get('pay_slip')?.errors?.['required']">File is required.</div>
+            <div *ngIf="purchaseForm.get('pay_slip')?.errors?.['invalidType']">Only JPG/PNG allowed.</div>
+            <div *ngIf="purchaseForm.get('pay_slip')?.errors?.['maxSize']">Max size is 2MB.</div>
+          </div>
+          <button type="submit" class="btn btn-success w-100 mt-4" [disabled]="isSubmitting">
+            ទូទាត់ (Pay)
+          </button>
+        </form>
       </div>
     </div>
   </div>
+</div>

@@ -13,12 +13,9 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 export class ApiService {
 
   private apiUrl= 'http://127.0.0.1:8000/api';
-  // private logoutUrl= 'http://127.0.0.1:8000/api/logout';
-  private sliderApi = 'http://localhost:8000/api/sliderApi';
-  private courseApi = 'http://localhost:8000/api/courseApi';
-  // private lessonApi = 'http://localhost:8000/api/lessonApi';
-  
-  // private newsApi='http://localhost:8000/api/newsApi';
+  // private sliderApi = 'http://localhost:8000/api/sliderApi';
+  // private courseApi = 'http://localhost:8000/api/courseApi';
+
   private currentUserSubject = new BehaviorSubject<any>(this.getUserFromStorage());
   private isLoggedInSubject = new BehaviorSubject<boolean>(!!this.getUserFromStorage());
 
@@ -50,8 +47,13 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/login`, { email, password });
   
   }
-
-
+isAuthenticated(): boolean {
+    // You can also decode token or check expiration
+    return !!localStorage.getItem('customer'); // or however you store login
+  }
+getProfile(customerId: number): Observable<any> {
+  return this.http.get(`${this.apiUrl}/customers/${customerId}`);
+}
   Logout(): Observable<any> {
   const token = localStorage.getItem('token');
   if (!token) return throwError(() => new Error('No token found'));
@@ -134,7 +136,7 @@ export class ApiService {
 
   // slider api
   getSliders(): Observable<any> {
-    return this.http.get<any>(this.sliderApi);
+    return this.http.get<any>(`${this.apiUrl}/sliderApi`);
   }
   // slider api
   getNews(): Observable<any> {
@@ -142,10 +144,10 @@ export class ApiService {
   }
   // get course
   getCourse():Observable<any>{
-    return this.http.get<any>(this.courseApi);
+    return this.http.get<any>(`${this.apiUrl}/courseApi`);
   }
   getCourseById(id: number): Observable<any> {
-    return this.http.get(`${this.courseApi}/${id}`);
+    return this.http.get(`${this.apiUrl}/courseApi/${id}`);
   }
   // get lession
  getLessonById(): Observable<any> {
@@ -169,15 +171,13 @@ getLessonsByCourse(courseId: number): Observable<any> {
     return this.http.post(this.Url, formData, { headers });
   }
 
-
-  // Method to send order/payment
-  makePayment(body: any): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
-    return this.http.post(`${this.apiUrl}/payment`, body, { headers });
+   uploadPayment(data: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/payments`, data);
   }
-
-
+  submitComment(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/comments`, data);
+  }
+  getCompletedCourses(customerId: number) {
+    return this.http.get<any>(`${this.apiUrl}/customer/completed-courses?customer_id=${customerId}`);
+  }
 }

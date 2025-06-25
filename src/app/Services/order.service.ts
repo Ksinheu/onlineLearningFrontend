@@ -37,7 +37,7 @@ private apiUrl = environment.apiUrl;
   submitPurchase(customerId: number, courseId: number, paySlip: string): Observable<ApiResponse> {
     const payload = { customer_id: customerId, course_id: courseId, pay_slip: paySlip };
     console.log('API payload:', payload);
-    return this.http.post<ApiResponse>(`${this.apiUrl}/purchases`, payload).pipe(
+    return this.http.post<ApiResponse>(`${this.apiUrl}/payment`, payload).pipe(
       catchError(this.handleError)
     );
   }

@@ -17,10 +17,11 @@ export class LessonComponent {
   constructor(private apiService: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-  // this.id = Number(this.route.snapshot.paramMap.get('id'));
+  // const courseId = Number(this.route.snapshot.paramMap.get('id'));
   this.apiService.getLessonById().subscribe({
      next: (res) => {
     this.lesson = res.lessons; // <- match key!
+    this.hasPurchased = res.hasPurchased || false;
   }
      
   });

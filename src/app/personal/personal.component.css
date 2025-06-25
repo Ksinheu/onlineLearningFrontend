@@ -1,0 +1,29 @@
+.header{
+    width: 100%;
+    position: fixed;
+    z-index: 99999999999;
+}
+.btn-blue{
+  background-color: #006494;
+}
+.shadow-card{
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+ol{
+    list-style:square;
+}
+.customer-detail-container {
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+.customer-detail-container ul {
+  list-style: none;
+  padding: 0;
+}
+.customer-detail-container li {
+  margin-bottom: 8px;
+}
+.error {
+  color: red;
+}

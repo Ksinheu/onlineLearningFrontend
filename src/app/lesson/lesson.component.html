@@ -1,12 +1,11 @@
-<div class="container mt-4">
+<!-- <div class="container mt-4">
   <div *ngFor="let lessons of lesson; let i = index">
     <div class="card mb-3 shadow-sm">
       <div class="card-body">
         <h5 class="card-title">{{ lessons.title }}</h5>
         <p class="card-text">{{ lessons.content }}</p>
        
-
-        <!-- Video only shown when clicked -->
+        Video only shown when clicked
         <div>
           <video
             [src]="'http://localhost:8000/storage/' + lessons.video_url"
@@ -19,8 +18,43 @@
     </div>
   </div>
 
-  <!-- Loading/Error Fallback -->
-  <div *ngIf="!lesson?.length" class="text-center">
+  Loading/Error Fallback
+  
+</div> -->
+
+<div class="container mt-4">
+  <div *ngFor="let lessons of lesson; let i = index">
+    <div class="card mb-3 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">{{ lessons.title }}</h5>
+        <p class="card-text">{{ lessons.content }}</p>
+
+        <!-- Optional: Show image or video -->
+        <ng-container *ngIf="lessons.image_url">
+          <img 
+            [src]="'http://localhost:8000/storage/' + lessons.image_url" 
+            alt="Image" 
+            class="img-fluid rounded shadow-sm mb-2"
+          />
+        </ng-container>
+
+        <ng-container *ngIf="lessons.video_url">
+          <video 
+            [src]="'http://localhost:8000/storage/' + lessons.video_url" 
+            controls 
+            class="w-100 rounded shadow-sm"
+            preload="metadata"
+          ></video>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+<div *ngIf="!lesson?.length" class="text-center">
     <p>កំពុងផ្ទុកមេរៀន...</p>
   </div>
+  <!-- Loading/Error State -->
+  <!-- <div *ngIf="!lessons?.length" class="text-center">
+    <p>កំពុងផ្ទុកទិន្នន័យ...</p>
+  </div> -->
 </div>
+

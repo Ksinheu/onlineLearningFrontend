@@ -1,31 +1,44 @@
-<div class="row">
-<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner" *ngIf="sliders.length > 0; else noImages">
-        <div *ngFor="let slider of sliders; let index = index" 
-             class="carousel-item" 
-             [ngClass]="{'active': index === 0}">
-             <div class="width-img">
-            <img [src]="'http://localhost:8000/storage/' + slider.image" 
-                 alt="Slider Image" 
-                 class=" w-100"/>
-            </div>
+<div class="row mt-5">
+  <div class="col-12">
+    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner" *ngIf="sliders.length > 0; else noImages">
+        <div 
+          *ngFor="let slider of sliders; let index = index" 
+          class="carousel-item"
+          [ngClass]="{'active': index === 0}"
+        >
+          <img 
+            [src]="'http://localhost:8000/storage/' + slider.image" 
+            alt="Slider Image" 
+            class="d-block w-100 img-fluid carousel-image"
+          />
         </div>
-    </div>
+      </div>
 
-    <!-- Carousel Controls -->
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
-        data-bs-slide="prev">
+      <!-- Carousel Controls -->
+      <button 
+        class="carousel-control-prev" 
+        type="button" 
+        data-bs-target="#carouselExampleAutoplaying" 
+        data-bs-slide="prev"
+      >
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
-        data-bs-slide="next">
+      </button>
+      <button 
+        class="carousel-control-next" 
+        type="button" 
+        data-bs-target="#carouselExampleAutoplaying" 
+        data-bs-slide="next"
+      >
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
-    </button>
+      </button>
+    </div>
+  </div>
 </div>
-</div>
+
 <!-- No Images Template -->
 <ng-template #noImages>
-    <p class="text-center mt-3">No images found.</p>
+  <p class="text-center mt-3">No images found.</p>
 </ng-template>

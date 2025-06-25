@@ -1,56 +1,79 @@
-
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../Services/api.service';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-payment',
-  standalone: false,
-  
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.css'
 })
-export class PaymentComponent {
- paymentForm: FormGroup;
-  selectedFile: File | null = null;
-  successMessage = '';
-  errorMessage = '';
+export class PaymentComponent implements OnInit {
+  customer_id = '';
+  course_id = '';
+  payment_status = 'pending';
+  pay_slip: File | null = null;
+  courses: any[] = [];
 
-  constructor(private fb: FormBuilder, private paymentService: ApiService) {
-    this.paymentForm = this.fb.group({
-      customer_id: ['', Validators.required],
-      course_id: ['', Validators.required],
-      pay_slip: ['', Validators.required]
+  constructor(private apiService: ApiService, private router: Router) {}
+
+  ngOnInit(): void {
+    // Get logged-in customer info from localStorage
+    const user = localStorage.getItem('user');
+   
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      this.customer_id = parsedUser.id; // adjust based on your stored user object
+    } else {
+      Swal.fire('Login Required', 'Please login first.', 'warning').then(() => {
+        this.router.navigate(['/login']);
+      });
+      return;
+    }
+
+    // Load available courses
+    this.apiService.getCourse().subscribe({
+      next: (res) => {
+        this.courses = res.courses || res; // adapt if the API wraps data
+      },
+      error: (err) => {
+        console.error('Failed to load courses', err);
+        Swal.fire('Error', 'Unable to fetch courses.', 'error');
+      }
     });
   }
 
   onFileChange(event: any) {
-    if (event.target.files.length > 0) {
-      this.selectedFile = event.target.files[0];
-    }
+    this.pay_slip = event.target.files[0];
   }
 
-  onSubmit() {
-    if (!this.paymentForm.valid || !this.selectedFile) {
-      this.errorMessage = 'Please fill all fields and select a valid file.';
+  submitPayment() {
+    if (!this.pay_slip) {
+      Swal.fire('Error', 'Please select a payslip image.', 'error');
+      return;
+    }
+
+    if (!this.customer_id || !this.course_id) {
+      Swal.fire('Error', 'Missing customer or course selection.', 'error');
       return;
     }
 
     const formData = new FormData();
-    formData.append('customer_id', this.paymentForm.get('customer_id')?.value);
-    formData.append('course_id', this.paymentForm.get('course_id')?.value);
-    formData.append('pay_slip', this.selectedFile);
+    formData.append('customer_id', this.customer_id);
+    formData.append('course_id', this.course_id);
+    formData.append('payment_status', this.payment_status);
+    formData.append('pay_slip', this.pay_slip);
 
-    this.paymentService.uploadPaySlip(formData).subscribe({
+    this.apiService.uploadPayment(formData).subscribe({
       next: (res) => {
-        this.successMessage = res.message;
-        this.errorMessage = '';
-        this.paymentForm.reset();
-        this.selectedFile = null;
+        Swal.fire('Success', res.message, 'success');
+        this.course_id = '';
+        this.payment_status = 'pending';
+        this.pay_slip = null;
       },
       error: (err) => {
-        this.errorMessage = err.error?.message || 'Upload failed';
-        this.successMessage = '';
+        Swal.fire('Error', 'Error uploading payment', 'error');
+        console.error(err);
       }
     });
   }

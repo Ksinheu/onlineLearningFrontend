@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { AppComponent } from './app.component';
 import { CourseDetailComponent } from './course-detail/course-detail.component';
 import { CoursesComponent } from './courses/courses.component';
 import { LessonComponent } from './lesson/lesson.component';
@@ -13,6 +12,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { NewsComponent } from './news/news.component';
 import { PaymentMethodComponent } from './payment-method/payment-method.component';
 import { PaymentComponent } from './payment/payment.component';
+import { PersonalComponent } from './personal/personal.component';
+import { MylessonComponent } from './mylesson/mylesson.component';
+import { ContactComponent } from './contact/contact.component';
 
 export const routes: Routes = [
   // { path: '', component: AppComponent },
@@ -30,6 +32,8 @@ export const routes: Routes = [
   {path:'dashboard',component:DashboardComponent,canActivate: [AuthGuard]},
   {path:'news',component:NewsComponent},
   {path:'payment_method',component:PaymentMethodComponent},
-  {path:'payment',component:PaymentComponent}
-  
+  {path:'payment',component:PaymentComponent},
+  {path:'personal',component:PersonalComponent},
+  {path:'myLesson',component:MylessonComponent},
+  {path:'contact',component:ContactComponent}
 ];

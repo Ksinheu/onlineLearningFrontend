@@ -13,6 +13,8 @@ import { isPlatformBrowser } from '@angular/common';
 
 })
 export class HomeComponent {
+
+  
   isLoggedIn = false; // Track authentication status
   loading=false;
   constructor(

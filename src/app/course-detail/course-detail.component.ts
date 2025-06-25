@@ -41,7 +41,7 @@ export class CourseDetailComponent {
   } else {
     console.error('No course ID found in route');
   }
-
+this.isLogined=this.courseService.isAuthenticated();
   this.checkLoginStatus();
   }
   toggleVideo(index: number): void {
@@ -98,6 +98,65 @@ export class CourseDetailComponent {
   }
 
  
+logout() {
+  const token = localStorage.getItem('token');
 
+  if (!token) {
+    this.forceLogout('Already Logged Out', 'No token found. You are already logged out.', 'warning');
+    return;
+  }
+
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "Do you really want to log out?",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, log out',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        this.forceLogout('Already Logged Out', 'No token found. You are already logged out.', 'warning');
+        return;
+      }
+
+      this.courseService.Logout().subscribe({
+        next: () => {
+          this.clearSession();
+          this.courseService.clearUser();
+          this.courseService.isLoggedIn.next(false);
+          this.forceLogout('Logged Out', 'You have successfully logged out.', 'success');
+        },
+        error: (error) => {
+          console.error('Logout error:', error);
+          this.clearSession();
+          this.courseService.clearUser();
+          this.courseService.isLoggedIn.next(false);
+          this.forceLogout('Logout Failed', 'There was an issue logging out. You were redirected anyway.', 'error');
+        },
+        complete: () => {
+          this.courseService.isLoggedIn.next(false);
+        }
+      });
+    }
+  });
+}
+
+private forceLogout(title: string, text: string, icon: 'success' | 'error' | 'warning') {
+  Swal.fire({
+    icon,
+    title,
+    text,
+    confirmButtonColor: '#3085d6',
+  }).then(() => {
+    this.router.navigate(['/login']);
+  });
+}
+
+private clearSession() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('redirectAfterLogin');
+}
 
 }

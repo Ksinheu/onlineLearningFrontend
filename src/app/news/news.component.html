@@ -1,14 +1,35 @@
-<div class="row overflow-auto flex-nowrap">
-  <!-- <div class="col-12"> -->
-  <div 
-    *ngFor="let newsItem of news" 
-    class="ms-3 card  shadow-card" 
-    style="width: 15rem;">
-    <img 
-      [src]="'http://localhost:8000/storage/' + newsItem.imageNews" 
-      class="card-img-top" 
-      alt="News Image">
+<!-- <div class="row">
+  <div class="col-12">
+    <div class="news-scroll-container d-flex overflow-auto flex-nowrap gap-3 pb-2">
+      <div 
+        *ngFor="let newsItem of news" 
+        class="card shadow-card flex-shrink-0"
+        style="width: 250px; min-width: 250px;"
+      >
+        <img 
+          [src]="'http://localhost:8000/storage/' + newsItem.imageNews" 
+          class="card-img-top" 
+          alt="News Image">
+       
+      </div>
+    </div>
   </div>
-  <!-- </div> -->
+</div> -->
+<div class="row">
+  <div class="col-12">
+    <div class="news-slider-wrapper overflow-hidden">
+      <div class="news-slider d-flex">
+        <div 
+          *ngFor="let newsItem of news" 
+          class="card shadow-card flex-shrink-0 mx-2"
+          style="width: 250px; min-width: 250px;"
+        >
+          <img 
+            [src]="'http://localhost:8000/storage/' + newsItem.imageNews" 
+            class="card-img-top" 
+            alt="News Image">
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-  

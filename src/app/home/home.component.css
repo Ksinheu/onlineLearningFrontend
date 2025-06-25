@@ -42,3 +42,32 @@ ol{
     transform: rotate(1turn);
   }
 }
+
+.news-scroll-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.news-scroll-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.news-scroll-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.news-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.news-scroll-container {
+  scroll-snap-type: x mandatory;
+}
+
+app-news {
+  scroll-snap-align: start;
+  flex: 0 0 auto; /* ensures horizontal layout */
+}

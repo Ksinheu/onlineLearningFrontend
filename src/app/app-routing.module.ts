@@ -12,6 +12,9 @@ import { NewsComponent } from './news/news.component';
 import { PaymentMethodComponent } from './payment-method/payment-method.component';
 import { PaymentComponent } from './payment/payment.component';
 import { AuthGuard } from './guards/auth.guard';
+import { PersonalComponent } from './personal/personal.component';
+import { MylessonComponent } from './mylesson/mylesson.component';
+import { ContactComponent } from './contact/contact.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -25,6 +28,9 @@ const routes: Routes = [
   { path: 'payment', component: PaymentComponent, canActivate: [AuthGuard] },
   { path: 'courses/:courseId/lessons', component: LessonComponent, canActivate: [AuthGuard] },
   { path: 'news', component: NewsComponent, canActivate: [AuthGuard] },
+  { path: 'personal', component: PersonalComponent },
+  {path:'myLesson',component:MylessonComponent},
+  {path:'contact',component:ContactComponent},
   { path: '**', redirectTo: '' }
 ];
 

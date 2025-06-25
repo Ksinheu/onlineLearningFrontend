@@ -1,6 +1,39 @@
 .shadow-card{
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
-.overflow-auto::-webkit-scrollbar {
+/* .overflow-auto::-webkit-scrollbar {
     display: none;  
+} */
+.news-scroll-container {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
+
+.news-scroll-container::-webkit-scrollbar {
+  height: 6px;
+}
+.news-scroll-container::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+.news-slider-wrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.news-slider {
+  display: flex;
+  animation: slideNews 30s linear infinite;
+}
+
+@keyframes slideNews {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+

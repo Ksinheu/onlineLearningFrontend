@@ -1,5 +1,5 @@
-.shadow-card{
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+.shadow{
+   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 .overflow-auto::-webkit-scrollbar {
     display: none;  
@@ -21,3 +21,69 @@ ol{
 .checked {
     color: orange;
   }
+.loader-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  background-color: #fff; /* Optional: to cover background */
+}
+
+/* Your existing loader stays the same */
+.loader {
+  width: 50px;
+  padding: 8px;
+  aspect-ratio: 1;
+  align-items: center;
+  border-radius: 50%;
+  background: #262a95;
+  --_m: 
+    conic-gradient(#0000 10%,#000),
+    linear-gradient(#000 0 0) content-box;
+  -webkit-mask: var(--_m);
+          mask: var(--_m);
+  -webkit-mask-composite: source-out;
+          mask-composite: subtract;
+  animation: l3 1s infinite linear;
+}
+
+@keyframes l3 {
+  to {
+    transform: rotate(1turn);
+  }
+}
+.scroll-nav {
+  white-space: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+}
+
+.scroll-nav::-webkit-scrollbar {
+  display: none; /* hide scrollbar if you want */
+}
+@media screen and (max-width: 576px) {
+  /* Styles for screens up to 768px wide (e.g. tablets and smaller) */
+  .scroll-nav {
+    white-space: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* .card.fade-in {
+  animation: fadeInUp 0.6s ease-out;
+}
+.card{
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;  
+} */

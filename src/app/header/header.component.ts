@@ -38,24 +38,41 @@ export class HeaderComponent implements OnInit{
       return;
     }
   
-    this.authService.Logout().subscribe({
-      next: () => {
-        this.clearSession();
-        this.authService.clearUser(); 
-        this.authService.isLoggedIn.next(false); // This line is correct
-        this.forceLogout('Logged Out', 'You have successfully logged out.', 'success');
-      },
-      error: (error) => {
-        console.error('Logout error:', error);
-        this.clearSession();
-        this.authService.clearUser();
-        this.authService.isLoggedIn.next(false);
-        this.forceLogout('Logout Failed', 'There was an issue logging out. You were redirected anyway.', 'error');
-      },
-      complete: () => {
-        this.authService.isLoggedIn.next(false);
+    Swal.fire({
+    title: 'Are you sure?',
+    text: "Do you really want to log out?",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, log out',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        this.forceLogout('Already Logged Out', 'No token found. You are already logged out.', 'warning');
+        return;
       }
-    });
+
+      this.authService.Logout().subscribe({
+        next: () => {
+          this.clearSession();
+          this.authService.clearUser();
+          this.authService.isLoggedIn.next(false);
+          this.forceLogout('Logged Out', 'You have successfully logged out.', 'success');
+        },
+        error: (error) => {
+          console.error('Logout error:', error);
+          this.clearSession();
+          this.authService.clearUser();
+          this.authService.isLoggedIn.next(false);
+          this.forceLogout('Logout Failed', 'There was an issue logging out. You were redirected anyway.', 'error');
+        },
+        complete: () => {
+          this.authService.isLoggedIn.next(false);
+        }
+      });
+    }
+  });
   }
   
   private forceLogout(title: string, text: string, icon: 'success' | 'error' | 'warning') {

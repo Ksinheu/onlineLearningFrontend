@@ -12,13 +12,15 @@ import Swal from 'sweetalert2';
 })
 export class CoursesComponent {
    course: any[] = [];
-  
+  loading = true;
     constructor(private apiService: ApiService,private router:Router) {}
   ngOnInit(): void {
     this.apiService.getCourse().subscribe((response) => {
       this.course = response.course; // Ensure response contains 'news' array
+      this.loading = false;
     }, (error) => {
       console.error('Error fetching news:', error);
+      this.loading = false;
     });
   }
   onBuy(courseId: number) {
