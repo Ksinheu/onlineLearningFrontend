@@ -15,6 +15,8 @@ import { PaymentComponent } from './payment/payment.component';
 import { PersonalComponent } from './personal/personal.component';
 import { MylessonComponent } from './mylesson/mylesson.component';
 import { ContactComponent } from './contact/contact.component';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+import { OtpLoginComponent } from './auth/otp-login/otp-login.component';
 
 export const routes: Routes = [
   // { path: '', component: AppComponent },
@@ -35,5 +37,9 @@ export const routes: Routes = [
   {path:'payment',component:PaymentComponent},
   {path:'personal',component:PersonalComponent},
   {path:'myLesson',component:MylessonComponent},
-  {path:'contact',component:ContactComponent}
+  {path:'contact',component:ContactComponent},
+  {path:'lesson',component:LessonComponent},
+  {path:'forgot-password',component:ForgotPasswordComponent},
+  { path: 'login-otp', component: OtpLoginComponent },
+  { path: 'lesson/:courseId', component: LessonComponent }
 ];

@@ -5,6 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import Swal from 'sweetalert2';
 import { ApiService } from '../Services/api.service';
+declare global {
+  interface Window {
+    Compressor: any;
+  }
+}
 
 @Component({
    selector: 'app-purchase',
@@ -13,14 +18,17 @@ import { ApiService } from '../Services/api.service';
   templateUrl: './purchase.component.html',
   styleUrl: './purchase.component.css'
 })
+
 export class PurchaseComponent implements OnInit {
-  purchaseForm: FormGroup;
+  
+ purchaseForm: FormGroup;
   isLogined = false;
   course: any = null;
   isSubmitting = false;
   showModal = false;
   loading = true;
   payment_methods: any;
+  formData = new FormData();
 
   constructor(
     private fb: FormBuilder,
@@ -38,7 +46,15 @@ export class PurchaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const courseId = +this.route.snapshot.paramMap.get('id')!;
+    const courseIdParam = this.route.snapshot.paramMap.get('id');
+    const courseId = courseIdParam ? +courseIdParam : null;
+
+    if (!courseId || isNaN(courseId)) {
+      Swal.fire('Error', 'Invalid course ID', 'error');
+      this.router.navigate(['/']);
+      return;
+    }
+
     this.apiService.getCourseById(courseId).subscribe({
       next: res => {
         this.course = res.course;
@@ -48,12 +64,12 @@ export class PurchaseComponent implements OnInit {
       error: err => {
         console.error(err);
         this.loading = false;
+        Swal.fire('Error', 'Failed to load course.', 'error');
       }
     });
 
     if (isPlatformBrowser(this.platformId)) {
       const customerId = localStorage.getItem('customer_id');
-      console.log('customer_id from localStorage:', localStorage.getItem('customer_id'));
       const token = localStorage.getItem('token');
       this.isLogined = !!token;
       if (customerId) {
@@ -69,8 +85,6 @@ export class PurchaseComponent implements OnInit {
         console.error(err);
       }
     });
-
-
   }
 
   openModal(): void {
@@ -90,71 +104,120 @@ export class PurchaseComponent implements OnInit {
     this.showModal = false;
   }
 
- onFileChange(event: Event): void {
-  const input = event.target as HTMLInputElement;
-  if (input.files && input.files.length > 0) {
-    const file = input.files[0];
+  onFileSelected(event: any, field: string) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      console.log(`Selected file for ${field}:`, file);
 
-    // Reset any previous errors
-    const control = this.purchaseForm.get('pay_slip');
-    control?.setErrors(null);
+      new window.Compressor(file, {
+        quality: 0.6,
+        success: (compressedResult: Blob) => {
+          this.formData.set(field, compressedResult);
+          this.purchaseForm.patchValue({ [field]: compressedResult });
+          console.log(`Compressed file added to FormData for ${field}:`, compressedResult);
+        },
+        error(err: any) {
+          console.error('Error compressing the file:', err.message);
+        }
+      });
+    }
+  }
 
-    // Validate file type
-    if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
-      control?.setErrors({ invalidType: true });
+  onSubmit(): void {
+    if (this.purchaseForm.invalid) {
+      this.purchaseForm.markAllAsTouched();
+      Swal.fire('Error', 'Please upload a valid payment slip.', 'error');
       return;
     }
 
-    // Validate file size
-    if (file.size > 2 * 1024 * 1024) {
-      control?.setErrors({ maxSize: true });
-      return;
-    }
+    this.formData.set('customer_id', this.purchaseForm.get('customer_id')?.value);
+    this.formData.set('course_id', this.purchaseForm.get('course_id')?.value);
+    this.formData.set('payment_status', this.purchaseForm.get('payment_status')?.value);
 
-    // Valid file – set to form and mark it valid
-    this.purchaseForm.patchValue({ pay_slip: file });
-    control?.updateValueAndValidity();
+    this.isSubmitting = true;
+
+    this.apiService.uploadPayment(this.formData).subscribe({
+      next: res => {
+         Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: res.message,
+        confirmButtonText: 'OK'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.purchaseForm.reset();
+          this.formData = new FormData();
+          this.closeModal();
+          this.isSubmitting = false;
+          this.router.navigate(['/myLesson']); // ✅ Navigate on confirm
+        }
+      });
+      },
+      error: err => {
+        console.error(err);
+        Swal.fire('Error', 'Failed to submit payment.', 'error');
+        this.isSubmitting = false;
+      }
+    });
   }
-}
-
-
-
- onSubmit(): void {
-  console.log('Form data:', this.purchaseForm.value);
-  console.log('File:', this.purchaseForm.get('pay_slip')?.value);
-
-  if (this.purchaseForm.invalid) {
-    this.purchaseForm.markAllAsTouched();
-    Swal.fire('Error', 'Please upload a valid payment slip.', 'error');
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append('customer_id', this.purchaseForm.get('customer_id')?.value);
-  formData.append('course_id', this.purchaseForm.get('course_id')?.value);
-  formData.append('payment_status', this.purchaseForm.get('payment_status')?.value);
-  formData.append('pay_slip', this.purchaseForm.get('pay_slip')?.value);
-
-  this.isSubmitting = true;
-
-  this.apiService.uploadPayment(formData).subscribe({
-    next: res => {
-      Swal.fire('Success', res.message, 'success');
-      this.purchaseForm.reset();
-      this.closeModal();
-      this.isSubmitting = false;
-    },
-    error: err => {
-      console.error(err);
-      Swal.fire('Error', 'Failed to submit payment.', 'error');
-      this.isSubmitting = false;
-    }
-  });
-}
-
 
   hasError(field: string): boolean {
     const control = this.purchaseForm.get(field);
     return !!control && control.touched && control.invalid;
+  }
+
+  logout(): void {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      this.forceLogout('Already Logged Out', 'No token found. You are already logged out.', 'warning');
+      return;
+    }
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you really want to log out?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, log out',
+      cancelButtonText: 'Cancel'
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.apiService.Logout().subscribe({
+          next: () => {
+            this.clearSession();
+            this.apiService.clearUser();
+            this.apiService.isLoggedIn.next(false);
+            this.forceLogout('Logged Out', 'You have successfully logged out.', 'success');
+          },
+          error: (error) => {
+            console.error('Logout error:', error);
+            this.clearSession();
+            this.apiService.clearUser();
+            this.apiService.isLoggedIn.next(false);
+            this.forceLogout('Logout Failed', 'There was an issue logging out. You were redirected anyway.', 'error');
+          },
+          complete: () => {
+            this.apiService.isLoggedIn.next(false);
+          }
+        });
+      }
+    });
+  }
+
+  private forceLogout(title: string, text: string, icon: 'success' | 'error' | 'warning') {
+    Swal.fire({
+      icon,
+      title,
+      text,
+      confirmButtonColor: '#3085d6',
+    }).then(() => {
+      this.router.navigate(['/login']);
+    });
+  }
+
+  private clearSession(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('redirectAfterLogin');
+    localStorage.removeItem('customer_id');
   }
 }

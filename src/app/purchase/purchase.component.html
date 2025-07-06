@@ -1,94 +1,56 @@
+<app-header></app-header>
 
-
- <app-header></app-header>
+<!-- Loading Spinner -->
 <div *ngIf="loading" class="loader-wrapper">
   <div class="loader"></div>
 </div>
 
+<!-- Main Container -->
 <div class="container mt-4">
   <div class="row" *ngIf="!loading && course">
-    <!-- Payment UI section -->
+
+    <!-- Payment Section -->
     <div class="col-md-8 mx-auto mb-4">
       <div class="payment-box card shadow rounded-4 overflow-hidden">
         <div class="d-flex justify-content-between align-items-center px-4 py-3 bg-primary text-white">
-          <div class="mb-0"><a routerLink="/dashboard" class="mb-2 ms-3 mt-5 text-white"><i class="fa-solid fa-arrow-left"></i></a></div>
-          <div>
-            <i class="bi bi-cart"></i>
-          </div>
+          <a routerLink="/dashboard" class="text-white"><i class="fa-solid fa-arrow-left"></i></a>
+          <i class="bi bi-cart"></i>
         </div>
 
         <div class="px-4 py-4">
           <div class="text-center">
             <h2 class="fw-bold">{{ course.price }} USD</h2>
-            <p class="text-muted">All Payment Methods</p>
-           
           </div>
 
-          <!-- Payment methods list -->
-          <div class="payment-methods mb-4">
-            <div class="d-flex justify-content-between align-items-center border rounded p-2 mb-2">
-              <span *ngIf="payment_methods[0]">{{ payment_methods[0].name_bank }}</span>
-              <!-- <img src="assets/cards/visa.png" alt="Visa" height="24" /> -->
-            </div>
-            <div class="d-flex justify-content-between align-items-center border rounded p-2 mb-2">
-              <span *ngIf="payment_methods[0]">{{ payment_methods[0].number_bank }}</span>
-              <!-- <img src="assets/cards/mastercard.png" alt="Mastercard" height="24" /> -->
-            </div>
-            <div class="d-flex justify-content-between align-items-center border rounded p-2 mb-2">
-              <span *ngIf="payment_methods[0]">{{ payment_methods[0].phone_number }}</span>
-              <!-- <img src="assets/cards/amex.png" alt="Amex" height="24" /> -->
-            </div>
-            <div class="row g-2">
-              <div class="col-6">
-                <div class="border rounded p-2 text-center">
-                  <!-- <img src="assets/cards/bank-card.png" alt="Bank Card" height="24" /> -->
-                   <span>ABA</span>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="border rounded p-2 text-center">
-                  <!-- <img src="assets/cards/paypal.png" alt="PayPal" height="24" /> -->
-                   <span>ABA</span>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="border rounded p-2 text-center">
-                  <!-- <img src="assets/cards/sofort.png" alt="Sofort" height="24" /> -->
-                   <span>ABA</span>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="border rounded p-2 text-center">
-                  <!-- <img src="assets/cards/ideal.png" alt="iDEAL" height="24" /> -->
-                   <span>ABA</span>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="border rounded p-2 text-center">
-                  <!-- <img src="assets/cards/bank.png" alt="Bank" height="24" /> -->
-                   <span>ABA</span>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="border rounded p-2 text-center">
-                  <!-- <img src="assets/cards/alipay.png" alt="Alipay" height="24" /> -->
-                   <span>ABA</span>
-                </div>
-              </div>
-            </div>
+          <!-- Payment Method Form -->
+          <div class="mb-3">
+            <label for="bankName" class="form-label">ជ្រើសរើសធនាគារ</label>
+            <select class="form-select" id="bankName">
+              <option selected disabled>-- ជ្រើសរើស --</option>
+              <option value="ABA">ABA</option>
+              <option value="AC">ACLEDA (AC)</option>
+              <option value="WING">WING</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="bankNumber" class="form-label">លេខធនាគារ</label>
+            <input type="text" class="form-control" id="bankNumber" [value]="payment_methods?.[0]?.number_bank" readonly>
+          </div>
+          <div class="mb-3">
+            <label for="phoneNumber" class="form-label">លេខទូរសព្ទសម្រាប់វេលុយ</label>
+            <input type="text" class="form-control" id="phoneNumber" [value]="payment_methods?.[0]?.phone_number" readonly>
           </div>
 
-          <!-- QR Code section -->
-          <div class="text-center border-top pt-4">
-            <p class="text-muted">Is it more convenient to pay by phone? Scan QR code</p>
-            <img *ngIf="payment_methods[0]" [src]="'http://localhost:8000/storage/' + payment_methods[0].QR_code" alt="QR Code" class="img-fluid rounded border qr-large me-3" style="max-width: 180px;" />
-            <img *ngIf="payment_methods[0]" [src]="'http://localhost:8000/storage/' + payment_methods[0].QR_code" alt="QR Code" class="img-fluid rounded border qr-large" style="max-width: 180px;" />
+          <!-- QR Code -->
+          <div class="text-center pt-4">
+            <p class="text-muted">ស្ដែននៅទីនេះដើម្បីបង់ប្រាក់ បន្ទាប់ពីស្កែនបង់ប្រាក់រួចរាល់សូមបញ្ចូលវិក័យបត្របង់ប្រាក់(Pay Slip)</p>
+            <img [src]="'http://localhost:8000/storage/' + payment_methods?.[0]?.QR_code" alt="QR Code" class="img-fluid rounded border qr-large" style="max-width: 200px;">
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Order summary and Pay -->
+    <!-- Order Summary -->
     <div class="col-md-4">
       <div class="bg-primary text-white text-center fw-semibold rounded py-2 mb-3">
         សរុប & ទូទាត់
@@ -96,7 +58,7 @@
       <div class="card shadow-sm p-4">
         <div class="row">
           <div class="col-3">
-            <img [src]="'http://localhost:8000/storage/' + course.imgCourse" alt="Course Image" class="rounded w-100 img-fluid" />
+            <img [src]="'http://localhost:8000/storage/' + course.imgCourse" alt="Course Image" class="rounded w-100 img-fluid">
           </div>
           <div class="col-9">
             <h5 class="mt-2">{{ course.course_name }}</h5>
@@ -111,7 +73,8 @@
           <span>${{ course.price }}</span>
         </div>
         <div class="text-end">
-          <button class="btn btn-outline-danger mt-4 w-50 " (click)="openModal()" [disabled]="!course">
+          <a routerLink="/dashboard" class="btn btn-secondary mt-4 me-3">បោះបង់</a>
+          <button class="btn btn-outline-danger mt-4 w-50" (click)="openModal()" [disabled]="!course">
             {{ isLogined ? 'ទិញ' : 'Login to Buy' }}
           </button>
         </div>
@@ -119,7 +82,7 @@
     </div>
   </div>
 
-  <!-- Modal for payment slip upload -->
+  <!-- Modal Upload Pay Slip -->
   <div class="modal-overlay" *ngIf="showModal">
     <div class="modal-container">
       <div class="modal-header d-flex justify-content-between align-items-center border-bottom pb-2">
@@ -129,11 +92,9 @@
       <div class="modal-body pt-3">
         <form [formGroup]="purchaseForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
           <label for="pay_slip" class="form-label fw-semibold">បញ្ចូលវិក័យបត្រ (Upload Pay Slip)</label>
-          <input type="file" id="pay_slip" class="form-control" (change)="onFileChange($event)" accept="image/*" />
+          <input type="file" id="pay_slip" class="form-control" (change)="onFileSelected($event, 'pay_slip')" accept="image/*">
           <div *ngIf="hasError('pay_slip')" class="text-danger small mt-1">
             <div *ngIf="purchaseForm.get('pay_slip')?.errors?.['required']">File is required.</div>
-            <div *ngIf="purchaseForm.get('pay_slip')?.errors?.['invalidType']">Only JPG/PNG allowed.</div>
-            <div *ngIf="purchaseForm.get('pay_slip')?.errors?.['maxSize']">Max size is 2MB.</div>
           </div>
           <button type="submit" class="btn btn-success w-100 mt-4" [disabled]="isSubmitting">
             ទូទាត់ (Pay)
@@ -143,3 +104,13 @@
     </div>
   </div>
 </div>
+
+<!-- Mobile Footer Navigation -->
+<nav class="mobile-footer-nav d-md-none">
+  <a routerLink="/personal" routerLinkActive="active" class="nav-icon"><i class="fa-solid fa-user"></i><small>ប្រវត្តិរូប</small></a>
+  <a routerLink="/dashboard" routerLinkActive="active" class="nav-icon"><i class="fa-solid fa-film"></i><small>វគ្គ</small></a>
+  <a routerLink="/myLesson" class="nav-icon"><i class="fa-solid fa-bell"></i><small>មេរៀនរបស់ខ្ញុំ</small></a>
+  <a (click)="logout()" class="nav-icon"><i class="fa-solid fa-sign-out-alt"></i><small>ចេញ</small></a>
+</nav>
+
+<app-footer></app-footer>

@@ -132,8 +132,31 @@ getProfile(customerId: number): Observable<any> {
   }
   // private isLoggedInSubject = new BehaviorSubject<boolean>(false);
 
+ forgot_password(endpoint: string, data: any) {
+    return this.http.post(`${this.apiUrl}/${endpoint}`, data);
+  }
+    // POST request
+  postOtp(endpoint: string, data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${endpoint}`, data);
+  }
+// GET request
+  getOtp(endpoint: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${endpoint}`, this.getAuthHeaders());
+  }
 
+  // Authenticated POST
+  postWithToken(endpoint: string, data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${endpoint}`, data, this.getAuthHeaders());
+  }
 
+  // Authenticated GET with headers
+  private getAuthHeaders() {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return { headers };
+  }
   // slider api
   getSliders(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/sliderApi`);

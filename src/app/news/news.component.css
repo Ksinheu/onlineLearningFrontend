@@ -1,9 +1,9 @@
-.shadow-card{
+/* .shadow-card{
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 /* .overflow-auto::-webkit-scrollbar {
     display: none;  
-} */
+} 
 .news-scroll-container {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
@@ -36,4 +36,24 @@
     transform: translateX(-50%);
   }
 }
+ */
 
+ .hero {
+      background-color: #eaf0ff;
+      padding: 60px 0;
+    }
+
+    .hero .btn-primary {
+      background-color: #3b82f6;
+      border: none;
+    }
+
+    .category-icon {
+      font-size: 32px;
+    }
+
+    .course-card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }

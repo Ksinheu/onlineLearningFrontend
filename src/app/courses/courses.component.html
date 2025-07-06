@@ -2,72 +2,38 @@
 <div *ngIf="loading" class="loader-wrapper">
   <div class="loader"></div>
 </div>
-<!-- វគ្គសិក្សាពេញនិយម -->
-<!-- <div class="row g-3">
-  <div 
-    class="col-12 col-sm-6 col-md-4 col-lg-3" 
-    *ngFor="let newsItem of course"
-  >
-    <div class="card fade-in h-100 shadow-card">
-      <a [routerLink]="['/courses', newsItem.id]">
-        <img 
-          [src]="'http://localhost:8000/storage/' + newsItem.imgCourse" 
-          class="card-img-top img-fluid" 
-          alt="Course Image"
-          style="height: 180px; object-fit: cover;"
-        >
-      </a>
-      <div class="card-body d-flex flex-column">
-        <h5 class="card-title text-primary">{{ newsItem.course_name }}</h5>
-        <p class="card-text mt-auto">
-          <span class="text-decoration-line-through text-muted">{{ newsItem.price_normal }}$</span>
-          <span class="text-danger fs-5 ms-2">{{ newsItem.price }}$</span>
-        </p>
-      </div>
-    </div>
-  </div>
-</div> -->
-
-<div class="row g-4 mb-2">
-  <div 
-    class="col-12 col-sm-6 col-md-4 col-lg-3"
-    *ngFor="let item of course"
-  >
-    <div class="card border-0 shadow-card rounded-4 text-center p-3 h-100">
-      
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <span class="badge bg-light text-muted">Music</span>
-        <div>
-          <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
-            <i 
-              class="bi" 
-              [ngClass]="{
-                'bi-star-fill text-warning': i < 4,
-                'bi-star text-muted': i >= 4
-              }"
-            ></i>
-          </ng-container>
+ <section class="">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-md-6 g-2" >
+        <!-- Example Card -->
+        <div class="col-12 col-md-4 col-lg-2" *ngFor="let item of course">
+          <div class="card h-100 course-card border-1 text-center">
+            <!-- Image container -->
+            <div class="pt-3">
+              <img [src]="'http://localhost:8000/storage/' + item.imgCourse" alt="Angular" class="mx-auto d-block" style="height: 80px; object-fit: contain;">
+            </div>
+            <div class="card-body py-3 px-3">
+              <span class="badge bg-primary mb-2" style="font-size: 0.75rem;">{{ item.course_name }}</span>
+              <ul class="list-inline text-muted small mb-2 text-nowrap">
+                <li class="list-inline-item me-3">
+                  <i class="bi bi-book"></i> 12 Lessons
+                </li>
+                <li class="list-inline-item me-3">
+                  <i class="bi bi-clock"></i> 4 Week
+                </li>
+              </ul>
+              <div class="mb-2">
+                <span class="text-warning small">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                <span class="text-muted small">(134 Reviews)</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <a [routerLink]="['/courses', item.id]" class="btn btn-sm btn-primary">ទិញ</a>
+                <span class="fw-bold small">${{ item.price }}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      <a [routerLink]="['/courses', item.id]">
-        <img 
-          [src]="'http://localhost:8000/storage/' + item.imgCourse"
-          class="img-fluid mb-3"
-          alt="Product Image"
-          style="height: 150px; object-fit: contain;"
-        >
-      </a>
-
-      <h6 class="fw-semibold mb-1">{{ item.course_name }}</h6>
-      <p class="text-muted mb-3">Price: ${{ item.price }}</p>
-
-      <div class="d-flex justify-content-center gap-2 mt-auto">
-        <a [routerLink]="['/courses', item.id]" class="btn btn-primary d-flex align-items-center gap-1 px-3">
-          <i class="bi bi-cart-check-fill"></i> ទិញឥឡូវនេះ
-        </a>
-        <button class="btn btn-outline-primary px-3">ដាក់ចូលថង់</button>
-      </div>
     </div>
-  </div>
-</div>
+  </section>
+

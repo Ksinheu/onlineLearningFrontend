@@ -1,0 +1,47 @@
+<!-- <div class="container mt-5">
+    <h2>Login with OTP</h2>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+        <div class="mb-3">
+            <label>Email</label>
+            <input type="email" formControlName="email" class="form-control" placeholder="Enter your email">
+        </div>
+
+        <div class="mb-3">
+            <label>OTP Code</label>
+            <input type="text" formControlName="otp" class="form-control" placeholder="Enter OTP code">
+        </div>
+
+        <button class="btn btn-primary" [disabled]="form.invalid">Login</button>
+    </form>
+</div> -->
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card login-card p-4">
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <img src="/img/2.png" alt="Logo" style="height: 60px;">
+                        <h4 class="moul mt-2">ចូលគណនីតាមរយៈលេខកូដ OTP</h4>
+                    </div>
+                    <div class="text-center">សូមផ្ទៀងផ្ទាត់លេខកូដ​ OTP ដើម្បីចូលគណនីរបស់អ្នក</div>
+                    <form [formGroup]="form" (ngSubmit)="submit()">
+                        <div class="mb-3">
+                            <label>អ៊ីមែល</label>
+                            <input type="email" formControlName="email" class="form-control"
+                                placeholder="សូមបញ្ចូលអ៊ីមែលរបស់អ្នក">
+                        </div>
+                        <div class="mb-3">
+                            <label>OTP Code</label>
+                            <input type="text" formControlName="otp" class="form-control" placeholder="សូមបញ្ចូល OTP code តាមរយៈអ៊ីមែលរបស់អ្នក">
+                        </div>
+                        <div class="d-grid mb-3">
+                            <button class="btn btn-primary" type="submit" [disabled]="form.invalid"><i class="bi bi-box-arrow-in-right me-2"></i> ចូល</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

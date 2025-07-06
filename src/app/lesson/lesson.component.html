@@ -1,60 +1,79 @@
-<!-- <div class="container mt-4">
-  <div *ngFor="let lessons of lesson; let i = index">
-    <div class="card mb-3 shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">{{ lessons.title }}</h5>
-        <p class="card-text">{{ lessons.content }}</p>
-       
-        Video only shown when clicked
-        <div>
-          <video
-            [src]="'http://localhost:8000/storage/' + lessons.video_url"
-            controls
-            class="w-100 rounded shadow"
-            preload="metadata"
-          ></video>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  Loading/Error Fallback
-  
-</div> -->
-
-<div class="container mt-4">
-  <div *ngFor="let lessons of lesson; let i = index">
-    <div class="card mb-3 shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">{{ lessons.title }}</h5>
-        <p class="card-text">{{ lessons.content }}</p>
-
-        <!-- Optional: Show image or video -->
-        <ng-container *ngIf="lessons.image_url">
-          <img 
-            [src]="'http://localhost:8000/storage/' + lessons.image_url" 
-            alt="Image" 
-            class="img-fluid rounded shadow-sm mb-2"
-          />
-        </ng-container>
-
-        <ng-container *ngIf="lessons.video_url">
-          <video 
-            [src]="'http://localhost:8000/storage/' + lessons.video_url" 
-            controls 
-            class="w-100 rounded shadow-sm"
-            preload="metadata"
-          ></video>
-        </ng-container>
-      </div>
-    </div>
-  </div>
-<div *ngIf="!lesson?.length" class="text-center">
-    <p>កំពុងផ្ទុកមេរៀន...</p>
-  </div>
-  <!-- Loading/Error State -->
-  <!-- <div *ngIf="!lessons?.length" class="text-center">
-    <p>កំពុងផ្ទុកទិន្នន័យ...</p>
-  </div> -->
+<!-- Header -->
+<div class="header fixed-top bg-white shadow-sm z-3">
+  <app-header></app-header>
 </div>
 
+<div class="container-fluid">
+  <div class="row">
+    <!-- Left Sidebar (Lesson List) -->
+    <div class="col-12 col-md-12 col-lg-2 mt-5">
+      <app-side-bar2></app-side-bar2>
+
+      <!-- Lesson Selector -->
+      <div class="lesson-list mt-4">
+        <h5>Lessons</h5>
+        <ul class="list-unstyled">
+          <li 
+            *ngFor="let lesson of lessons" 
+            (click)="selectLesson(lesson)"
+            [class.active]="selectedLesson?.id === lesson.id"
+            style="cursor: pointer; padding: 5px; border-radius: 4px;"
+          >
+            {{ lesson.title }}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Main Lesson Content -->
+    <div class="col-12 col-md-12 mt-5 col-lg-8 mt-3 overflow-hidden" *ngIf="selectedLesson">
+      <main>
+        <button (click)="goBack()" style="margin-bottom: 10px; background: none; border: none; color: #3b82f6;">
+          ← Go Back
+        </button>
+
+        <h1 style="font-size: 24px; font-weight: 700;">{{ selectedLesson.title }}</h1>
+
+        <!-- Show Buy Button if not purchased -->
+        
+
+        <!-- Show Video if purchased -->
+        <div *ngIf="hasPurchased">
+          <video class="video-section" controls>
+            <source [src]="'http://localhost:8000/storage/' + selectedLesson.video_url" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+
+          <h2 class="mt-3">Additional Materials</h2>
+          <div class="bg-light p-3 rounded mt-2">
+            <h4>{{ selectedLesson.materialTitle || 'Firebase FAQ' }}</h4>
+            <p class="text-muted">{{ selectedLesson.materialDescription || 'Firebase is more a content vocabulary...' }}</p>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="col-12 col-md-12 mt-5 col-lg-2 mt-3 overflow-hidden">
+      <aside>
+        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 10px;">Your Hometasks Progress</h3>
+        <ul class="tasks list-unstyled">
+          <li>What Metrics Mean?</li>
+          <li>Google Analytics Basics</li>
+          <li>Amplitude Basics</li>
+          <li class="active-task">Firebase Advanced</li>
+          <li>Metrics in UX Design</li>
+          <li>Google Analytics Advanced</li>
+        </ul>
+
+        <div class="upload mt-3">
+          <input type="text" placeholder="Paste Figma link" class="form-control mb-2" />
+          <input type="text" placeholder="Add comment" class="form-control mb-2" />
+          <p class="text-secondary" style="font-size: 14px;">
+            Drop the file or <span class="text-primary">Browse</span>
+          </p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>

@@ -1,42 +1,76 @@
-<div class="row mt-5">
-  <div class="col-12">
-    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner" *ngIf="sliders.length > 0; else noImages">
-        <div 
-          *ngFor="let slider of sliders; let index = index" 
-          class="carousel-item"
-          [ngClass]="{'active': index === 0}"
-        >
-          <img 
-            [src]="'http://localhost:8000/storage/' + slider.image" 
-            alt="Slider Image" 
-            class="d-block w-100 img-fluid carousel-image"
-          />
+
+<section class="hero py-5 " *ngIf="sliders.length > 0; else noImages" >
+  <div id="heroCarousel" class="carousel slide " data-bs-ride="carousel">
+    <div class="carousel-inner shadow-card border-1 rounded-4">
+
+      <!-- Slide 1 -->
+      <div class="carousel-item active">
+        <div class="container">
+          <div class="row align-items-center bg-white rounded-4  p-4">
+            <!-- Text Content -->
+            <div class="col-md-6 text-center text-md-start mb-4 mb-md-0">
+              <h1 class="fw-bold display-5 mb-3">Unlock your Potential with us</h1>
+              <p class="lead mb-4">Explore, Learn, and Grow!</p>
+              <a href="#" class="btn btn-primary btn-lg px-4 mb-3">Try Now!</a>
+              <p class="text-muted mb-0">1000+ Students | 100+ Mentors</p>
+            </div>
+            <!-- Image -->
+            <div class="col-md-6 text-center">
+              <img [src]="'http://localhost:8000/storage/' + sliders[0].image" alt="Student" class="img-fluid rounded-3" style="max-width: 80%; height: auto;">
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Carousel Controls -->
-      <button 
-        class="carousel-control-prev" 
-        type="button" 
-        data-bs-target="#carouselExampleAutoplaying" 
-        data-bs-slide="prev"
-      >
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button 
-        class="carousel-control-next" 
-        type="button" 
-        data-bs-target="#carouselExampleAutoplaying" 
-        data-bs-slide="next"
-      >
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
+      <!-- Slide 2 -->
+      <div class="carousel-item">
+        <div class="container">
+          <div class="row align-items-center bg-white rounded-4 p-4">
+            <!-- Text Content -->
+            <div class="col-md-6 text-center text-md-start mb-4 mb-md-0">
+              <h1 class="fw-bold display-5 mb-3">Learn Anytime, Anywhere</h1>
+              <p class="lead mb-4">Flexible online courses for you</p>
+              <a href="#" class="btn btn-outline-primary btn-lg px-4 mb-3">Browse Courses</a>
+              <p class="text-muted mb-0">Join our growing community</p>
+            </div>
+            <!-- Image -->
+            <div class="col-md-6 text-center">
+              <img [src]="'http://localhost:8000/storage/' + sliders[1].image" alt="Student" class="img-fluid rounded-3" style="max-width: 80%; height: auto;">
+            </div>
+          </div>
+        </div>
+      </div>
+ <!-- Slide 2 -->
+      <div class="carousel-item">
+        <div class="container">
+          <div class="row align-items-center bg-white rounded-4 p-4">
+            <!-- Text Content -->
+            <div class="col-md-6 text-center text-md-start mb-4 mb-md-0">
+              <h1 class="fw-bold display-5 mb-3">Learn Anytime, Anywhere</h1>
+              <p class="lead mb-4">Flexible online courses for you</p>
+              <a href="#" class="btn btn-outline-primary btn-lg px-4 mb-3">Browse Courses</a>
+              <p class="text-muted mb-0">Join our growing community</p>
+            </div>
+            <!-- Image -->
+            <div class="col-md-6 text-center">
+              <img [src]="'http://localhost:8000/storage/' + sliders[2].image" alt="Student" class="img-fluid rounded-3" style="max-width: 80%; height: auto;">
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Controls -->
+    <button class="carousel-control-prev text-danger" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+      <!-- <span class="carousel-control-prev-icon"></span> -->
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next " type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+      <!-- <span class="carousel-control-next-icon"></span> -->
+      <span class="visually-hidden">Next</span>
+    </button>
   </div>
-</div>
+</section>
 
 <!-- No Images Template -->
 <ng-template #noImages>

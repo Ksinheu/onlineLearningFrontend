@@ -1,35 +1,26 @@
-<!-- <div class="row">
-  <div class="col-12">
-    <div class="news-scroll-container d-flex overflow-auto flex-nowrap gap-3 pb-2">
-      <div 
-        *ngFor="let newsItem of news" 
-        class="card shadow-card flex-shrink-0"
-        style="width: 250px; min-width: 250px;"
-      >
-        <img 
-          [src]="'http://localhost:8000/storage/' + newsItem.imageNews" 
-          class="card-img-top" 
-          alt="News Image">
-       
+
+ <section class="">
+  <div class="container">
+    <!-- <h4 class="mb-4 moul-regular">ព័ត៌មានវគ្គសិក្សា</h4> -->
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <img [src]="'http://localhost:8000/storage/' + news[0].imageNews" alt="Center Image 1" class="card-img-top" style="height: 100%; width: 100%; object-fit: cover;">
+        </div>
       </div>
-    </div>
-  </div>
-</div> -->
-<div class="row">
-  <div class="col-12">
-    <div class="news-slider-wrapper overflow-hidden">
-      <div class="news-slider d-flex">
-        <div 
-          *ngFor="let newsItem of news" 
-          class="card shadow-card flex-shrink-0 mx-2"
-          style="width: 250px; min-width: 250px;"
-        >
-          <img 
-            [src]="'http://localhost:8000/storage/' + newsItem.imageNews" 
-            class="card-img-top" 
-            alt="News Image">
+
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <img [src]="'http://localhost:8000/storage/' + news[1].imageNews" alt="Center Image 2" class="card-img-top" style="height: 100%; width: 100%; object-fit: cover;">
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <img [src]="'http://localhost:8000/storage/' + news[2].imageNews" alt="Center Image 3" class="card-img-top" style="height: 100%; width: 100%; object-fit: cover;">
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>

@@ -9,7 +9,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrl: './mylesson.component.css'
 })
 export class MylessonComponent implements OnInit{
-  courses: any[] = [];
+  // courses: any[] = [];
+  completedCourses: any[] = [];
+  pendingCourses: any[] = [];
   loading = false;
   customerId!: number;
 
@@ -18,6 +20,7 @@ export class MylessonComponent implements OnInit{
   commentForm: FormGroup;
   isSubmitting = false;
   successMessage = '';
+
   constructor(private purchaseService: ApiService,private fb:FormBuilder,) {
     this.commentForm = this.fb.group({
       comment: ['', Validators.required],
@@ -34,12 +37,13 @@ export class MylessonComponent implements OnInit{
   loadCompletedCourses() {
     this.loading = true;
     this.purchaseService.getCompletedCourses(this.customerId).subscribe({
-      next: (res) => {
-        this.courses = res.courses;
+      next: res => {
+        this.completedCourses = res.completed || [];
+        this.pendingCourses = res.pending || [];
         this.loading = false;
       },
-      error: (err) => {
-        console.error('Error loading courses:', err);
+      error: err => {
+        console.error('Failed to load courses:', err);
         this.loading = false;
       }
     });

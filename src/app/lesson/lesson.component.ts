@@ -10,26 +10,39 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './lesson.component.css'
 })
 export class LessonComponent {
-  lesson: any;
-  hasPurchased = false;
+  lessons: any[] = [];
+  selectedLesson: any = null;
+  hasPurchased: boolean = false;
 
-
-  constructor(private apiService: ApiService, private route: ActivatedRoute) {}
+  constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
-  // const courseId = Number(this.route.snapshot.paramMap.get('id'));
-  this.apiService.getLessonById().subscribe({
-     next: (res) => {
-    this.lesson = res.lessons; // <- match key!
-    this.hasPurchased = res.hasPurchased || false;
+    this.apiService.getLessonById().subscribe({
+      next: (res) => {
+        this.lessons = res.lessons || [];
+        // this.hasPurchased = res.hasPurchased || false;
+        this.hasPurchased = true;
+        // Auto-select first lesson
+        if (this.lessons.length > 0) {
+          this.selectedLesson = this.lessons[0];
+        }
+      },
+      error: (err) => {
+        console.error('Failed to fetch lessons', err);
+      }
+    });
   }
-     
-  });
-}
 
-  buyCourse(courseId: number): void {
-    console.log('Buying course with ID:', courseId);
-    // Call actual purchase API here
-    this.hasPurchased = true;
+  selectLesson(lesson: any): void {
+    this.selectedLesson = lesson;
   }
+
+  goBack(): void {
+    window.history.back();
+  }
+
+  // buyCourse(courseId: number): void {
+  //   console.log('Buying course with ID:', courseId);
+  //   this.hasPurchased = true;
+  // }
 }

@@ -1,32 +1,40 @@
-<app-home-header></app-home-header>
-<div class="row justify-content-center mt-5">
-  <div class="col-md-8 card shadow">
-    <div class="row">
-      <div class="col-12 col-md-6 col-lg-6 text-center">
-        
-        <div class="d-none d-md-block"><img src="img/illustration.png" alt=""></div>
-      </div>
-      <div class="col-12 col-md-6 col-lg-6 p-5">
-        <h1 class="pt-3 text-center text-danger">ចូលគណនី</h1>
-        <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm)">
-          <div class="mb-3">
-            <label for="email" class="form-label">អ៊ីម៉ែល</label>
-            <input type="email" class="form-control"  id="email" [(ngModel)]="email" name="email" required ngModel>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+        <div class="card login-card p-4">
+          <div class="card-body">
+            <div class="text-center mb-4">
+              <img src="/img/2.png" alt="Logo" style="height: 60px;">
+              <h4 class="moul mt-2">ចូលគណនី</h4>
+            </div>
+            <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm)">
+              <div class="mb-3">
+                <label for="email" class="form-label">អ៊ីមែល</label>
+                <input type="email" class="form-control" id="email" placeholder="name@example.com" [(ngModel)]="email" name="email" required ngModel>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">លេខសម្ងាត់</label>
+                <input type="password" class="form-control" id="password" placeholder="********"  [(ngModel)]="password" name="password" required minlength="8" ngModel>
+              </div>
+              <!-- <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="rememberMe">
+                <label class="form-check-label" for="rememberMe">ចងចាំខ្ញុំ</label>
+              </div> -->
+
+              <div class="d-grid mb-3">
+                
+                <button class="btn btn-primary" type="submit" [disabled]="!loginForm.valid"><i class="bi bi-box-arrow-in-right me-2"></i> ចូល</button>
+              </div>
+
+              <div class="text-center">
+                <a routerLink="/forgot-password">ភ្លេចពាក្យសម្ងាត់?</a> |
+                <a routerLink="/signup">ចុះឈ្មោះ</a>
+              </div>
+            </form>
+
           </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">លេខសម្ងាត់</label>
-            <input type="password" class="form-control" id="password" [(ngModel)]="password" name="password" required minlength="8" ngModel>
         </div>
-        <div class="mb-3">បើអ្នកមិនទាន់មានគណនី?<a routerLink="/signup">បង្កើត</a></div>
-        <div *ngIf="errorMessage" class="alert alert-danger">
-          {{ errorMessage }}
-        </div>
-        <div class="mb-3 text-center">
-            <button class="btn btn-primary" type="submit" [disabled]="!loginForm.valid">ចូល</button>
-            <a class="btn btn-secondary" routerLink="/">ចេញ</a>
-        </div>
-        </form>
       </div>
     </div>
-  </div>
 </div>

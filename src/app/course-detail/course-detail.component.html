@@ -22,9 +22,9 @@
 </div>
 
 <!-- Main Product View -->
-<div class="container py-4 shadow mt-5 mb-2" *ngIf="!loading && course">
+<div class="container py-4 shadow mt-3 mb-5" *ngIf="!loading && course">
   <div class="">
-     <a routerLink="/dashboard" class="mb-2 ms-3 mt-5"><i class="fa-solid fa-arrow-left"></i></a>
+     <a  class="mb-2 ms-3 mt-5"><i class="fa-solid fa-arrow-left"></i></a>
   </div>
   <div class="row mt-2">
     <!-- Left: Image & Thumbnails -->
@@ -56,21 +56,16 @@
         </ng-container>
         <small class="text-muted ms-2">(120 Reviews)</small>
       </div>
-
       <!-- Description -->
       <p class="text-muted mb-2">
         {{ course.description || 'This course provides valuable knowledge and practical lessons to help you succeed.' }}
         <a href="#">more...</a>
       </p>
-
       <!-- Price -->
       <h4 class="fw-bold mb-3">
         <span class="text-decoration-line-through text-muted me-2">{{ course.price_normal }}$</span>
         <span class="text-success">{{ course.price }}$</span>
       </h4>
-
-      
-
       <!-- Action Buttons -->
       <div class="d-flex gap-3">
         <button class="btn btn-success px-4" (click)="onBuy(course.id)">
@@ -80,27 +75,5 @@
       </div>
     </div>
   </div>
-
-  <!-- Lesson Content Below -->
-  <!-- <div class="row mt-5">
-    <div class="col-12">
-      <h4 class="mb-3">Course Lessons</h4>
-      <div *ngIf="lessons && lessons.length > 0; else noLessons">
-        <div *ngFor="let lesson of lessons; let i = index" class="mb-4">
-          <div class="p-3 bg-light rounded shadow-sm" (click)="toggleVideo(i)" style="cursor: pointer;">
-            <h5>{{ lesson.title }}</h5>
-            <p class="mb-1">{{ lesson.content }}</p>
-          </div>
-          <div *ngIf="selectedLessonIndex === i" class="mt-2">
-            <video [src]="'http://localhost:8000/storage/' + lesson.video_url"
-                   controls
-                   class="w-100 rounded shadow"></video>
-          </div>
-        </div>
-      </div>
-      <ng-template #noLessons>
-        <p class="text-muted">មិនមានមេរៀនក្នុងវគ្គនេះទេ។</p>
-      </ng-template>
-    </div>
-  </div> -->
 </div>
+<app-footer></app-footer>

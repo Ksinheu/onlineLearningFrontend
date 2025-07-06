@@ -20,14 +20,16 @@ import { LessonComponent } from './lesson/lesson.component';
 import { CourseDetailComponent } from './course-detail/course-detail.component';
 import { HomeHeaderComponent } from './home-header/home-header.component';
 import { PaymentMethodComponent } from './payment-method/payment-method.component';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { AuthGuard } from './guards/auth.guard';
 import { OrderService } from './Services/order.service';
-// import { AuthInterceptor } from './auth.interceptor';
-import { PaymentComponent } from './payment/payment.component';
 import { PersonalComponent } from './personal/personal.component';
 import { MylessonComponent } from './mylesson/mylesson.component';
 import { ContactComponent } from './contact/contact.component';
 import { routes } from './app.routes';
+import { OtpLoginComponent } from './auth/otp-login/otp-login.component';
+import { FooterComponent } from './footer/footer.component';
+
 
 @NgModule({
   declarations: [
@@ -49,7 +51,10 @@ import { routes } from './app.routes';
     PaymentMethodComponent,
     PersonalComponent,
     MylessonComponent,
-    ContactComponent
+    ContactComponent,
+    ForgotPasswordComponent,
+    OtpLoginComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
