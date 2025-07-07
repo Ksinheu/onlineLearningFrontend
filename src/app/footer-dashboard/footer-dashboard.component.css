@@ -1,0 +1,15 @@
+
+.footer {
+  height: 50px;
+  line-height: 30px;
+  z-index: 1030;
+}
+/* :host {
+  display: block;
+  background-color: #ffffff;
+  border-top: 1px solid #dee2e6;
+  padding: 10px 0;
+  text-align: center;
+  font-size: 14px;
+  color: #6c757d;
+} */

@@ -29,6 +29,8 @@ import { ContactComponent } from './contact/contact.component';
 import { routes } from './app.routes';
 import { OtpLoginComponent } from './auth/otp-login/otp-login.component';
 import { FooterComponent } from './footer/footer.component';
+import { FooterDashboardComponent } from './footer-dashboard/footer-dashboard.component';
+import { NewNewsComponent } from './new-news/new-news.component';
 
 
 @NgModule({
@@ -54,7 +56,9 @@ import { FooterComponent } from './footer/footer.component';
     ContactComponent,
     ForgotPasswordComponent,
     OtpLoginComponent,
-    FooterComponent
+    FooterComponent,
+    FooterDashboardComponent,
+    NewNewsComponent
   ],
   imports: [
     BrowserModule,

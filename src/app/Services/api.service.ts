@@ -12,9 +12,7 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 })
 export class ApiService {
 
-  private apiUrl= 'http://127.0.0.1:8000/api';
-  // private sliderApi = 'http://localhost:8000/api/sliderApi';
-  // private courseApi = 'http://localhost:8000/api/courseApi';
+  private apiUrl = 'http://127.0.0.1:8000/api';
 
   private currentUserSubject = new BehaviorSubject<any>(this.getUserFromStorage());
   private isLoggedInSubject = new BehaviorSubject<boolean>(!!this.getUserFromStorage());
@@ -25,10 +23,10 @@ export class ApiService {
   get isLoggedIn(): BehaviorSubject<boolean> {
     return this.isLoggedInSubject;
   }
-  constructor(private http:HttpClient, private router:Router,
-     @Inject(PLATFORM_ID) private platformId: object) { 
-      
-     }
+  constructor(private http: HttpClient, private router: Router,
+    @Inject(PLATFORM_ID) private platformId: object) {
+
+  }
 
   register(data: any): Observable<any> {
     const deviceInfo = this.collectDeviceInfo();
@@ -40,38 +38,38 @@ export class ApiService {
   }
   private loggedIn1 = new BehaviorSubject<boolean>(false);
 
-  
-  
+
+
   Login(email: string, password: string): Observable<any> {
     this.loggedIn1.next(true);
     return this.http.post(`${this.apiUrl}/login`, { email, password });
-  
+
   }
-isAuthenticated(): boolean {
+  isAuthenticated(): boolean {
     // You can also decode token or check expiration
     return !!localStorage.getItem('customer'); // or however you store login
   }
-getProfile(customerId: number): Observable<any> {
-  return this.http.get(`${this.apiUrl}/customers/${customerId}`);
-}
+  getProfile(customerId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/customers/${customerId}`);
+  }
   Logout(): Observable<any> {
-  const token = localStorage.getItem('token');
-  if (!token) return throwError(() => new Error('No token found'));
+    const token = localStorage.getItem('token');
+    if (!token) return throwError(() => new Error('No token found'));
 
-  return this.http.post(`${this.apiUrl}/logout`, {}, {
-    headers: new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/json',
-    }),
-  });
-}
+    return this.http.post(`${this.apiUrl}/logout`, {}, {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      }),
+    });
+  }
 
   clearSession(): void {
-  localStorage.removeItem('token'); // Remove the token
-  sessionStorage.clear(); // Clear session storage
-  this.isLoggedInSubject.next(false);
-  this.router.navigate(['/login']); // Redirect to login page
-}
+    localStorage.removeItem('token'); // Remove the token
+    sessionStorage.clear(); // Clear session storage
+    this.isLoggedInSubject.next(false);
+    this.router.navigate(['/login']); // Redirect to login page
+  }
 
   private getUserFromStorage(): any {
     if (isPlatformBrowser(this.platformId)) {
@@ -98,21 +96,21 @@ getProfile(customerId: number): Observable<any> {
 
     // Browser detection using regular expressions
     const browserMap = {
-        'Chrome': /Chrome\/(\S+)/,
-        'Firefox': /Firefox\/(\S+)/,
-        'MSIE': /MSIE (\S+);/,
-        'Edge': /Edge\/(\S+)/,
-        'Safari': /Version\/(\S+) Safari\//
+      'Chrome': /Chrome\/(\S+)/,
+      'Firefox': /Firefox\/(\S+)/,
+      'MSIE': /MSIE (\S+);/,
+      'Edge': /Edge\/(\S+)/,
+      'Safari': /Version\/(\S+) Safari\//
     };
 
     // Iterate over browserMap to find a match for the current browser
     for (const [name, regex] of Object.entries(browserMap)) {
-        const match = userAgent.match(regex);
-        if (match) {
-            browserName = name;
-            browserVersion = match[1];
-            break;
-        }
+      const match = userAgent.match(regex);
+      if (match) {
+        browserName = name;
+        browserVersion = match[1];
+        break;
+      }
     }
 
     // Attempt to detect the operating system from navigator.platform
@@ -120,26 +118,26 @@ getProfile(customerId: number): Observable<any> {
     const operatingSystem = osMatch ? osMatch[0] : 'Unknown';
 
     return {
-        device_type: navigator.platform,
-        operating_system: operatingSystem,
-        browser_name: browserName,
-        browser_version: browserVersion,
-        screen_resolution: `${window.screen.width}x${window.screen.height}`,
-        ip_address: '127.0.0.1', // Placeholder, actual IP should be collected server-side
-        location: 'Unknown', // Placeholder, precise location should be handled more securely
-        // last_used: new Date().toISOString()
+      device_type: navigator.platform,
+      operating_system: operatingSystem,
+      browser_name: browserName,
+      browser_version: browserVersion,
+      screen_resolution: `${window.screen.width}x${window.screen.height}`,
+      ip_address: '127.0.0.1', // Placeholder, actual IP should be collected server-side
+      location: 'Unknown', // Placeholder, precise location should be handled more securely
+      // last_used: new Date().toISOString()
     };
   }
   // private isLoggedInSubject = new BehaviorSubject<boolean>(false);
 
- forgot_password(endpoint: string, data: any) {
+  forgot_password(endpoint: string, data: any) {
     return this.http.post(`${this.apiUrl}/${endpoint}`, data);
   }
-    // POST request
+  // POST request
   postOtp(endpoint: string, data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/${endpoint}`, data);
   }
-// GET request
+  // GET request
   getOtp(endpoint: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/${endpoint}`, this.getAuthHeaders());
   }
@@ -163,29 +161,29 @@ getProfile(customerId: number): Observable<any> {
   }
   // slider api
   getNews(): Observable<any> {
-    return this.http.get<any>('http://localhost:8000/api/newsApi');
+    return this.http.get<any>(`${this.apiUrl}/newsApi`);
   }
   // get course
-  getCourse():Observable<any>{
+  getCourse(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/courseApi`);
   }
   getCourseById(id: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/courseApi/${id}`);
   }
   // get lession
- getLessonById(): Observable<any> {
-  return this.http.get<any>(`${this.apiUrl}/lessonApi`);
-}
+  getLessonById(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/lessonApi`);
+  }
 
-getLessonsByCourse(courseId: number): Observable<any> {
-  return this.http.get(`http://127.0.0.1:8000/api/lessons/course/${courseId}`);
-}
+  getLessonsByCourse(courseId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/lessons/course/${courseId}`);
+  }
   // get payment method
-  getPaymentMethod():Observable<any>{
+  getPaymentMethod(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/payment_method`);
   }
- private Url = 'http://127.0.0.1:8000/api/payment';
-   uploadPaySlip(formData: FormData): Observable<any> {
+  private Url = 'http://127.0.0.1:8000/api/payment';
+  uploadPaySlip(formData: FormData): Observable<any> {
     const token = localStorage.getItem('token'); // if using Bearer token
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`
@@ -194,7 +192,7 @@ getLessonsByCourse(courseId: number): Observable<any> {
     return this.http.post(this.Url, formData, { headers });
   }
 
-   uploadPayment(data: FormData): Observable<any> {
+  uploadPayment(data: FormData): Observable<any> {
     return this.http.post(`${this.apiUrl}/payments`, data);
   }
   submitComment(data: any): Observable<any> {
@@ -202,5 +200,12 @@ getLessonsByCourse(courseId: number): Observable<any> {
   }
   getCompletedCourses(customerId: number) {
     return this.http.get<any>(`${this.apiUrl}/customer/completed-courses?customer_id=${customerId}`);
+  }
+
+  getContents(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/contents`);
+  }
+  getExercise(lessonId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/exercise/${lessonId}`);
   }
 }

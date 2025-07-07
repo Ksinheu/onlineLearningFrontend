@@ -6,50 +6,52 @@ import { isBrowser } from '../utils/platform.util';
 @Component({
   selector: 'app-course-detail',
   standalone: false,
-  
+
   templateUrl: './course-detail.component.html',
   styleUrl: './course-detail.component.css'
 })
 export class CourseDetailComponent {
-  course: any= null;
+  course: any = null;
   loading = true;
   isLogined: boolean = false;
-   lessons: any[] = [];
+  lessons: any[] = [];
   selectedLessonIndex: number | null = null;
   courseId!: number;
+  contents: any[] = [];
   isLoading = true;
   error: string | null = null;
-  constructor(private router: Router,private route: ActivatedRoute, private courseService: ApiService,
+  constructor(private router: Router, private route: ActivatedRoute, private courseService: ApiService,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  ) { }
   ngOnInit() {
     const idParam = this.route.snapshot.paramMap.get('id');
-  if (idParam) {
-    const id = +idParam;
-    this.courseId = id;
-    this.loadCourse(id);
+    if (idParam) {
+      const id = +idParam;
+      this.courseId = id;
+      this.loadCourse(id);
 
-    this.courseService.getLessonsByCourse(id).subscribe({
-      next: (response) => {
-        this.lessons = response.lesson;
-      },
-      error: (error) => {
-        // console.error('Error fetching lessons:', error);
-        console.log('Error fetching lessons:',error);
-      }
-    });
-  } else {
-    console.error('No course ID found in route');
-  }
-this.isLogined=this.courseService.isAuthenticated();
-  this.checkLoginStatus();
+      this.courseService.getLessonsByCourse(id).subscribe({
+        next: (response) => {
+          this.lessons = response.lesson;
+        },
+        error: (error) => {
+          // console.error('Error fetching lessons:', error);
+          console.log('Error fetching lessons:', error);
+        }
+      });
+    } else {
+      console.error('No course ID found in route');
+    }
+    this.isLogined = this.courseService.isAuthenticated();
+    this.checkLoginStatus();
+    this.loadContents();
   }
   toggleVideo(index: number): void {
     this.selectedLessonIndex = this.selectedLessonIndex === index ? null : index;
   }
   trackByLessonId(index: number, lesson: any): number {
-  return lesson.id;
-}
+    return lesson.id;
+  }
   private loadCourse(courseId: number) {
     this.courseService.getCourseById(courseId).subscribe({
       next: res => {
@@ -96,67 +98,76 @@ this.isLogined=this.courseService.isAuthenticated();
       });
     }
   }
-
- 
-logout() {
-  const token = localStorage.getItem('token');
-
-  if (!token) {
-    this.forceLogout('Already Logged Out', 'No token found. You are already logged out.', 'warning');
-    return;
+  loadContents(): void {
+    this.courseService.getContents().subscribe({
+      next: (response) => {
+        this.contents = response.content;
+      },
+      error: (error) => {
+        console.error('Failed to load content:', error);
+      }
+    });
   }
 
-  Swal.fire({
-    title: 'Are you sure?',
-    text: "Do you really want to log out?",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, log out',
-    cancelButtonText: 'Cancel'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        this.forceLogout('Already Logged Out', 'No token found. You are already logged out.', 'warning');
-        return;
-      }
+  logout() {
+    const token = localStorage.getItem('token');
 
-      this.courseService.Logout().subscribe({
-        next: () => {
-          this.clearSession();
-          this.courseService.clearUser();
-          this.courseService.isLoggedIn.next(false);
-          this.forceLogout('Logged Out', 'You have successfully logged out.', 'success');
-        },
-        error: (error) => {
-          console.error('Logout error:', error);
-          this.clearSession();
-          this.courseService.clearUser();
-          this.courseService.isLoggedIn.next(false);
-          this.forceLogout('Logout Failed', 'There was an issue logging out. You were redirected anyway.', 'error');
-        },
-        complete: () => {
-          this.courseService.isLoggedIn.next(false);
-        }
-      });
+    if (!token) {
+      this.forceLogout('Already Logged Out', 'No token found. You are already logged out.', 'warning');
+      return;
     }
-  });
-}
 
-private forceLogout(title: string, text: string, icon: 'success' | 'error' | 'warning') {
-  Swal.fire({
-    icon,
-    title,
-    text,
-    confirmButtonColor: '#3085d6',
-  }).then(() => {
-    this.router.navigate(['/login']);
-  });
-}
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you really want to log out?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, log out',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          this.forceLogout('Already Logged Out', 'No token found. You are already logged out.', 'warning');
+          return;
+        }
 
-private clearSession() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('redirectAfterLogin');
-}
+        this.courseService.Logout().subscribe({
+          next: () => {
+            this.clearSession();
+            this.courseService.clearUser();
+            this.courseService.isLoggedIn.next(false);
+            this.forceLogout('Logged Out', 'You have successfully logged out.', 'success');
+          },
+          error: (error) => {
+            console.error('Logout error:', error);
+            this.clearSession();
+            this.courseService.clearUser();
+            this.courseService.isLoggedIn.next(false);
+            this.forceLogout('Logout Failed', 'There was an issue logging out. You were redirected anyway.', 'error');
+          },
+          complete: () => {
+            this.courseService.isLoggedIn.next(false);
+          }
+        });
+      }
+    });
+  }
+
+  private forceLogout(title: string, text: string, icon: 'success' | 'error' | 'warning') {
+    Swal.fire({
+      icon,
+      title,
+      text,
+      confirmButtonColor: '#3085d6',
+    }).then(() => {
+      this.router.navigate(['/login']);
+    });
+  }
+
+  private clearSession() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('redirectAfterLogin');
+  }
 
 }

@@ -22,30 +22,41 @@
             <h2 class="fw-bold">{{ course.price }} USD</h2>
           </div>
 
-          <!-- Payment Method Form -->
+          <!-- Select Bank -->
           <div class="mb-3">
-            <label for="bankName" class="form-label">ជ្រើសរើសធនាគារ</label>
-            <select class="form-select" id="bankName">
-              <option selected disabled>-- ជ្រើសរើស --</option>
-              <option value="ABA">ABA</option>
-              <option value="AC">ACLEDA (AC)</option>
-              <option value="WING">WING</option>
+            <label for="">ជ្រើសរើសប្រភេទធនាគារដែលអ្នកចង់ទូទាត់ជាមួយ</label>
+            <select class="form-select" id="bankName" [(ngModel)]="selectedBankId" name="bankId">
+              <option disabled [value]="null">-- ជ្រើសរើស --</option>
+              <option *ngFor="let bank of payment_methods" [ngValue]="bank.id">
+                {{ bank.name_bank }}
+              </option>
             </select>
           </div>
+
+          <!-- Dynamic Bank Info -->
           <div class="mb-3">
-            <label for="bankNumber" class="form-label">លេខធនាគារ</label>
-            <input type="text" class="form-control" id="bankNumber" [value]="payment_methods?.[0]?.number_bank" readonly>
+            <label for="">លេខធនាគារ</label>
+            <input class="form-control " [value]="selectedBank?.number_bank || ''" placeholder="លេខធនាគារ" readonly>
           </div>
           <div class="mb-3">
-            <label for="phoneNumber" class="form-label">លេខទូរសព្ទសម្រាប់វេលុយ</label>
-            <input type="text" class="form-control" id="phoneNumber" [value]="payment_methods?.[0]?.phone_number" readonly>
+            <label for="">លេខទូរស័ព្ទ</label>
+            <input class="form-control" [value]="selectedBank?.phone_number || ''" placeholder="លេខទូរស័ព្ទ" readonly>
+
+          </div>
+          <!-- Dynamic QR -->
+          <div class="text-center mt-3 text-primary">
+            ស្ដែននៅទីនេះដើម្បីបង់ប្រាក់
+            បន្ទាប់ពីស្កែនបង់ប្រាក់រួចរាល់សូមបញ្ចូលវិក័យបត្របង់ប្រាក់(Pay Slip)
+          </div>
+          <div class="text-center mt-3">
+
+            <img *ngIf="selectedBank?.QR_code" [src]="'http://localhost:8000/storage/' + selectedBank.QR_code"
+              alt="QR Code" class="img-fluid rounded border" style="max-width: 300px;">
+            <div class="mt-2">
+              <button class="btn btn-outline-primary" (click)="downloadQR()">ទាញយក QR Code</button>
+            </div>
           </div>
 
-          <!-- QR Code -->
-          <div class="text-center pt-4">
-            <p class="text-muted">ស្ដែននៅទីនេះដើម្បីបង់ប្រាក់ បន្ទាប់ពីស្កែនបង់ប្រាក់រួចរាល់សូមបញ្ចូលវិក័យបត្របង់ប្រាក់(Pay Slip)</p>
-            <img [src]="'http://localhost:8000/storage/' + payment_methods?.[0]?.QR_code" alt="QR Code" class="img-fluid rounded border qr-large" style="max-width: 200px;">
-          </div>
         </div>
       </div>
     </div>
@@ -58,7 +69,8 @@
       <div class="card shadow-sm p-4">
         <div class="row">
           <div class="col-3">
-            <img [src]="'http://localhost:8000/storage/' + course.imgCourse" alt="Course Image" class="rounded w-100 img-fluid">
+            <img [src]="'http://localhost:8000/storage/' + course.imgCourse" alt="Course Image"
+              class="rounded w-100 img-fluid">
           </div>
           <div class="col-9">
             <h5 class="mt-2">{{ course.course_name }}</h5>
@@ -74,7 +86,7 @@
         </div>
         <div class="text-end">
           <a routerLink="/dashboard" class="btn btn-secondary mt-4 me-3">បោះបង់</a>
-          <button class="btn btn-outline-danger mt-4 w-50" (click)="openModal()" [disabled]="!course">
+          <button class="btn btn-outline-primary mt-4 w-50" (click)="openModal()" [disabled]="!course">
             {{ isLogined ? 'ទិញ' : 'Login to Buy' }}
           </button>
         </div>
@@ -92,7 +104,8 @@
       <div class="modal-body pt-3">
         <form [formGroup]="purchaseForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
           <label for="pay_slip" class="form-label fw-semibold">បញ្ចូលវិក័យបត្រ (Upload Pay Slip)</label>
-          <input type="file" id="pay_slip" class="form-control" (change)="onFileSelected($event, 'pay_slip')" accept="image/*">
+          <input type="file" id="pay_slip" class="form-control" (change)="onFileSelected($event, 'pay_slip')"
+            accept="image/*">
           <div *ngIf="hasError('pay_slip')" class="text-danger small mt-1">
             <div *ngIf="purchaseForm.get('pay_slip')?.errors?.['required']">File is required.</div>
           </div>
@@ -107,8 +120,10 @@
 
 <!-- Mobile Footer Navigation -->
 <nav class="mobile-footer-nav d-md-none">
-  <a routerLink="/personal" routerLinkActive="active" class="nav-icon"><i class="fa-solid fa-user"></i><small>ប្រវត្តិរូប</small></a>
-  <a routerLink="/dashboard" routerLinkActive="active" class="nav-icon"><i class="fa-solid fa-film"></i><small>វគ្គ</small></a>
+  <a routerLink="/personal" routerLinkActive="active" class="nav-icon"><i
+      class="fa-solid fa-user"></i><small>ប្រវត្តិរូប</small></a>
+  <a routerLink="/dashboard" routerLinkActive="active" class="nav-icon"><i
+      class="fa-solid fa-film"></i><small>វគ្គ</small></a>
   <a routerLink="/myLesson" class="nav-icon"><i class="fa-solid fa-bell"></i><small>មេរៀនរបស់ខ្ញុំ</small></a>
   <a (click)="logout()" class="nav-icon"><i class="fa-solid fa-sign-out-alt"></i><small>ចេញ</small></a>
 </nav>

@@ -3,21 +3,20 @@
   <app-header></app-header>
 </div>
 
-<div class="container-fluid">
+<!-- Main Layout -->
+<div class="container-fluid py-4">
   <div class="row">
-    <!-- Left Sidebar (Lesson List) -->
-    <div class="col-12 col-md-12 col-lg-2 mt-5">
-      <app-side-bar2></app-side-bar2>
 
-      <!-- Lesson Selector -->
-      <div class="lesson-list mt-4">
-        <h5>Lessons</h5>
-        <ul class="list-unstyled">
+    <!-- Left Sidebar: Lessons List -->
+    <div class="col-12 col-md-12 col-lg-2 mt-5">
+      <div class="lesson-list pt-3 border-end">
+        <h5 class="text-center mb-2">មេរៀន</h5>
+        <ul class="list-unstyled ps-3">
           <li 
             *ngFor="let lesson of lessons" 
             (click)="selectLesson(lesson)"
             [class.active]="selectedLesson?.id === lesson.id"
-            style="cursor: pointer; padding: 5px; border-radius: 4px;"
+            style="cursor: pointer; padding: 10px; border-radius: 4px;"
           >
             {{ lesson.title }}
           </li>
@@ -25,55 +24,65 @@
       </div>
     </div>
 
-    <!-- Main Lesson Content -->
+    <!-- Center: Lesson Content -->
     <div class="col-12 col-md-12 mt-5 col-lg-8 mt-3 overflow-hidden" *ngIf="selectedLesson">
       <main>
+        <!-- Back Button -->
         <button (click)="goBack()" style="margin-bottom: 10px; background: none; border: none; color: #3b82f6;">
-          ← Go Back
+          <i class="fa-solid fa-arrow-left"></i> ត្រលប់ក្រោយ
         </button>
 
+        <!-- Lesson Title -->
         <h1 style="font-size: 24px; font-weight: 700;">{{ selectedLesson.title }}</h1>
 
-        <!-- Show Buy Button if not purchased -->
-        
-
-        <!-- Show Video if purchased -->
+        <!-- Video Section -->
         <div *ngIf="hasPurchased">
-          <video class="video-section" controls>
+          <video #videoPlayer class="video-section w-100 rounded" controls>
             <source [src]="'http://localhost:8000/storage/' + selectedLesson.video_url" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
 
-          <h2 class="mt-3">Additional Materials</h2>
+          <!-- Additional Materials -->
+          <h2 class="mt-3">ពណ៌នាអំពីមេរៀន</h2>
           <div class="bg-light p-3 rounded mt-2">
-            <h4>{{ selectedLesson.materialTitle || 'Firebase FAQ' }}</h4>
-            <p class="text-muted">{{ selectedLesson.materialDescription || 'Firebase is more a content vocabulary...' }}</p>
+            <!-- If contents exist -->
+            <div *ngIf="contents.length > 0; else noContent">
+              <ul class="content-list ps-3">
+                <li *ngFor="let item of contents" class="mb-1">
+                  <span class="check-icon text-primary me-2">✔</span>
+                  {{ item.expect_result }}
+                </li>
+              </ul>
+            </div>
+
+            <!-- If no contents -->
+            <ng-template #noContent>
+              <p class="text-muted">មេរៀននេះមិនមានបញ្ជាក់អំពីមាតិកាទេ។</p>
+            </ng-template>
           </div>
         </div>
       </main>
     </div>
 
-    <!-- Right Panel -->
+    <!-- Right Sidebar: Exercises -->
     <div class="col-12 col-md-12 mt-5 col-lg-2 mt-3 overflow-hidden">
       <aside>
-        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 10px;">Your Hometasks Progress</h3>
-        <ul class="tasks list-unstyled">
-          <li>What Metrics Mean?</li>
-          <li>Google Analytics Basics</li>
-          <li>Amplitude Basics</li>
-          <li class="active-task">Firebase Advanced</li>
-          <li>Metrics in UX Design</li>
-          <li>Google Analytics Advanced</li>
+        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 10px;">លំហាត់</h3>
+
+        <!-- Show if exercises exist -->
+        <ul class="tasks list-unstyled" *ngIf="exercise.length > 0; else noExercise">
+          <li *ngFor="let ex of exercise">
+            {{ ex.exercise_element }}
+          </li>
         </ul>
 
-        <div class="upload mt-3">
-          <input type="text" placeholder="Paste Figma link" class="form-control mb-2" />
-          <input type="text" placeholder="Add comment" class="form-control mb-2" />
-          <p class="text-secondary" style="font-size: 14px;">
-            Drop the file or <span class="text-primary">Browse</span>
-          </p>
-        </div>
+        <!-- Show if no exercises -->
+        <ng-template #noExercise>
+          <p class="text-danger">មេរៀននេះគ្មានលំហាត់ទេ</p>
+        </ng-template>
       </aside>
     </div>
   </div>
 </div>
+
+  <app-footer-dashboard></app-footer-dashboard>

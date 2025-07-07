@@ -29,7 +29,7 @@ export class PurchaseComponent implements OnInit {
   loading = true;
   payment_methods: any;
   formData = new FormData();
-
+selectedBankId: number | null = null;
   constructor(
     private fb: FormBuilder,
     private apiService: ApiService,
@@ -86,6 +86,22 @@ export class PurchaseComponent implements OnInit {
       }
     });
   }
+// Return selected bank object
+  get selectedBank() {
+  return Array.isArray(this.payment_methods)
+    ? this.payment_methods.find((bank) => bank.id === this.selectedBankId)
+    : null;
+}
+downloadQR(): void {
+  if (!this.selectedBank?.QR_code) return;
+  const imageUrl = `http://localhost:8000/storage/${this.selectedBank.QR_code}`;
+  const link = document.createElement('a');
+  link.href = imageUrl;
+  link.download = `${this.selectedBank.name_bank}_qr_code.png`; // Set desired filename
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 
   openModal(): void {
     if (!this.isLogined) {

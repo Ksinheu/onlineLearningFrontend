@@ -1,16 +1,16 @@
-
-
 <!-- Header -->
 <ng-container *ngIf="isLogined; else guestNav">
   <app-header></app-header>
- 
-<nav class="mobile-footer-nav d-md-none">
- 
-  <a routerLink="/personal" routerLinkActive="active" class="nav-icon"><i class="fa-solid fa-user"></i><small>ប្រវត្តិរូប</small></a>
-  <a routerLink="/dashboard" routerLinkActive="active" class="nav-icon"><i class="fa-solid fa-film"></i><small>វគ្គ</small></a>
-  <a routerLink="/myLesson" class="nav-icon"><i class="fa-solid fa-bell"></i><small>មេរៀនរបស់ខ្ញុំ</small></a>
-  <a (click)="logout()" class="nav-icon"><i class="fa-solid fa-sign-out-alt"></i><small>ចេញ</small></a>
-</nav>
+
+  <nav class="mobile-footer-nav d-md-none">
+
+    <a routerLink="/personal" routerLinkActive="active" class="nav-icon"><i
+        class="fa-solid fa-user"></i><small>ប្រវត្តិរូប</small></a>
+    <a routerLink="/dashboard" routerLinkActive="active" class="nav-icon"><i
+        class="fa-solid fa-film"></i><small>វគ្គ</small></a>
+    <a routerLink="/myLesson" class="nav-icon"><i class="fa-solid fa-bell"></i><small>មេរៀនរបស់ខ្ញុំ</small></a>
+    <a (click)="logout()" class="nav-icon"><i class="fa-solid fa-sign-out-alt"></i><small>ចេញ</small></a>
+  </nav>
 
 </ng-container>
 <ng-template #guestNav>
@@ -23,33 +23,24 @@
 
 <!-- Main Product View -->
 <div class="container py-4 shadow mt-3 mb-5" *ngIf="!loading && course">
-  <div class="">
-     <a  class="mb-2 ms-3 mt-5"><i class="fa-solid fa-arrow-left"></i></a>
-  </div>
   <div class="row mt-2">
     <!-- Left: Image & Thumbnails -->
     <div class="col-md-6">
-      <img [src]="'http://localhost:8000/storage/' + course.imgCourse"
-           alt="Course Image"
-           class="img-fluid rounded shadow-sm w-100"
-           style="object-fit: contain; max-height: 400px;"/>
+      <img [src]="'http://localhost:8000/storage/' + course.imgCourse" alt="Course Image"
+        class="img-fluid rounded shadow-sm w-100" style="object-fit: contain; max-height: 400px;" />
       <!-- Optional thumbnails can go here -->
     </div>
-
     <!-- Right: Details -->
     <div class="col-md-6">
       <div class="d-flex justify-content-between align-items-start">
         <h3>{{ course.course_name }}</h3>
-        <button class="btn btn-light rounded-circle shadow-sm">
-          <i class="fa fa-heart text-danger"></i>
-        </button>
+
       </div>
 
       <!-- Rating -->
       <div class="mb-3">
         <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
-          <i class="fa"
-             [ngClass]="{
+          <i class="fa" [ngClass]="{
                'fa-star text-warning': i < 4,
                'fa-star-o text-muted': i >= 4
              }"></i>
@@ -59,21 +50,61 @@
       <!-- Description -->
       <p class="text-muted mb-2">
         {{ course.description || 'This course provides valuable knowledge and practical lessons to help you succeed.' }}
-        <a href="#">more...</a>
+        <!-- <a href="#">more...</a> -->
       </p>
       <!-- Price -->
       <h4 class="fw-bold mb-3">
         <span class="text-decoration-line-through text-muted me-2">{{ course.price_normal }}$</span>
-        <span class="text-success">{{ course.price }}$</span>
+        <span class="text-primary">{{ course.price }}$</span>
       </h4>
       <!-- Action Buttons -->
       <div class="d-flex gap-3">
-        <button class="btn btn-success px-4" (click)="onBuy(course.id)">
+        <button class="btn btn-primary px-4" (click)="onBuy(course.id)">
           <i class="fa fa-shopping-cart me-1"></i> ទិញវគ្គសិក្សា
         </button>
-        
+
+      </div>
+
+
+    </div>
+  </div>
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-4 ">
+        <div class="mb-3">📚 មាតិកាមេរៀន</div>
+
+        <div *ngIf="contents.length > 0; else noData">
+          <ul class="content-list">
+            <li *ngFor="let item of contents">
+              <span class="check-icon">☑</span> {{ item.Lesson_content }}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="mb-3">📚 ពេលសិស្សរៀនចប់ទទួលបាន</div>
+        <div *ngIf="contents.length > 0; else noData">
+          <ul class="content-list">
+            <li *ngFor="let item of contents">
+              <span class="check-icon">✔</span> {{ item.expect_result }}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="mb-3">📚 សកម្មភាពរៀន</div>
+        <div *ngIf="contents.length > 0; else noData">
+          <ul>
+            <li *ngFor="let item of contents" class="mb-2">
+               {{ item.activity }}
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
+    <ng-template #noData>
+      <p class="text-muted">No content available.</p>
+    </ng-template>
   </div>
 </div>
 <app-footer></app-footer>

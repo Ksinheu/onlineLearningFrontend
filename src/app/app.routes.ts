@@ -17,6 +17,7 @@ import { MylessonComponent } from './mylesson/mylesson.component';
 import { ContactComponent } from './contact/contact.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { OtpLoginComponent } from './auth/otp-login/otp-login.component';
+import { NewNewsComponent } from './new-news/new-news.component';
 
 export const routes: Routes = [
   // { path: '', component: AppComponent },
@@ -41,5 +42,6 @@ export const routes: Routes = [
   {path:'lesson',component:LessonComponent},
   {path:'forgot-password',component:ForgotPasswordComponent},
   { path: 'login-otp', component: OtpLoginComponent },
-  { path: 'lesson/:courseId', component: LessonComponent }
+  { path: 'lesson/:courseId', component: LessonComponent },
+  {path:'new-news',component:NewNewsComponent},
 ];
