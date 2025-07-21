@@ -78,7 +78,9 @@ export class ApiService {
     }
     return null;
   }
-
+// getCustomerById(id: number): Observable<any> {
+//   return this.http.get(`${this.apiUrl}/customers/${id}`);
+// }
   setCurrentUser(customer: any) {
     this.currentUserSubject.next(customer);
     localStorage.setItem('customer', JSON.stringify(customer));
@@ -141,12 +143,10 @@ export class ApiService {
   getOtp(endpoint: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/${endpoint}`, this.getAuthHeaders());
   }
-
   // Authenticated POST
   postWithToken(endpoint: string, data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/${endpoint}`, data, this.getAuthHeaders());
   }
-
   // Authenticated GET with headers
   private getAuthHeaders() {
     const token = localStorage.getItem('token');
@@ -171,12 +171,12 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/courseApi/${id}`);
   }
   // get lession
-  getLessonById(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/lessonApi`);
-  }
+  // getLessonById(): Observable<any> {
+  //   return this.http.get<any>(`${this.apiUrl}/lessonApi`);
+  // }
 
   getLessonsByCourse(courseId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/lessons/course/${courseId}`);
+    return this.http.get(`${this.apiUrl}/lessons/${courseId}`);
   }
   // get payment method
   getPaymentMethod(): Observable<any> {
@@ -202,8 +202,8 @@ export class ApiService {
     return this.http.get<any>(`${this.apiUrl}/customer/completed-courses?customer_id=${customerId}`);
   }
 
-  getContents(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/contents`);
+  getContents(content_id :number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/contents/${content_id}`);
   }
   getExercise(lessonId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/exercise/${lessonId}`);

@@ -40,11 +40,11 @@ export class HeaderComponent implements OnInit{
   
     Swal.fire({
     title: 'Are you sure?',
-    text: "Do you really want to log out?",
+    text: "តើអ្នកពិតជាចង់ចាកចេញមែនឬទេ?",
     icon: 'warning',
     showCancelButton: true,
-    confirmButtonText: 'Yes, log out',
-    cancelButtonText: 'Cancel'
+    confirmButtonText: 'បាទ/ចាស',
+    cancelButtonText: 'ទេ'
   }).then((result) => {
     if (result.isConfirmed) {
       const token = localStorage.getItem('token');

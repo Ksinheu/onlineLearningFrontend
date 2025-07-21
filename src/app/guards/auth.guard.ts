@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
     //   }
     // }
     
-    // // If not in browser or no token, redirect to login
+    // If not in browser or no token, redirect to login
     // this.router.navigate(['/login']);
     return true;
   }

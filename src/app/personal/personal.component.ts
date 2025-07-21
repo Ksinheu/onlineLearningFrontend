@@ -12,6 +12,7 @@ import { isPlatformBrowser } from '@angular/common';
   styleUrl: './personal.component.css'
 })
 export class PersonalComponent {
+  
  profile: any = {};
  constructor(
     private authService: ApiService, 

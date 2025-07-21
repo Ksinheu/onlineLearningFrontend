@@ -14,9 +14,7 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class HomeComponent {
 
-  
   isLoggedIn = false; // Track authentication status
-  loading=false;
   constructor(
     private authService: ApiService, 
     private router: Router,
@@ -24,12 +22,14 @@ export class HomeComponent {
 
   ngOnInit(): void {
     this.checkLoginStatus(); // Check login status when component initializes
+    
   }
-
+  
   checkLoginStatus(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.isLoggedIn = !!localStorage.getItem('token');
     }
+    
   }
   logout(): void {
     this.authService.Logout().subscribe({

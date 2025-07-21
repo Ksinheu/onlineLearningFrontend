@@ -1,26 +1,60 @@
-
+<!-- 
  <section class="">
   <div class="container">
-    <!-- <h4 class="mb-4 moul-regular">ព័ត៌មានវគ្គសិក្សា</h4> -->
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    
+    <div class="row row-cols-1 row-cols-md-3 g-4" *ngFor="let new of news">
 
       <div class="col">
         <div class="card h-100 shadow-sm">
-          <img [src]="'http://localhost:8000/storage/' + news[0].imageNews" alt="Center Image 1" class="card-img-top" style="height: 100%; width: 100%; object-fit: cover;">
+          <img [src]="'http://localhost:8000/storage/' + new.imageNews" alt="Center Image 1" class="card-img-top" style="height: 100%; width: 100%; object-fit: cover;">
         </div>
       </div>
 
       <div class="col">
         <div class="card h-100 shadow-sm">
-          <img [src]="'http://localhost:8000/storage/' + news[1].imageNews" alt="Center Image 2" class="card-img-top" style="height: 100%; width: 100%; object-fit: cover;">
+          <img [src]="'http://localhost:8000/storage/' + new.imageNews" alt="Center Image 2" class="card-img-top" style="height: 100%; width: 100%; object-fit: cover;">
         </div>
       </div>
 
       <div class="col">
         <div class="card h-100 shadow-sm">
-          <img [src]="'http://localhost:8000/storage/' + news[2].imageNews" alt="Center Image 3" class="card-img-top" style="height: 100%; width: 100%; object-fit: cover;">
+          <img [src]="'http://localhost:8000/storage/' + new.imageNews" alt="Center Image 3" class="card-img-top" style="height: 100%; width: 100%; object-fit: cover;">
         </div>
       </div>
     </div>
   </div>
+</section> -->
+
+<section class="pt-4">
+  <div class="container">
+    <!-- <h4 class="mb-4 fw-bold text-secondary">វគ្គសិក្សាថ្មីៗ</h4> -->
+
+    <!-- Scrollable horizontal list -->
+    <div class="d-flex overflow-auto pb-4">
+      <div class="card me-3 shadow-sm" 
+           *ngFor="let newItem of news" 
+           style="flex: 0 0 300px; min-width: 300px; border-radius: 12px;">
+        <img [src]="'http://localhost:8000/storage/' + newItem.imageNews"
+             class="card-img-top"
+             alt="News"
+             style="height: 100%; object-fit: cover; border-top-left-radius: 12px; border-top-right-radius: 12px;">
+      </div>
+    </div>
+  </div>
 </section>
+
+
+<!-- <section>
+  <div class="container">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <div class="col" *ngFor="let newItem of news">
+        <div class="card h-100 shadow-sm">
+          <img [src]="'http://localhost:8000/storage/' + newItem.imageNews"
+               alt="News Image"
+               class="card-img-top"
+               style="height: 100%; width: 100%; object-fit: cover;">
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->

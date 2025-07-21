@@ -1,3 +1,9 @@
+.header{
+    width: 100%;
+    position: fixed;
+    z-index: 99999999999;
+    margin-bottom: 50px;
+}
 /* Loader */
 .loader-wrapper {
   display: flex;
@@ -11,7 +17,7 @@
   aspect-ratio: 1;
   align-items: center;
   border-radius: 50%;
-  background: #25b09b;
+  background: blue;
   --_m: 
     conic-gradient(#0000 10%,#000),
     linear-gradient(#000 0 0) content-box;

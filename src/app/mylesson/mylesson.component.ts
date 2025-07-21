@@ -9,7 +9,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrl: './mylesson.component.css'
 })
 export class MylessonComponent implements OnInit{
-  // courses: any[] = [];
   completedCourses: any[] = [];
   pendingCourses: any[] = [];
   loading = false;
@@ -26,7 +25,6 @@ export class MylessonComponent implements OnInit{
       comment: ['', Validators.required],
     });
   }
-
   ngOnInit(): void {
     this.customerId = Number(localStorage.getItem('customer_id')); // adjust to your auth logic
     if (this.customerId) {
@@ -39,6 +37,7 @@ export class MylessonComponent implements OnInit{
     this.purchaseService.getCompletedCourses(this.customerId).subscribe({
       next: res => {
         this.completedCourses = res.completed || [];
+        console.log(this.completedCourses)
         this.pendingCourses = res.pending || [];
         this.loading = false;
       },
@@ -83,4 +82,5 @@ export class MylessonComponent implements OnInit{
     });
   
   }
+
 }

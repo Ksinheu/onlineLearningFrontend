@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AppRoutingModule } from './app-routing.module';
-import { RouterModule } from '@angular/router';
+// import { AppRoutingModule } from './app-routing.module';
+import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
@@ -26,12 +26,35 @@ import { OrderService } from './Services/order.service';
 import { PersonalComponent } from './personal/personal.component';
 import { MylessonComponent } from './mylesson/mylesson.component';
 import { ContactComponent } from './contact/contact.component';
-import { routes } from './app.routes';
+// import { routes } from './app.routes';
 import { OtpLoginComponent } from './auth/otp-login/otp-login.component';
 import { FooterComponent } from './footer/footer.component';
 import { FooterDashboardComponent } from './footer-dashboard/footer-dashboard.component';
 import { NewNewsComponent } from './new-news/new-news.component';
+import { InvioceComponent } from './invioce/invioce.component';
 
+const routes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'courses', component: CoursesComponent, canActivate: [AuthGuard] },
+  { path: 'courses/:id', component: CourseDetailComponent},
+  { path: 'purchase/:id', component: PurchaseComponent, canActivate: [AuthGuard] },
+  { path: 'payment_method', component: PaymentMethodComponent, canActivate: [AuthGuard] },
+  { path: 'payment', component: PaymentMethodComponent, canActivate: [AuthGuard] },
+  { path: 'courses/:courseId/lessons', component: LessonComponent},
+  { path: 'news', component: NewsComponent, canActivate: [AuthGuard] },
+  { path: 'personal', component: PersonalComponent },
+  {path:'myLesson',component:MylessonComponent},
+  {path:'contact',component:ContactComponent},
+  // {path: 'lesson/:id', component: LessonComponent },
+  {path:'forgot-password',component:ForgotPasswordComponent},
+  { path: 'login-otp', component: OtpLoginComponent},
+  {path:'new-news',component:NewNewsComponent},
+  {path:'invoice',component:InvioceComponent},
+  { path: '**', redirectTo: '' }
+];
 
 @NgModule({
   declarations: [
@@ -58,11 +81,12 @@ import { NewNewsComponent } from './new-news/new-news.component';
     OtpLoginComponent,
     FooterComponent,
     FooterDashboardComponent,
-    NewNewsComponent
+    NewNewsComponent,
+    InvioceComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
+    // AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,

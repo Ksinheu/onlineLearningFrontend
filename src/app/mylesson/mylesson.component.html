@@ -15,12 +15,10 @@
     <div class="col-12 col-md-12 mt-5 col-lg-10 mt-3 overflow-hidden">
       <div class="col-12 mb-3 mt-4 ps-3 fs-4 text-danger border-bottom p-2">មេរៀនរបស់ខ្ញុំ</div>
 
-      <!-- Loading Spinner -->
-      <div *ngIf="loading" class="text-center">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </div>
+     <!-- Loader -->
+<div *ngIf="loading" class="loader-wrapper">
+  <div class="loader"></div>
+</div>
 
       <!-- No Completed Courses -->
       <div *ngIf="!loading && completedCourses.length === 0 && pendingCourses.length === 0" class="alert alert-warning text-center mt-5">
@@ -32,7 +30,7 @@
         <div class="col-12 mb-2 ps-3 fs-5 fw-bold text-success">វគ្គសិក្សាដែលទទួលបាន (Completed)</div>
         <div class="col-md-4 mb-4" *ngFor="let course of completedCourses">
           <div class="card border-0 shadow-card rounded-4 text-center p-3 h-100">
-            <a [routerLink]="['/lesson', course.id]">
+            <a [routerLink]="['/courses', course.id, 'lessons']">
               <img [src]="'http://localhost:8000/storage/' + course.imgCourse" class="img-fluid mb-3" alt="Course Image"
                 style="height: 150px; object-fit: contain;">
             </a>

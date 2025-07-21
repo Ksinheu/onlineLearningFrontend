@@ -1,0 +1,74 @@
+.invoice-wrapper {
+  padding: 30px;
+  color: #333;
+  font-family: Arial, sans-serif;
+}
+.header {
+  color: #008060;
+}
+.company-info {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+.table th {
+  background-color: #008060;
+  color: white;
+}
+.signature {
+  margin-top: 60px;
+}
+
+.invoice-wrapper {
+  font-family: 'Khmer OS Battambang', sans-serif;
+  font-size: 14px;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #invoiceSection, #invoiceSection * {
+    visibility: visible;
+  }
+
+  #invoiceSection {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}
+@media print {
+  .print-logo {
+    max-width: 200px;
+    height: auto;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .col-md-6 {
+    width: 48% !important;
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  .text-md-end {
+    text-align: right !important;
+  }
+
+  .text-center {
+    text-align: center !important;
+  }
+}
+

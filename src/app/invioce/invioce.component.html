@@ -1,0 +1,109 @@
+<div class="d-flex">
+  <div class="text-start">
+  <button class="btn btn-primary p-2 mt-4 ms-2 me-2" (click)="goBack()">
+     ត្រឡប់
+  </button>
+</div>
+<div class="text-end">
+  <button class="btn btn-primary p-2 mt-4 me-2" (click)="printInvoice()">
+    <i class="fa fa-print me-1"></i> បោះពុម្ពវិក័យបត្រ
+  </button>
+</div>
+</div>
+
+<!-- Wrapper to print only the invoices -->
+<div #invoiceSection>
+  <div *ngFor="let course of completedCourses" class="mb-5 p-4 border rounded bg-white shadow-sm">
+    <h2 class="text-center text-primary mb-4">វិក័យបត្រ</h2>
+
+<div class="row align-items-center">
+  <!-- Left: Company Info -->
+  <div class="col-12 col-md-6 mb-3 mb-md-0">
+    <div>
+      <h4>មជ្ឈមណ្ឌលកុំព្យូទ័រប៉ោយប៉ែត</h4>
+      <p class="mb-0">
+        ផ្លូវជាតិលេខ៥<br>
+        ក្បែរផ្សារទួលពង្រ<br>
+        ប៉ោយប៉ែត, បន្ទាយមានជ័យ<br>
+        ទូរស័ព្ទ: 093 456 789 / 012 345 678
+      </p>
+    </div>
+  </div>
+
+  <!-- Right: Logo -->
+  <div class="col-12 col-md-6 text-md-end text-center">
+    <img src="/img/pcc-logo.png" alt="PCC Logo" class="img-fluid print-logo">
+  </div>
+</div>
+
+
+    <!-- Invoice Info -->
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <p><strong>លេខវិក័យបត្រ:</strong> INV-{{ course.id }}</p>
+        <p><strong>កាលបរិច្ឆេទ:</strong> {{ course.created_at | date: 'dd-MM-yyyy' }}</p>
+        <!-- <p><strong>ស្ថានភាព:</strong> {{ course.payment_status }}</p> -->
+      </div>
+      <!-- <div class="col-md-6 text-end">
+        <p><strong>អ្នកទិញ:</strong></p>
+        <p>ព័ត៌មានអតិថិជន (អ្នកទិញ)</p>
+      </div> -->
+    </div>
+    <!-- Course Table -->
+    <table class="table table-bordered text-center">
+      <thead class="table-primary">
+        <tr>
+          <th>ល.រ</th>
+          <th>មុខវិជ្ជា</th>
+          <th>ចំនួន</th>
+          <th>តម្លៃ</th>
+          <th>សរុប</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>{{ course.course_name }}</td>
+          <td>1</td>
+          <td>${{ course.price.toFixed(2) }}</td>
+          <td>${{ course.price.toFixed(2) }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- Totals -->
+    <div class="float-end" style="width: 300px;">
+      <table class="table table-borderless">
+        <!-- <tr>
+          <td><strong>សរុបរង</strong></td>
+          <td>${{ course.price.toFixed(2) }}</td>
+        </tr> -->
+        <!-- <tr>
+          <td><strong>សរុប</strong></td>
+          <td><strong>${{ course.price.toFixed(2) }}</strong></td>
+        </tr> -->
+        <!-- <tr>
+          <td><strong>ស្ថានភាព</strong></td>
+          <td>
+            <span class="badge bg-success">{{ course.payment_status }}</span>
+          </td>
+        </tr> -->
+      </table>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <!-- Payment Slip -->
+    <!-- <div class="mt-4">
+      <p><strong>បង្កាន់ដៃបង់ប្រាក់:</strong></p>
+      <img *ngIf="course.pay_slip"
+           [src]="'http://localhost:8000/storage/' + course.pay_slip"
+           class="img-fluid border rounded"
+           style="max-width: 400px;">
+    </div> -->
+
+    <!-- Signature -->
+    <div class="text-end mt-5">
+      <p>ហត្ថលេខាអ្នកតំណាង</p>
+    </div>
+  </div>
+</div>

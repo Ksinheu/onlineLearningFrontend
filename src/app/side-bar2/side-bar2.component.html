@@ -1,6 +1,6 @@
 <!-- Desktop Sidebar -->
 <div class="row pt-3 d-none d-md-block bg-blue">
-  <div class="col-12">
+  <div class="col-lg-12">
     <div class="sidebar">
       <nav class="sidebar-nav">
         <ul class="nav-list primary-nav fs-5">
@@ -19,12 +19,20 @@
   </div>
 </div>
 
-<!-- Mobile Bottom Navbar -->
-<nav class="mobile-footer-nav d-md-none">
-  <!-- <a routerLink="/" class="nav-icon"><i class="fa-solid fa-house"></i><small>គេហទំព័រ</small></a> -->
-  <a routerLink="/personal" routerLinkActive="active" class="nav-icon"><i class="fa-solid fa-user"></i><small>ប្រវត្តិរូប</small></a>
-  <a routerLink="/dashboard" routerLinkActive="active" class="nav-icon"><i class="fa-solid fa-film"></i><small>វគ្គ</small></a>
-  <a routerLink="/myLesson" class="nav-icon"><i class="fa-solid fa-book"></i><small>មេរៀនរបស់ខ្ញុំ</small></a>
-  <a (click)="logout()" class="nav-icon"><i class="fa-solid fa-sign-out-alt"></i><small>ចេញ</small></a>
+<!-- Mobile & Tablet Bottom Navbar (<992px) -->
+<nav class="mobile-footer-nav d-lg-none fixed-bottom bg-white border-top d-flex justify-content-around py-2 shadow-sm">
+  <a routerLink="/personal" routerLinkActive="active" class="nav-icon text-center text-dark">
+    <i class="fa-solid fa-user fs-5"></i><br><small>ប្រវត្តិរូប</small>
+  </a>
+  <a routerLink="/dashboard" routerLinkActive="active" class="nav-icon text-center text-dark">
+    <i class="fa-solid fa-film fs-5"></i><br><small>វគ្គ</small>
+  </a>
+  <a routerLink="/myLesson" routerLinkActive="active" class="nav-icon text-center text-dark">
+    <i class="fa-solid fa-book fs-5"></i><br><small>មេរៀន</small>
+  </a>
+  <a (click)="logout()" class="nav-icon text-center text-danger">
+    <i class="fa-solid fa-sign-out-alt fs-5"></i><br><small>ចេញ</small>
+  </a>
 </nav>
+
 

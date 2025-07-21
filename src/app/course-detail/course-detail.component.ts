@@ -29,10 +29,10 @@ export class CourseDetailComponent {
       const id = +idParam;
       this.courseId = id;
       this.loadCourse(id);
-
       this.courseService.getLessonsByCourse(id).subscribe({
         next: (response) => {
           this.lessons = response.lesson;
+          console.log(response)
         },
         error: (error) => {
           // console.error('Error fetching lessons:', error);
@@ -99,7 +99,7 @@ export class CourseDetailComponent {
     }
   }
   loadContents(): void {
-    this.courseService.getContents().subscribe({
+    this.courseService.getContents(this.courseId).subscribe({
       next: (response) => {
         this.contents = response.content;
       },

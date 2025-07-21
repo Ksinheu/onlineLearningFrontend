@@ -10,89 +10,61 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './lesson.component.css'
 })
 export class LessonComponent {
-//   lessons: any[] = [];
-//   exercise:any[]=[];
-//   selectedLesson: any = null;
-//   hasPurchased: boolean = false;
-
-//   constructor(private apiService: ApiService) {}
-
-//   ngOnInit(): void {
-//     this.apiService.getLessonById().subscribe({
-//       next: (res) => {
-//         this.lessons = res.lessons || [];
-//         // this.hasPurchased = res.hasPurchased || false;
-//         this.hasPurchased = true;
-//         // Auto-select first lesson
-//         if (this.lessons.length > 0) {
-//           this.selectedLesson = this.lessons[0];
-//         }
-//       },
-//       error: (err) => {
-//         console.error('Failed to fetch lessons', err);
-//       }
-//     });
-//     this.loadExercise();
-//   }
-// loadExercise(): void {
-//     this.apiService.getExercise().subscribe({
-//       next: (response) => {
-//         this.exercise = response.exercise;
-//       },
-//       error: (error) => {
-//         console.error('Failed to load exercise:', error);
-//       }
-//     });
-//   }
-//   selectLesson(lesson: any): void {
-//     this.selectedLesson = lesson;
-//   }
-
-//   goBack(): void {
-//     window.history.back();
-//   }
   lessons: any[] = [];
   exercise: any[] = [];
   selectedLesson: any = null;
   hasPurchased: boolean = true;
   contents: any[] = [];
+  courseId!: number;
 
   @ViewChild('videoPlayer') videoPlayer!: ElementRef<HTMLVideoElement>;
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.apiService.getLessonById().subscribe({
-      next: (res) => {
-        this.lessons = res.lessons || [];
-        if (this.lessons.length > 0) {
-          this.selectedLesson = this.lessons[0];
-          this.loadExercise(); // Load exercise for first lesson
-        }
-      },
-      error: (err) => {
-        console.error('Failed to fetch lessons', err);
-      }
+    // ✅ Get courseId from route
+    this.route.params.subscribe(params => {
+      this.courseId = +params['courseId']; // convert to number
+      this.loadLessons(); // load lessons by courseId
     });
-    this.loadContents();
+
+    this.loadContents(); // optional global content
+  }
+
+  loadLessons(): void {
+    this.apiService.getLessonsByCourse(this.courseId).subscribe({
+  next: (res) => {
+    console.log('Full response:', res);
+    this.lessons = res.lesson || []; // adjust this key as needed
+    if (this.lessons.length > 0) {
+      this.selectedLesson = this.lessons[0];
+      this.loadExercise();
+    }
+  },
+  error: (err) => {
+    console.error('Failed to fetch lessons', err);
+  }
+});
+
   }
 
   selectLesson(lesson: any): void {
     this.selectedLesson = lesson;
-
-    // Reload video
+    
+    // console.log('Selected Lesson:', this.selectedLesson);
     setTimeout(() => {
       const video = this.videoPlayer?.nativeElement;
       if (video) {
         video.pause();
         video.load();
-        video.play(); // Optional
+        video.play();
       }
     });
 
-    // Reload exercises
     this.loadExercise();
-    
   }
 
   loadExercise(): void {
@@ -108,8 +80,9 @@ export class LessonComponent {
       }
     });
   }
- loadContents(): void {
-    this.apiService.getContents().subscribe({
+
+  loadContents(): void {
+    this.apiService.getContents(this.courseId).subscribe({
       next: (response) => {
         this.contents = response.content;
       },
@@ -118,6 +91,7 @@ export class LessonComponent {
       }
     });
   }
+
   goBack(): void {
     window.history.back();
   }

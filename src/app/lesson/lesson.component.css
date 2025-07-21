@@ -26,6 +26,14 @@ main {
   padding: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
+.lesson-list li:hover {
+  background-color: #e0f2fe;
+}
+
+/* .lesson-list li.active {
+  background-color: #3b82f6;
+  color: white;
+} */
 
 .sidebar ul {
   list-style: none;
@@ -101,9 +109,9 @@ video.video-section {
   border-radius: 8px;
 }
 
-.active-task {
+/* .active-task {
   border-color: #3b82f6;
-}
+} */
 
 .upload input {
   display: block;
@@ -155,5 +163,22 @@ video.video-section {
 }
 .content-list{
   list-style: none;
+}
+
+/* ✅ Desktop Sidebar Active Style */
+@media (min-width: 992px) {
+  .lesson-list li.active {
+    color: #0d6efd;
+    background-color: rgba(13, 110, 253, 0.1);
+    border-left: 4px solid #0d6efd;
+    border-radius: 6px;
+    font-weight: bold;
+    padding-left: 12px;
+    transition: 0.3s;
+  }
+
+  .nav-link.active i {
+    color: #0d6efd;
+  }
 }
 
