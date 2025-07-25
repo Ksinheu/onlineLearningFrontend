@@ -37,7 +37,7 @@ export class LessonComponent {
   loadLessons(): void {
     this.apiService.getLessonsByCourse(this.courseId).subscribe({
   next: (res) => {
-    console.log('Full response:', res);
+    // console.log('Full response:', res);
     this.lessons = res.lesson || []; // adjust this key as needed
     if (this.lessons.length > 0) {
       this.selectedLesson = this.lessons[0];
@@ -81,16 +81,23 @@ export class LessonComponent {
     });
   }
 
-  loadContents(): void {
-    this.apiService.getContents(this.courseId).subscribe({
-      next: (response) => {
-        this.contents = response.content;
-      },
-      error: (error) => {
-        console.error('Failed to load content:', error);
-      }
-    });
+loadContents(): void {
+  if (!this.courseId) {
+    console.error('Invalid courseId');
+    return;
   }
+
+  this.apiService.getContents(this.courseId).subscribe({
+    next: (response) => {
+      this.contents = response.content || [];
+    },
+    error: (error) => {
+      console.error('Failed to load content:', error);
+    }
+  });
+}
+
+
 
   goBack(): void {
     window.history.back();

@@ -19,33 +19,38 @@ export class CourseDetailComponent {
   courseId!: number;
   contents: any[] = [];
   isLoading = true;
+ activeSection: string = 'description';
   error: string | null = null;
+   errorMessage = '';
+   comments: any[] = [];
+   
   constructor(private router: Router, private route: ActivatedRoute, private courseService: ApiService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
   ngOnInit() {
-    const idParam = this.route.snapshot.paramMap.get('id');
-    if (idParam) {
-      const id = +idParam;
-      this.courseId = id;
-      this.loadCourse(id);
-      this.courseService.getLessonsByCourse(id).subscribe({
-        next: (response) => {
-          this.lessons = response.lesson;
-          console.log(response)
-        },
-        error: (error) => {
-          // console.error('Error fetching lessons:', error);
-          console.log('Error fetching lessons:', error);
-        }
-      });
-    } else {
-      console.error('No course ID found in route');
-    }
-    this.isLogined = this.courseService.isAuthenticated();
-    this.checkLoginStatus();
-    this.loadContents();
+  const idParam = this.route.snapshot.paramMap.get('id');
+  if (idParam) {
+    const id = +idParam;
+    this.courseId = id;
+    this.loadCourse(id);
+    this.loadContent(); // <- load contents now
+    this.loadComments();
+    this.courseService.getLessonsByCourse(id).subscribe({
+      next: (response) => {
+        // console.log(response);
+      },
+      error: (error) => {
+        console.log('Error fetching lessons:', error);
+      }
+    });
+  } else {
+    console.error('No course ID found in route');
   }
+
+  this.isLogined = this.courseService.isAuthenticated();
+  this.checkLoginStatus();
+}
+
   toggleVideo(index: number): void {
     this.selectedLessonIndex = this.selectedLessonIndex === index ? null : index;
   }
@@ -98,16 +103,38 @@ export class CourseDetailComponent {
       });
     }
   }
-  loadContents(): void {
-    this.courseService.getContents(this.courseId).subscribe({
-      next: (response) => {
-        this.contents = response.content;
+loadContent(): void {
+  this.isLoading = true;
+
+  this.courseService.getContents(this.courseId).subscribe({
+    next: (res) => {
+      this.contents = res.contents; // already an array
+      this.isLoading = false;
+      // console.log('Contents loaded:', this.contents);
+    },
+    error: (error) => {
+      this.errorMessage = error?.error?.message || 'Failed to load content';
+      console.error('Content loading error:', error);
+      this.isLoading = false;
+    }
+  });
+}
+  loadComments(): void {
+    this.isLoading = true;
+    this.courseService.getCommentsByCourse(this.courseId).subscribe({
+      next: res => {
+        this.comments = res.data;
+        this.isLoading = false;
+        
       },
-      error: (error) => {
-        console.error('Failed to load content:', error);
+      error: () => {
+        this.isLoading = false;
       }
     });
   }
+setActiveSection(section: string) {
+  this.activeSection = section;
+}
 
   logout() {
     const token = localStorage.getItem('token');

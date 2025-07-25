@@ -1,0 +1,12 @@
+/
+ /login
+ /signup
+ /dashboard
+ /courses
+ /news
+ /personal
+ /myLesson
+ /contact
+ /invoice
+ /forgot-password
+ /login-otp

@@ -32,30 +32,30 @@ import { FooterComponent } from './footer/footer.component';
 import { FooterDashboardComponent } from './footer-dashboard/footer-dashboard.component';
 import { NewNewsComponent } from './new-news/new-news.component';
 import { InvioceComponent } from './invioce/invioce.component';
+import { PaymentComponent } from './payment/payment.component';
 
-const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'courses', component: CoursesComponent, canActivate: [AuthGuard] },
-  { path: 'courses/:id', component: CourseDetailComponent},
-  { path: 'purchase/:id', component: PurchaseComponent, canActivate: [AuthGuard] },
-  { path: 'payment_method', component: PaymentMethodComponent, canActivate: [AuthGuard] },
-  { path: 'payment', component: PaymentMethodComponent, canActivate: [AuthGuard] },
-  { path: 'courses/:courseId/lessons', component: LessonComponent},
-  { path: 'news', component: NewsComponent, canActivate: [AuthGuard] },
-  { path: 'personal', component: PersonalComponent },
+export const routes: Routes = [
+  {path:'courses',component:CoursesComponent},
+  {path:'login',component:LoginComponent},
+  {path:'signup',component:SignupComponent},
+  {path:'',component:HomeComponent},
+  {path:'slider',component:SliderComponent},
+  {path:'dashboard',component:DashboardComponent,canActivate: [AuthGuard]},
+  {path:'news',component:NewsComponent},
+  {path:'payment_method',component:PaymentMethodComponent},
+  {path:'payment',component:PaymentComponent},
+  {path:'personal',component:PersonalComponent},
   {path:'myLesson',component:MylessonComponent},
   {path:'contact',component:ContactComponent},
-  // {path: 'lesson/:id', component: LessonComponent },
+  {path:'lesson',component:LessonComponent},
   {path:'forgot-password',component:ForgotPasswordComponent},
-  { path: 'login-otp', component: OtpLoginComponent},
+  { path: 'login-otp', component: OtpLoginComponent },
   {path:'new-news',component:NewNewsComponent},
-  {path:'invoice',component:InvioceComponent},
-  { path: '**', redirectTo: '' }
+  { path: 'courses/:id', component: CourseDetailComponent },
+  { path: 'courses/:courseId/lessons', component: LessonComponent },
+  {path:'purchase/:id',component:PurchaseComponent},
+  {path:'invoice',component:InvioceComponent}
 ];
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -99,4 +99,26 @@ const routes: Routes = [
   ],
   bootstrap: [AppComponent]
 })
+
+
 export class AppModule { }
+// ✅ This is required by Angular prerenderer!
+export function getPrerenderParams() {
+  const courseIds = ['1', '2', '3'];
+  const purchaseIds = ['100', '101', '102']; // Replace with actual or dummy purchase IDs
+
+  return [
+    ...courseIds.map(id => ({
+      route: `courses/${id}`,
+      params: { id },
+    })),
+    ...courseIds.map(courseId => ({
+      route: `courses/${courseId}/lessons`,
+      params: { courseId },
+    })),
+    ...purchaseIds.map(id => ({
+      route: `purchase/${id}`,
+      params: { id },
+    })),
+  ];
+}

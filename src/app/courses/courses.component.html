@@ -10,7 +10,7 @@
           <div class="card h-100 course-card border-1 text-center">
             <!-- Image container -->
             <div class="pt-3">
-              <img [src]="'http://localhost:8000/storage/' + item.imgCourse" alt="Angular" class="mx-auto d-block" style="height: 80px; object-fit: contain;">
+            <a [routerLink]="['/courses', item.id]">  <img [src]="'http://localhost:8000/storage/' + item.imgCourse" alt="Angular" class="mx-auto d-block" style="height: 80px; object-fit: contain;"></a>
             </div>
             <div class="card-body py-3 px-3">
               <span class="badge bg-primary mb-2" style="font-size: 0.75rem;">{{ item.course_name }}</span>

@@ -170,10 +170,6 @@ export class ApiService {
   getCourseById(id: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/courseApi/${id}`);
   }
-  // get lession
-  // getLessonById(): Observable<any> {
-  //   return this.http.get<any>(`${this.apiUrl}/lessonApi`);
-  // }
 
   getLessonsByCourse(courseId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/lessons/${courseId}`);
@@ -202,10 +198,14 @@ export class ApiService {
     return this.http.get<any>(`${this.apiUrl}/customer/completed-courses?customer_id=${customerId}`);
   }
 
-  getContents(content_id :number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/contents/${content_id}`);
+  getContents(courseId :number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/contents/course/${courseId}`);
   }
   getExercise(lessonId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/exercise/${lessonId}`);
+  }
+  // GET: Fetch comments by course ID
+  getCommentsByCourse(courseId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/comments/course/${courseId}`);
   }
 }

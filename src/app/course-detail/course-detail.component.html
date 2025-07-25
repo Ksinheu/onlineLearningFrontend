@@ -1,20 +1,25 @@
 <!-- Header -->
 <ng-container *ngIf="isLogined; else guestNav">
-  <app-header></app-header>
-
+  
+<div class="container-fuild header">
+ <app-header></app-header> 
+</div>
   <nav class="mobile-footer-nav d-md-none">
 
     <a routerLink="/personal" routerLinkActive="active" class="nav-icon"><i
         class="fa-solid fa-user"></i><small>ប្រវត្តិរូប</small></a>
     <a routerLink="/dashboard" routerLinkActive="active" class="nav-icon"><i
         class="fa-solid fa-film"></i><small>វគ្គ</small></a>
-    <a routerLink="/myLesson" class="nav-icon"><i class="fa-solid fa-bell"></i><small>មេរៀនរបស់ខ្ញុំ</small></a>
+    <a routerLink="/myLesson" routerLinkActive="active" class="nav-icon"><i
+        class="fa-solid fa-book fs-5"></i><small>មេរៀនរបស់ខ្ញុំ</small></a>
     <a (click)="logout()" class="nav-icon"><i class="fa-solid fa-sign-out-alt"></i><small>ចេញ</small></a>
   </nav>
 
 </ng-container>
 <ng-template #guestNav>
-  <app-home-header></app-home-header>
+  <div class="container-fuild header">
+    <app-home-header></app-home-header>
+</div>
 </ng-template>
 <!-- Loader -->
 <div *ngIf="loading" class="loader-wrapper">
@@ -22,8 +27,8 @@
 </div>
 
 <!-- Main Product View -->
-<div class="container py-4 shadow mt-3 mb-5" *ngIf="!loading && course">
-  <div class="row mt-2">
+<div class="container py-4 pt-5 mb-3" *ngIf="!loading && course">
+  <div class="row mt-5">
     <!-- Left: Image & Thumbnails -->
     <div class="col-md-6">
       <img [src]="'http://localhost:8000/storage/' + course.imgCourse" alt="Course Image"
@@ -48,10 +53,7 @@
         <small class="text-muted ms-2">(120 Reviews)</small>
       </div>
       <!-- Description -->
-      <p class="text-muted mb-2">
-        {{ course.description || 'This course provides valuable knowledge and practical lessons to help you succeed.' }}
-        <!-- <a href="#">more...</a> -->
-      </p>
+      
       <!-- Price -->
       <h4 class="fw-bold mb-3">
         <span class="text-decoration-line-through text-muted me-2">{{ course.price_normal }}$</span>
@@ -68,43 +70,108 @@
 
     </div>
   </div>
-  <div class="container mt-4">
-    <div class="row">
-      <div class="col-4 ">
-        <div class="mb-3">📚 មាតិកាមេរៀន</div>
 
-        <div *ngIf="contents.length > 0; else noData">
-          <ul class="content-list">
-            <li *ngFor="let item of contents">
-              <span class="check-icon">☑</span> {{ item.Lesson_content }}
-            </li>
-          </ul>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="navbar rounded-2">
+        <a href="#" [class.active]="activeSection === 'description'"
+          (click)="setActiveSection('description'); $event.preventDefault()">
+          ពិពណ៌នាវគ្គសិក្សា
+        </a>
+        <a href="#" [class.active]="activeSection === 'lesson'"
+          (click)="setActiveSection('lesson'); $event.preventDefault()">
+          មាតិកាមេរៀន
+        </a>
+        <a href="#" [class.active]="activeSection === 'expect'"
+          (click)="setActiveSection('expect'); $event.preventDefault()">
+          លទ្ធផលដែលរំពឹង
+        </a>
+        <a href="#" [class.active]="activeSection === 'activity'"
+          (click)="setActiveSection('activity'); $event.preventDefault()">
+          សកម្មភាព
+        </a>
+        <a href="#" [class.active]="activeSection === 'comments'"
+          (click)="setActiveSection('comments'); $event.preventDefault()">
+          មតិអ្នកសិក្សា
+        </a>
+
+      </div>
+
+      <!-- Description -->
+      <div *ngIf="activeSection === 'description'" class="mt-4">
+        <h5>ពិពណ៌នាវគ្គសិក្សា</h5>
+        <p class="text-muted">
+          {{ course.description || 'This course provides valuable knowledge and practical lessons.' }}
+        </p>
+      </div>
+      <!-- Lesson Content -->
+      <div *ngIf="activeSection === 'lesson'" class="mt-4">
+        <div *ngIf="isLoading">Loading contents...</div>
+        <div *ngIf="!isLoading && contents.length">
+          <h5>មាតិកាមេរៀន</h5>
+          <div *ngFor="let content of contents" class="border rounded p-2 mb-2 bg-light shadow-sm">
+            <p class="pt-3"> {{ content.Lesson_content }}</p>
+          </div>
+        </div>
+        <div *ngIf="!isLoading && !contents.length">
+          <p>មាតិកាមិនមានសម្រាប់វគ្គនេះទេ។</p>
         </div>
       </div>
-      <div class="col-4">
-        <div class="mb-3">📚 ពេលសិស្សរៀនចប់ទទួលបាន</div>
-        <div *ngIf="contents.length > 0; else noData">
-          <ul class="content-list">
-            <li *ngFor="let item of contents">
-              <span class="check-icon">✔</span> {{ item.expect_result }}
-            </li>
-          </ul>
+
+      <!-- Expected Result -->
+      <div *ngIf="activeSection === 'expect'" class="mt-4">
+        <div *ngIf="isLoading">Loading contents...</div>
+        <div *ngIf="!isLoading && contents.length">
+          <h5>លទ្ធផលដែលរំពឹង</h5>
+          <div *ngFor="let content of contents">
+            <p><strong class="text-primary">☑</strong> {{ content.expect_result }}</p>
+          </div>
+        </div>
+        <div *ngIf="!isLoading && !contents.length">
+          <p>មាតិកាមិនមានសម្រាប់វគ្គនេះទេ។</p>
         </div>
       </div>
-      <div class="col-4">
-        <div class="mb-3">📚 សកម្មភាពរៀន</div>
-        <div *ngIf="contents.length > 0; else noData">
-          <ul>
-            <li *ngFor="let item of contents" class="mb-2">
-               {{ item.activity }}
-            </li>
-          </ul>
+
+      <!-- Activity -->
+      <div *ngIf="activeSection === 'activity'" class="mt-4">
+        <div *ngIf="isLoading">Loading contents...</div>
+        <div *ngIf="!isLoading && contents.length">
+          <h5>សកម្មភាព</h5>
+          <div *ngFor="let content of contents">
+            <p><strong class="text-primary">☑</strong> {{ content.activity }}</p>
+            <!-- <p><strong>ការវាយតម្លៃ:</strong> {{ content.Evaluate }}</p> -->
+          </div>
+        </div>
+        <div *ngIf="!isLoading && !contents.length">
+          <p>មាតិកាមិនមានសម្រាប់វគ្គនេះទេ។</p>
         </div>
       </div>
+
+      <!-- Comments Section -->
+      <div *ngIf="activeSection === 'comments'" class="mt-4">
+  <div *ngIf="isLoading">កំពុងផ្ទុកមតិ...</div>
+
+  <div *ngIf="!isLoading && comments.length > 0">
+    <h5>មតិអ្នកសិក្សា</h5>
+    <div *ngFor="let comment of comments" class="border rounded p-3 mb-3 bg-light shadow-sm">
+      <p class="mb-0">
+        <strong class="text-primary">☑</strong>
+        {{ comment?.comment || 'មតិមិនមានទេ' }}
+      </p>
     </div>
-    <ng-template #noData>
-      <p class="text-muted">No content available.</p>
-    </ng-template>
+  </div>
+
+  <div *ngIf="!isLoading && !comments.length">
+    <p>មិនមានមតិទេ។</p>
   </div>
 </div>
+
+
+    </div>
+  </div>
+</div>
+
+
 <app-footer></app-footer>

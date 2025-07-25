@@ -3,3 +3,9 @@
       border-radius: 15px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
+    .header{
+    width: 100%;
+    position: fixed;
+    z-index: 99999999999;
+    margin-bottom: 50px;
+}

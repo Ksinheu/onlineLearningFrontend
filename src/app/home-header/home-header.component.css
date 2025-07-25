@@ -1,7 +1,12 @@
 .bg-blue{
     background-color: #262a95;
 }
-
+.header{
+    width: 100%;
+    position: fixed;
+    z-index: 99999999999;
+    margin-bottom: 50px;
+}
 .mobile-bottom-nav {
   position: fixed;
   bottom: 0;

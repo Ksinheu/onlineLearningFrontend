@@ -13,3 +13,6 @@ if ('serviceWorker' in navigator) {
     }
   });
 }
+// bootstrapApplication(AppComponent, {
+//   providers: [provideRouter(routes)]
+// });
