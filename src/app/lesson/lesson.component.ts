@@ -5,99 +5,171 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-lesson',
   standalone: false,
-  
+
   templateUrl: './lesson.component.html',
   styleUrl: './lesson.component.css'
 })
 export class LessonComponent {
-  lessons: any[] = [];
-  exercise: any[] = [];
-  selectedLesson: any = null;
-  hasPurchased: boolean = true;
-  contents: any[] = [];
-  courseId!: number;
 
   @ViewChild('videoPlayer') videoPlayer!: ElementRef<HTMLVideoElement>;
+  courseId!: number;
+  lessonId!: number;
+  lessons: any[] = [];
+  groupedContents: any[] = []; // [{ lesson_title: string, lectures: [] }]
+  selectedContent: any = null;
+  activeSectionIndex: number | null = null;
+  exercises: any[] = [];
+  isLoading = true;
+  errorMessage = '';
 
-  constructor(
-    private apiService: ApiService,
-    private route: ActivatedRoute
-  ) {}
+  constructor(private apiService: ApiService, private route: ActivatedRoute) { }
 
-  ngOnInit(): void {
-    // ✅ Get courseId from route
-    this.route.params.subscribe(params => {
-      this.courseId = +params['courseId']; // convert to number
-      this.loadLessons(); // load lessons by courseId
-    });
-
-    this.loadContents(); // optional global content
-  }
-
-  loadLessons(): void {
-    this.apiService.getLessonsByCourse(this.courseId).subscribe({
-  next: (res) => {
-    // console.log('Full response:', res);
-    this.lessons = res.lesson || []; // adjust this key as needed
-    if (this.lessons.length > 0) {
-      this.selectedLesson = this.lessons[0];
-      this.loadExercise();
+  ngOnInit() {
+    const idParam = this.route.snapshot.paramMap.get('courseId');
+    // const idLesson = this.route.snapshot.paramMap.get('id');
+    if (idParam) {
+      this.courseId = +idParam;
+      this.lessonId = +idParam;
+      this.loadContents();
+      this.loadExercise()
+    } else {
+      console.error('No course ID found in route');
     }
-  },
-  error: (err) => {
-    console.error('Failed to fetch lessons', err);
   }
-});
+  // loadContents(): void {
+  //   this.isLoading = true;
+  //   this.apiService.getContents(this.courseId).subscribe({
+  //     next: (res) => {
+  //       console.log('API response:', res);
 
-  }
+  //       if (res.success && res.contents && res.contents.length > 0) {
+  //         // Group contents by lesson
+  //         const grouped = res.contents.reduce((acc: any, content: any) => {
+  //           const lessonId = content.lesson?.id;
+  //           if (!lessonId) return acc;
 
-  selectLesson(lesson: any): void {
-    this.selectedLesson = lesson;
-    
-    // console.log('Selected Lesson:', this.selectedLesson);
-    setTimeout(() => {
-      const video = this.videoPlayer?.nativeElement;
-      if (video) {
-        video.pause();
-        video.load();
-        video.play();
-      }
-    });
+  //           let group = acc.find((g: any) => g.id === lessonId);
+  //           if (!group) {
+  //             group = {
+  //               id: lessonId,
+  //               title: content.lesson?.title || 'មេរៀនគ្មានចំណងជើង',
+  //               contents: []
+  //             };
+  //             acc.push(group);
+  //           }
+  //           group.contents.push(content);
+  //           return acc;
+  //         }, []);
 
-    this.loadExercise();
-  }
+  //         this.lessons = grouped;
+  //         this.groupByLesson();
 
-  loadExercise(): void {
-    if (!this.selectedLesson) return;
-
-    this.apiService.getExercise(this.selectedLesson.id).subscribe({
-      next: (response) => {
-        this.exercise = response.exercise;
-      },
-      error: (error) => {
-        console.error('Failed to load exercise:', error);
-        this.exercise = [];
-      }
-    });
-  }
+  //         const firstGroup = this.groupedContents[0];
+  //         if (firstGroup && firstGroup.lectures.length > 0) {
+  //           this.selectContent(firstGroup.lectures[0]);
+  //           this.activeSectionIndex = 0;
+  //         }
+  //       } else {
+  //         this.errorMessage = 'មិនមានមេរៀន';
+  //       }
+  //       this.isLoading = false;
+  //     },
+  //     error: (err) => {
+  //       this.errorMessage = 'Could not load content.';
+  //       console.error(err);
+  //       this.isLoading = false;
+  //     }
+  //   });
+  // }
+// Call this manually when needed
+  
 
 loadContents(): void {
-  if (!this.courseId) {
-    console.error('Invalid courseId');
-    return;
-  }
+  this.isLoading = true;
+  this.errorMessage = '';
 
   this.apiService.getContents(this.courseId).subscribe({
-    next: (response) => {
-      this.contents = response.content || [];
+    next: (res) => {
+      if (res.success && Array.isArray(res.contents) && res.contents.length > 0) {
+        const grouped = res.contents.reduce((acc: any[], content: any) => {
+          const lessonId = content.lesson?.id;
+          if (!lessonId) return acc;
+
+          let group = acc.find(g => g.id === lessonId);
+          if (!group) {
+            group = {
+              id: lessonId,
+              title: content.lesson?.title || 'មេរៀនគ្មានចំណងជើង',
+              contents: []
+            };
+            acc.push(group);
+          }
+          group.contents.push(content);
+          return acc;
+        }, []);
+
+        this.lessons = grouped;
+        this.groupByLesson();
+
+        // Wait for view to update before selecting first content
+        setTimeout(() => {
+          const firstGroup = this.groupedContents[0];
+          if (firstGroup && firstGroup.lectures.length > 0) {
+            this.selectContent(firstGroup.lectures[0]);
+            this.activeSectionIndex = 0;
+          }
+        }, 0);
+
+      } else {
+        this.errorMessage = 'មិនមានមេរៀន';
+      }
+      this.isLoading = false;
     },
-    error: (error) => {
-      console.error('Failed to load content:', error);
+    error: (err) => {
+      this.errorMessage = 'Could not load content.';
+      console.error(err);
+      this.isLoading = false;
     }
   });
 }
 
-
+loadExercise(): void {
+    if (this.courseId) {
+      this.apiService.getExercise(this.courseId).subscribe({
+        next: (res) => {
+           this.exercises = res.exercises;
+          console.log('Exercise',res)
+        },
+        error: (err) => {
+          console.error('Failed to load exercises', err);
+        }
+      });
+    }
+  }
+  groupByLesson(): void {
+    this.groupedContents = this.lessons.map(lesson => ({
+      lesson_title: lesson.title || 'មេរៀនគ្មានចំណងជើង',
+      lectures: lesson.contents || []
+    }));
+  }
+  toggleSection(index: number) {
+    if (this.activeSectionIndex === index) {
+      this.activeSectionIndex = null; // close if same clicked again
+    } else {
+      this.activeSectionIndex = index; // open clicked section
+    }
+  }
+  selectContent(content: any): void {
+    this.selectedContent = content;
+    setTimeout(() => {
+      const video = this.videoPlayer?.nativeElement;
+      if (video && content.video_url) {
+        video.src = `http://localhost:8000/storage/${content.video_url}`;
+        video.load();
+        video.play();
+      }
+    }, 0);
+  }
 
   goBack(): void {
     window.history.back();

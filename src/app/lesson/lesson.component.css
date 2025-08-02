@@ -1,184 +1,372 @@
-.header {
-  width: 100%;
-  position: fixed;
-  z-index: 99999999999;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  /* font-family: 'Inter', sans-serif; */
-}
-
-body {
-  background: #f7f9fc;
+.lesson-layout {
   display: grid;
-  grid-template-columns: 200px 1fr 300px;
-  gap: 20px;
-  padding: 20px;
-}
-
-aside,
-main {
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-}
-.lesson-list li:hover {
-  background-color: #e0f2fe;
-}
-
-/* .lesson-list li.active {
-  background-color: #3b82f6;
-  color: white;
-} */
-
-.sidebar ul {
-  list-style: none;
-  margin-top: 20px;
-}
-
-.sidebar li {
-  margin: 10px 0;
-}
-
-.highlight {
-  color: #3b82f6;
-  font-weight: 600;
-}
-
-.video-section {
-  position: relative;
-  height: 250px;
-  border-radius: 12px;
+  grid-template-columns: 250px 1fr 300px;
+  height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f5f7fb;
   overflow: hidden;
 }
-
-.video-section img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.video-section .overlay {
-  position: absolute;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.3);
+.loader-wrapper {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  background-color: #fff; /* Optional: to cover background */
 }
 
-video.video-section {
-  width: 100%;
-  border-radius: 12px;
-  height: 400px;
-  object-fit: cover;
+/* Your existing loader stays the same */
+.loader {
+  width: 50px;
+  padding: 8px;
+  aspect-ratio: 1;
+  align-items: center;
+  border-radius: 50%;
+  background: blue;
+  --_m: 
+    conic-gradient(#0000 10%,#000),
+    linear-gradient(#000 0 0) content-box;
+  -webkit-mask: var(--_m);
+          mask: var(--_m);
+  -webkit-mask-composite: source-out;
+          mask-composite: subtract;
+  animation: l3 1s infinite linear;
 }
 
-.overlay i {
-  font-size: 48px;
-  color: white;
+@keyframes l3 {
+  to {
+    transform: rotate(1turn);
+  }
 }
-
-.tabs {
+/* Left Sidebar - Fixed */
+.sidebar {
+  background: white;
+  padding: 1rem;
+  border-right: 1px solid #ddd;
   display: flex;
-  overflow-x: auto;
-  gap: 10px;
-  margin-bottom: 20px;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto;
+  height: 100vh;
+  position: sticky;
+  top: 0;
 }
 
-.tabs button {
-  background: #e5e7eb;
+.sidebar .logo {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar nav ul li {
+  margin-bottom: 1rem;
+}
+
+.sidebar nav ul li.active a {
+  color: #4f46e5;
+  font-weight: bold;
+}
+
+.sidebar .promo-box {
+  margin-top: auto;
+  text-align: center;
+}
+
+.sidebar .settings {
+  margin-top: auto;
+  font-size: 0.9rem;
+}
+
+/* Main container */
+.main-content {
+  background-color: #f9fafb;
+  min-height: 100vh;
+  overflow-y: auto;
+  padding: 24px;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Back button */
+.back-button {
+  color: #2563eb;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 16px;
+  background: none;
   border: none;
-  border-radius: 6px;
-  padding: 10px 20px;
   cursor: pointer;
 }
 
-.tasks ul {
-  list-style: none;
+.back-button:hover {
+  color: #1e40af;
 }
 
-.tasks li {
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #d1d5db;
+/* Page title */
+.main-content h1 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 16px;
+}
+
+/* Section box */
+.lesson-section {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background-color: white;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Section title bar */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.section-header:hover {
+  background-color: #f3f4f6;
+}
+
+.section-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Each lecture */
+.lecture-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  border-top: 1px solid #e5e7eb;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.lecture-item:hover {
+  background-color: #f9fafb;
+}
+
+/* Lecture info and icon */
+.lecture-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #374151;
+  max-width: 230px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Duration */
+.lecture-duration {
+  font-size: 14px;
+  font-weight: 600;
+  color: #6b7280;
+  min-width: 50px;
+  text-align: right;
+}
+
+/* Video Player */
+.video-player-container {
+  margin-top: 24px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+video {
+  width: 100%;
   border-radius: 8px;
 }
 
-/* .active-task {
-  border-color: #3b82f6;
-} */
-
-.upload input {
-  display: block;
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+/* Selected video title */
+.video-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-top: 12px;
 }
 
-.upload span {
-  color: #3b82f6;
-}
-.video-section {
-  width: 100%;
-  border-radius: 10px;
-  margin-top: 15px;
-  background-color: #000;
+/* Extra materials */
+.extra-materials {
+  margin-top: 24px;
 }
 
-.lesson-list ul li.active {
-  background-color: #e0f2fe;
+.extra-materials h3 {
+  font-size: 16px;
   font-weight: bold;
-  color: #1d4ed8;
-}
-
-.tasks ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-.tasks ul li {
-  padding: 5px 0;
-  color: #4b5563;
-}
-
-.tasks ul li.active-task {
-  font-weight: bold;
-  color: #3b82f6;
-}
-
-.upload input[type='text'] {
-  display: block;
-  width: 100%;
-  padding: 8px;
+  color: #1f2937;
   margin-bottom: 8px;
+}
+
+.extra-box {
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 16px;
+  border-radius: 8px;
+  color: #1e3a8a;
+  font-size: 14px;
+}
+
+
+.additional-materials {
+  margin-top: 2rem;
+}
+
+.material-box {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.right-sidebar {
+  background: #fff;
+  padding: 1.5rem;
+  border-left: 1px solid #ddd;
+  overflow-y: auto;
+}
+
+.task-list {
+  list-style: none;
+  padding: 0;
+}
+
+.task-list label {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.upload-box {
+  margin-top: 2rem;
+}
+
+.upload-box input,
+.upload-box textarea {
+  width: 100%;
+  padding: 0.5rem;
+  margin: 0.3rem 0;
   border: 1px solid #ccc;
   border-radius: 6px;
 }
-.content-list{
+
+.dropzone {
+  border: 2px dashed #ccc;
+  padding: 1rem;
+  text-align: center;
+  margin-top: 1rem;
+  border-radius: 8px;
+  background: #f0f4ff;
+}
+.custom-nav {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 10px 20px;
+  width: fit-content;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.custom-nav ul {
   list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 20px;
 }
 
-/* ✅ Desktop Sidebar Active Style */
-@media (min-width: 992px) {
-  .lesson-list li.active {
-    color: #0d6efd;
-    background-color: rgba(13, 110, 253, 0.1);
-    border-left: 4px solid #0d6efd;
-    border-radius: 6px;
-    font-weight: bold;
-    padding-left: 12px;
-    transition: 0.3s;
-  }
-
-  .nav-link.active i {
-    color: #0d6efd;
-  }
+.custom-nav ul li a {
+  text-decoration: none;
+  color: #444;
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-weight: 500;
 }
 
+.custom-nav ul li a:hover {
+  background-color: #f0f0f0;
+}
+
+.custom-nav ul li.active a {
+  background-color: #dce9ff;
+  color: #1a73e8;
+  font-weight: 600;
+}
+/* Right Sidebar - Fixed */
+.right-sidebar {
+  background: #fff;
+  padding: 1.5rem;
+  border-left: 1px solid #ddd;
+  overflow-y: auto;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+}
+
+/* Sidebar lessons */
+.lesson-sidebar .accordion-button {
+  font-size: 0.95rem;
+  /* padding: 0.75rem 1rem; */
+}
+
+.lesson-sidebar .accordion-button:hover,
+.lesson-sidebar .accordion-button.active-section {
+  background-color: #e9f0ff;
+  color: #0d6efd;
+  font-weight: 600;
+}
+
+/* Lesson item row */
+.lesson-item {
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.lesson-item:hover {
+  background-color: #f8f9fa;
+}
+
+.lesson-item.active-lesson {
+  background-color: #e7f1ff;
+  border-left: 3px solid #0d6efd;
+  font-weight: 500;
+  color: #0d6efd;
+}
+/* Optional purple badge */
+.bg-purple {
+  background-color: #6f42c1;
+}
+
+/* Optional: override arrow color */
+.accordion-button::after {
+  filter: invert(30%);
+}
+.accordion-button:not(.collapsed)::after {
+  filter: invert(70%);
+}
+
+/* Optional: highlight active lesson */
+.lesson-item.active-lesson {
+  background-color: #0d6efd22;
+  border-left: 4px solid #0d6efd;
+  border-radius: 6px;
+}
+
+/* Add cursor pointer for lessons */
+.lesson-item {
+  cursor: pointer;
+}

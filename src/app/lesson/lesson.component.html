@@ -1,87 +1,127 @@
-<!-- Header -->
-<div class="header fixed-top bg-white shadow-sm z-3">
-  <app-header></app-header>
-</div>
+<div class="lesson-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo"><img src="/img/pcc-logo.png" alt="" class="w-100" /></div>
+    <nav class="lesson-sidebar">
+      <div *ngIf="lessons.length > 0">
+        <h5 class="text-center pb-2 text-primary">មេរៀនទាំងអស់</h5>
 
-<!-- Main Layout -->
-<div class="container-fluid py-4">
-  <div class="row">
+        <ng-container *ngIf="groupedContents.length > 0; else noLessons">
+          <div class="accordion" id="lessonAccordion">
+            <div *ngFor="let section of groupedContents; let i = index" class="accordion-item border-0 mb-1">
+              <h2 class="accordion-header">
+                <button
+              class="accordion-button rounded-3"
+              [class.collapsed]="activeSectionIndex !== i"
+              type="button"
+              (click)="toggleSection(i)"
+              >
+              {{ section.lesson_title }}
+            </button>
+              </h2>
 
-    <!-- Left Sidebar: Lessons List -->
-    <div class="col-12 col-md-12 col-lg-2 mt-5">
-      <div class="lesson-list pt-3 border-end">
-        <h5 class="text-center mb-2">មេរៀន</h5>
-        <ul class="list-unstyled ps-3">
-          <li 
-            *ngFor="let lesson of lessons" 
-            (click)="selectLesson(lesson)"
-            [class.active]="selectedLesson?.id === lesson.id"
-            style="cursor: pointer; padding: 10px; border-radius: 4px;"
-          >
-            {{ lesson.title }}
-          </li>
-        </ul>
+              <div class="accordion-collapse collapse"  [class.show]="activeSectionIndex === i">
+                <div class="accordion-body p-2">
+                  <ul class="list-group list-group-flush">
+                    <li *ngFor="let content of section.lectures"
+                      class="list-group-item d-flex justify-content-between align-items-center lesson-item"
+                      [class.active-lesson]="selectedContent?.id === content.id" (click)="selectContent(content)">
+                      <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-play-circle text-secondary"></i>
+                        <span class="text-truncate">{{ content.Lesson_content }}</span>
+                        <span *ngIf="content.preview" class="badge bg-purple text-white ms-2">Preview</span>
+                      </div>
+                      <!-- <small class="text-muted">{{ content.session || '00:00' }}</small> -->
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
       </div>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content px-6 py-4 space-y-6 bg-gray-50 min-h-screen">
+<div *ngIf="isLoading" class="loader-wrapper">
+  <div class="loader"></div>
+</div>
+    <!-- Back Button -->
+    <a (click)="goBack()" style="cursor: pointer; margin-bottom: 50px;">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor"
+        style="width: 25px;">
+        <path fill-rule="evenodd"
+          d="M7.707 14.707a1 1 0 01-1.414 0L1.586 10l4.707-4.707a1 1 0 011.414 1.414L4.414 10l3.293 3.293a1 1 0 010 1.414z"
+          clip-rule="evenodd" />
+      </svg>
+      <span class="text-primary">ត្រឡប់</span>
+    </a>
+
+    <!-- No Lessons Message -->
+    <ng-template #noLessons>
+      <p class="text-gray-500 italic">មេរៀនគ្មានលំហាត់ទេ</p>
+    </ng-template>
+    <!-- Video Player -->
+    <div *ngIf="selectedContent" class="space-y-4 mt-3">
+      <!-- Lesson Title -->
+      <h2 class="text-2xl font-semibold text-gray-800">
+        {{ selectedContent.Lesson_content }}
+      </h2>
+
+      <div class="rounded-lg overflow-hidden shadow-md mt-3">
+        <video #videoPlayer controls class="w-full rounded-lg">
+          <source [src]="'http://localhost:8000/storage/' + selectedContent.video_url" type="video/mp4" class="w-100" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <h2 class="text-xl font-semibold text-gray-800">
+        {{ selectedContent.lesson_content }}
+      </h2>
     </div>
 
-    <!-- Center: Lesson Content -->
-    <div class="col-12 col-md-12 mt-5 col-lg-8 mt-3 overflow-hidden" *ngIf="selectedLesson">
-      <main>
-        <!-- Back Button -->
-        <button (click)="goBack()" style="margin-bottom: 10px; background: none; border: none; color: #3b82f6;">
-          <i class="fa-solid fa-arrow-left"></i> ត្រលប់ក្រោយ
-        </button>
+    <!-- Additional Materials -->
+    <!-- <section *ngIf="selectedContent?.expect_result" class="mt-6">
+      <h3 class="text-lg font-bold text-gray-800 mb-2">សម្ភារៈបន្ថែម</h3>
+      <div class="bg-blue-50 border border-blue-200 rounded-md p-4 text-sm text-blue-800">
+        {{ selectedContent.expect_result }}
+      </div>
+    </section> -->
 
-        <!-- Lesson Title -->
-        <h1 style="font-size: 24px; font-weight: 700;">{{ selectedLesson.title }}</h1>
+  </main>
 
-        <!-- Video Section -->
-        <div *ngIf="hasPurchased">
-          <video #videoPlayer class="video-section w-100 rounded" controls>
-            <source [src]="'http://localhost:8000/storage/' + selectedLesson.video_url" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+  <!-- Right Sidebar -->
+  <aside class="right-sidebar">
+    <h3 class="text-primary text-center">លំហាត់</h3>
+<div *ngIf="exercises && exercises.length > 0; else noExercise">
+  <div>
+    <ol class="list-decimal">
+      <li *ngFor="let exercise of exercises; let i = index" class="pb-4">
+        <div class="mb-2">
+          {{ exercise.exercise_element }}
+        </div>
 
-          <!-- Additional Materials -->
-          <h2 class="mt-3">ពណ៌នាអំពីមេរៀនទាំងអស់</h2>
-          <div class="bg-light p-3 rounded mt-2">
-            <!-- If contents exist -->
-            <div *ngIf="contents.length > 0; else noContent">
-              <ul class="content-list ps-3">
-                <li *ngFor="let item of contents" class="mb-1">
-                  <span class="check-icon text-primary me-2">✔</span>
-                  {{ item.expect_result }}
-                </li>
-              </ul>
-            </div>
-            <!-- If no contents -->
-            <ng-template #noContent>
-              <p class="text-muted">មេរៀននេះមិនមានបញ្ជាក់អំពីមាតិកាទេ។</p>
-            </ng-template>
+        <!-- Loop over all images -->
+        <div *ngIf="exercise.exercise_image?.length > 0" class="space-y-2 mt-2">
+          <div *ngFor="let img of exercise.exercise_image">
+            <img
+              [src]="'http://127.0.0.1:8000/storage/' + img.image_path"
+              alt="Exercise Image"
+              class="w-full max-w-md rounded shadow-sm border"
+            />
           </div>
         </div>
-      </main>
-    </div>
-
-    <!-- Right Sidebar: Exercises -->
-    <div class="col-12 col-md-12 mt-5 col-lg-2 mt-3 overflow-hidden">
-      <aside>
-        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 10px;">លំហាត់</h3>
-
-        <!-- Show if exercises exist -->
-        <ul class="tasks list-unstyled" *ngIf="exercise.length > 0; else noExercise">
-          <li *ngFor="let ex of exercise">
-            {{ ex.exercise_element }}
-          </li>
-        </ul>
-
-        <!-- Show if no exercises -->
-        <ng-template #noExercise>
-          <p class="text-danger">មេរៀននេះគ្មានលំហាត់ទេ</p>
-        </ng-template>
-      </aside>
-    </div>
+      </li>
+    </ol>
   </div>
 </div>
 
-  <app-footer-dashboard></app-footer-dashboard>
+<ng-template #noExercise>
+  <div class="p-4 text-center text-warning">
+    មិនមានលំហាត់សម្រាប់មេរៀននេះទេ។
+  </div>
+</ng-template>
+
+  </aside>
+</div>

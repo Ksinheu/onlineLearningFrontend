@@ -201,8 +201,24 @@ export class ApiService {
   getContents(courseId :number): Observable<any> {
     return this.http.get(`${this.apiUrl}/contents/course/${courseId}`);
   }
-  getExercise(lessonId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/exercise/${lessonId}`);
+    // ✅ 2. Get only count for one course
+  getContentCountByCourseId(courseId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/contents/count/course/${courseId}`);
+  }
+   // Get lesson count by course ID
+  getLessonCountByCourseId(courseId: number): Observable<{ success: boolean; course_id: number; lesson_count: number }> {
+    return this.http.get<{ success: boolean; course_id: number; lesson_count: number }>(
+      `${this.apiUrl}/lessons/count/course/${courseId}`
+    );
+  }
+  // Get comment count by course ID
+  getCommentCountByCourseId(courseId: number): Observable<{ success: boolean; course_id: number; comment_count: number }> {
+    return this.http.get<{ success: boolean; course_id: number; comment_count: number }>(
+      `${this.apiUrl}/comments/count/course/${courseId}`
+    );
+  }
+  getExercise(courseId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/exercise/${courseId}`);
   }
   // GET: Fetch comments by course ID
   getCommentsByCourse(courseId: number): Observable<any> {

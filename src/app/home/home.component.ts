@@ -1,6 +1,6 @@
 import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { ApiService } from '../Services/api.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
@@ -13,14 +13,16 @@ import { isPlatformBrowser } from '@angular/common';
 
 })
 export class HomeComponent {
-
+  
   isLoggedIn = false; // Track authentication status
   constructor(
     private authService: ApiService, 
     private router: Router,
+    
      @Inject(PLATFORM_ID) private platformId: Object) {}
 
   ngOnInit(): void {
+     
     this.checkLoginStatus(); // Check login status when component initializes
     
   }
@@ -31,6 +33,7 @@ export class HomeComponent {
     }
     
   }
+ 
   logout(): void {
     this.authService.Logout().subscribe({
       next: (response) => {

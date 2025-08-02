@@ -4,7 +4,7 @@
 </div>
  <section class="">
     <div class="container">
-      <div class="row row-cols-1 row-cols-md-6 g-2" >
+      <div class="row row-cols-1 row-cols-md-6 g-2">
         <!-- Example Card -->
         <div class="col-12 col-md-4 col-lg-2" *ngFor="let item of course">
           <div class="card h-100 course-card border-1 text-center">
@@ -16,19 +16,19 @@
               <span class="badge bg-primary mb-2" style="font-size: 0.75rem;">{{ item.course_name }}</span>
               <ul class="list-inline text-muted small mb-2 text-nowrap">
                 <li class="list-inline-item me-3">
-                  <i class="bi bi-book"></i> 12 មេរៀន
+                  <i class="bi bi-book"></i> {{ item.countContent || 0 }} មេរៀន
                 </li>
                 <li class="list-inline-item me-3">
-                  <i class="bi bi-clock"></i> 4 សប្ដាហ៍
+                  <i class="fa-solid fa-book"></i> {{item.lessonCount || 0}} ជំពូក
                 </li>
               </ul>
               <div class="mb-2">
                 <span class="text-warning small">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                <span class="text-muted small">(134 Reviews)</span>
+                <span class="text-muted small">({{item.commentCount || 0 }} <i class="fa-regular fa-comment"></i>)</span>
               </div>
               <div class="d-flex justify-content-between align-items-center mt-2">
                 <a [routerLink]="['/courses', item.id]" class="btn btn-sm btn-primary">ទិញ</a>
-                <span class="fw-bold small">${{ item.price }}</span>
+                <span class="fw-bold small text-decoration-line-through">${{ item.price_normal }}</span>|<span class="fw-bold small">${{ item.price }}</span>
               </div>
             </div>
           </div>
